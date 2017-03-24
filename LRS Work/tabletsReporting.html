@@ -1,0 +1,45 @@
+
+<div id="reporting-container" class="reporting-container padding-zero">
+    <div class="reporting-container-body margin-zero guestsReportSubHeader">
+        <div class="reporting-container-header padding-zero">
+            <table class="report-header-table">
+                <tr><td class="reportName" colspan="3">{{i18n key='Tablets'}}</td></tr>
+                <tr class="report-header-table-label-row">
+                    <td id="tdLocation" class="report-header-table-location-selector">
+                        <div id="report-legend" style="display: inline-block;"></div>
+                    </td>
+                    <td id="tdDate" class="report-header-table-daterange-selector">
+                        <div style="margin-top:7px;">
+                            <div class="report-header-table-daterange-label">{{i18n key='content.page.reporting.dateRange'}}</div>
+                            <div><input id="reportDateWidget" type="text" maxlength="30"/></div>
+                        </div>
+                    </td>
+                    <td id="tdExport" style="width:35px;">
+                        <div style="margin-top:15px;">
+                            <button class="btn btn-large exportReportBtn"><i class="icon-share icon-2x"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="report-container" class="reporting-container-body margin-zero" style="border:none;">
+        <table id="datatables-report" class="dataGridReport" cellspacing="0" cellpadding="5" border="0">
+            <thead >
+            <tr>
+            	<th>{{i18n key='Account'}}</th>
+                <th>{{i18n key='Location'}}</th>
+                <th>{{i18n key='Device'}}</th>
+                <th>{{i18n key='ActivationCode'}}</th>
+                <th>{{i18n key='LastSeenDate'}}</th>
+                <th>{{i18n key='EventName'}}</th>
+                <th>{{i18n key='EventTTS'}}</th>
+                <th>{{i18n key='EventData'}}</th>
+            </tr>
+            </thead>
+            <tbody id="guestsReport-tbody">
+            </tbody>
+        </table>
+
+    </div>
+</div>

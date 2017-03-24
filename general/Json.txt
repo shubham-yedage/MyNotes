@@ -1,0 +1,11 @@
+JSON, or JavaScript Object Notation, is a minimal, readable format for structuring data. It is used primarily to transmit data between a server and web application, as an alternative to XML.
+
+> Refer this link for JSON structure
+> Hii i am having trouble to read .json file in Java containing following structure,
+
+    {"id":"1", "name":"A", "address":{"plot no":"22", "street":"road"}}
+    {"id":"2", "name":"A", "address":{"plot no":"22", "street":"road"}}
+    {"id":"3", "name":"A", "address":{"plot no":"22", "street":"road"}}
+    {"id":"4", "name":"A", "address":{"plot no":"22", "street":"road"}}
+
+I have such 10k records. I cant change structure. I want to read it and do processing on "address". I need an efficient way to read it and fetch only address. Any suggestions?

@@ -1,0 +1,60 @@
+My Device
+
+ {
+ 	"authToken": "0L3lpbGK9uYusHMAd5tRLA==",
+ 	"publicKey": "9b6f4810-1fa0-4dba-85ea-66014b63c1c5",
+ 	"requestObject": {
+ 		"locationGuid": "71a3aa37-776f-4a03-b912-f366c81e7520",
+ 		"events": [{
+ 			"orderCleared": "2016-11-10T02:28:16+00:00",
+ 			"spaceId": "24301",
+ 			"orderType": "ON_PREMISE",
+ 			"orderGuid": "00431uy1ddcdc-90c4-49d1-8515-50f14952df0b",
+ 			"puckId": "20",
+ 			"orderStarted": "2016-11-10T01:28:16+00:00",
+ 			"type": "ORDER_SUMMARY",
+ 			"orderLocated": "2016-11-10T01:28:16+00:00"
+ 		}]
+ 	},
+ 	"nonce": "MjAxNi0xMS0xNCAxNjozMTowOA=="
+ }
+
+KOP
+ {
+ 	"authToken": "6XympAY0mBHmVHt+ItrHvw==",
+ 	"publicKey": "bc2377d2-b81a-485e-8c68-28fab425bad9",
+ 	"requestObject": {
+ 		"locationGuid": "bcf977ba-a19f-4679-a0eb-ddb974d176bc",
+ 		"events": [{
+ 			"orderCleared": "2016-11-07T02:28:16+00:00",
+ 			"spaceId": "24191",
+ 			"orderType": "ON_PREMISE",
+ 			"orderGuid": "01531uy1ddcdc-90c4-49d1-8515-50f14952df0b",
+ 			"puckId": "20",
+ 			"orderStarted": "2016-11-07T01:28:16+00:00",
+ 			"type": "ORDER_SUMMARY",
+ 			"orderLocated": "2016-11-07T01:28:16+00:00"
+ 		}]
+ 	},
+ 	"nonce": "MjAxNi0xMS0xNCAxNjozMTowOA=="
+ }
+
+My Gateway
+ {
+ 	"authToken": "KRCSO4by9kDhIRsQ2EObdg==",
+ 	"publicKey": "dad7fc63-26b2-4e2e-a25b-90fc23f1aa50",
+ 	"requestObject": {
+ 		"locationGuid": "f72311fe-4229-461a-8ef8-ca48bd44afe2",
+ 		"events": [{
+ 			"orderCleared": "2016-11-05T02:28:16+00:00",
+ 			"spaceId": "24321",
+ 			"orderType": "ON_PREMISE",
+ 			"orderGuid": "03631uy1ddcdc-90c4-49d1-8515-50f14952df0b",
+ 			"puckId": "20",
+ 			"orderStarted": "2016-11-05T01:28:16+00:00",
+ 			"type": "ORDER_SUMMARY",
+ 			"orderLocated": "2016-11-05T01:28:16+00:00"
+ 		}]
+ 	},
+ 	"nonce": "MjAxNi0xMS0xNCAxNjozMTowOA=="
+ }

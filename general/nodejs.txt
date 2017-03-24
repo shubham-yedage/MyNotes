@@ -1,0 +1,5 @@
+(It will install both node and node package manager npm)
+install nodejs (node)
+	# Using Ubuntu
+	curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+	sudo apt-get install -y nodejs

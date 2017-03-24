@@ -1,0 +1,72 @@
+	> SQL
+		1. To see all DEVICES, ACCOUUNTS, LOCATIONS, .....etc
+		   Workbench-->lrs-connect-dev-->Tables
+
+		2. Activating Device
+			https://www.base64encode.org/
+			Generate nonce : By add timestamp : 2014-09-05 11:22:29
+			nonce = o/p generated.
+
+
+			https://quickhash.com/
+			Generate AuthToken:
+
+			Add nonce in Input_Data = MjAxNC0wOS0wNSAxMToyMjoyOQ==
+
+			Use HMAC Method?  -> HMAC Key: private_Key
+			Select Base64Enocodeing 
+			Output Data = authToken.
+
+			Type: POST Request	
+			Url: http://localhost:8080/api/product/activate
+			Body:
+			{
+			 "publicKey":"9dd65a4f-4f94-4bf5-b2ce-ab0008b14e3d",
+			 "authToken":"DRewdc0x47uU4p5VQWUHnQ==",
+			 "requestObject": {
+			 "deviceGuid":"15c4effb-56eb-4fb2-93c0-187630ec0983",
+			 "activationCode":"455-4997-336",
+			 "productType":"TABLE_TRACKER"
+			 }
+			 }
+
+		3. Access Key
+			Url: http://localhost:8080/rest/v3/oauth/token?client_id=3MOMUY5ZQ9FE7N00NU4Q43C9A&client_secret=anCDOk0/vXpra3XzJIPWYYZILx99JHNBlJ8ZV7QcIa0&grant_type=client_credentials
+			Type: Post
+
+		4. Dump Event to Mongo
+			url: http://localhost:8080/api/collector/ttevent
+			Type: Get
+			Body:
+			{
+				"publicKey": "0f01d84d-173d-4949-b952-5b4a7909b4a8",
+				"nonce": "MjAxNC0wOS0wNSAxMToyMjoyOQ==",
+				"authToken": "Lt/dz9z8ZnZZU8fxQPP03g==",
+				"requestObject": {
+					"locationGuid": "e6c884e0-c4eb-4015-9dcf-70ddb1f5f1b4",
+					"events": [{
+						"orderLocated": "2016-07-23T22:02:52+00:00",
+						"orderCleared": "2016-07-23T22:38:22+00:00",
+						"orderType": "ON_PREMISE",
+						"orderGuid": "6b3010f5-46a8-4ee9-9a10-d723f1dedcd2",
+						"puckId": "20",
+						"spaceId": "501",
+						"type": "ORDER_SUMMARY",
+						"orderStarted": "2016-07-23T21:56:46+00:00"
+					}]
+				}
+			}
+
+		> Delete from ROBOMONGO
+		1. reports --> Collections --> aggregationEntry
+		2. events-historical --> collections --> events
+
+	> Mongo import data
+		> travel to location where ".json" file is present
+		>  mongoimport --host localhost --port 27017 --db events-historical --collection event  --file <enter file name with .json extension>
+		>  db.collection.update({query}, {$set: {field_to_update : value}}, {multi:true});
+
+	> Update query
+		> db.aggregationEntry.update({'accountGuid' : '0ca09506-713d-4df7-bba7-1a6cb17565ce'}, 
+{$set: {'locationGuid' : 'ba4ee142-dbf4-4e77-98fa-5662626a11b2', 'accountGuid' : '6af270aa-f2fd-419f-8f0d-88672b44b21b'}},
+{multi:true});

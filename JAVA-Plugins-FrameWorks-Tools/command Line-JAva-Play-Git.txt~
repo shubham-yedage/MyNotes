@@ -1,0 +1,104 @@
+﻿1.
+git status
+git add <.>/"<File name>"
+git commit -m "<>"
+git push origin master
+
+2. git pull
+
+3. 
+java -version
+
+4.
+~/software/activator-1.3.9-minimal/bin/activator new play-java
+ cd play-java/
+ ~/software/activator-1.3.9-minimal/bin/activator run
+
+5.
+sudo apt-get install eclipse
+
+6. cd play-java
+/home/synerzip/software/activator-1.3.9-minimal/bin/play-java/activator test
+
+7.use bash to provide path
+export PATH="</usr/local>"
+
+8. cd myapp
+run
+test
+compile
+
+9.http://localhost:9000
+
+10.
+cd play-java/
+or
+cd play-run/
+cd myapp/
+activator
+
+11.</home/synerzip/software/idea/idea-IC-145.597.3/bin/idea.sh> run
+
+12. locate <file_name_with_extension>
+
+13.change of port to 9000
+sudo gedit /etc/ssh/ssh_config 
+telnet localhost 9000
+
+14.
+touch .gitignore
+nano .gitignore or gedit .gitignore
+git add .gitignore
+
+15.
+git clean -f <path>
+git diff
+
+16. 
+git clone <url> ==> clones repository to any folder
+
+git checkout -b <branch_name> ==> switch branch
+
+git branch or git branch -a ==> shows all branches
+
+git check - ===> switch to previous branch
+
+create pull request:
+go to code-->select branch of code-->create new pull request-->base must be master and compare with branch
+
+change commit message
+git commit --amend
+
+
+	> Git checkout --> To remove change
+
+	> git branch -a
+
+	> git checkout -b <branch_Name>
+
+	> git diff --> to check changes
+
+	> git statsh ---> to store changes
+	> git stash pop ---> retrive changes
+
+
+
+17.Java Shortcuts
+
+sudo update-alternatives --config java 
+USe this when you download new jdk and keep it in remote folder. If you want to use it.
+sudo update-alternatives --install /usr/bin/java java path-to-downloaded-jdk/bin/java 1
+
+
+sudo update-alternatives --config maven
+
+List all java versions:
+update-java-alternatives --list
+
+Set java version as default (needs root permissions):
+sudo update-java-alternatives --set /path/to/java/version
+
+========================================================================
+
+#Watch ram usage
+watch -n 1 free -m 3

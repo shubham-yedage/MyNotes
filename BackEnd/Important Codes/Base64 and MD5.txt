@@ -1,0 +1,36 @@
+Check Out for MD5 technics 
+	> Check out for MD5 coding Technics
+	http://jexp.ru/index.php/Java_Tutorial/Security/MD5_Message_Digest_algorithm#Creating_a_Keyed_Digest_Using_MD5
+
+
+	/**
+	 * 
+	 * Get nonce.
+	 * Base 64 Technics
+	 *
+	 */
+
+	public String getNonce() {
+		byte[] date = "2016-08-15 11:28:16".getBytes(StandardCharsets.UTF_8);
+		return Base64.encodeBase64String(date);
+	}
+
+
+	/**
+	 * 
+	 * Get AuthenticationKey.
+	 * qucikhash- MD% Technics
+	 */
+
+	public void getAuthenticationKey() throws NoSuchAlgorithmException,
+			InvalidKeyException, UnsupportedEncodingException {
+		String privateKey = "34e923a4-135f-489e-931a-307a506fba36";
+
+		SecretKeySpec key = new SecretKeySpec(privateKey.getBytes("UTF-8"), "HmacMD5");
+		Mac mac = Mac.getInstance("HmacMD5");
+		mac.init(key);
+
+		byte[] bytes = mac.doFinal(getNonce().getBytes("ASCII"));
+		System.out.println(Base64.encodeBase64String(bytes));
+		
+	}

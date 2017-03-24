@@ -1,0 +1,386 @@
+/**
+ * 
+ */
+package Common;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import junit.framework.Assert;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import model.Events;
+import model.StringConstants;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.Test;
+
+import com.google.gson.Gson;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
+/**
+ * @author synerzip
+ * 
+ */
+public class DataCollectorControllerTest {
+
+	Reader read = new Reader();
+
+	/**
+	 * 
+	 * JSON request to dump events to Mongo DB.
+	 */
+	public void eventDumpRequest() {
+		// Load loginCredentials1.properties file.
+		read.logincredentials();
+
+		/*
+		 * Json request structure
+		 * 
+		 * { "publicKey": "String", "nonce": "String", "authToken": "String",
+		 * "nonce": "String", "requestObject":{"locationGuid": "String",
+		 * "events": [{ "orderGuid": "String", "spaceId": "long", "type":
+		 * "String", "orderType": "String", "orderStarted": "String",
+		 * "orderLocated": "String", "orderCleared": "String", "puckId":
+		 * "String"},{...}]...}
+		 */
+		try {
+			Map<Integer, Map<String, String>> eventsMap = readResourceFile(StringConstants.MONGOEVENTDUMP);
+			for (int count = 0; count < eventsMap.size(); count++) {
+				Map<String, String> eventParametrs = eventsMap.get(count);
+
+				String locationGuid = eventParametrs
+						.get(StringConstants.LOCATION_GUID);
+				eventParametrs.remove(StringConstants.LOCATION_GUID);
+
+				Gson gson = new Gson();
+				String eventObj = gson.toJson(eventParametrs);
+				JSONArray array = new JSONArray();
+				array.put(new JSONObject(eventObj));
+				JSONObject requestObj = new JSONObject();
+				requestObj.put(StringConstants.LOCATION_GUID, locationGuid);
+				requestObj.put(StringConstants.EVENTS, array);
+				JSONObject mainRequestObj = new JSONObject();
+				mainRequestObj.put(StringConstants.PUBLIC_KEY,
+						read.getPublicKey());
+				mainRequestObj.put(StringConstants.NONCE, getNonce());
+				mainRequestObj.put(StringConstants.AUTH_TOKEN, getAuthToken());
+				mainRequestObj.put(StringConstants.REQUEST_OBJECT, requestObj);
+				System.out.println(mainRequestObj);
+				// Event Dump Request Using Unirest.
+				System.setProperty("org.apache.commons.logging.Log",
+						"org.apache.commons.logging.impl.Jdk14Logger");
+				HttpResponse<JsonNode> statusResponse = Unirest
+						.post(read.getEventDumpUrl())
+						.header("content-type", "application/json")
+						.body(mainRequestObj).asJson();
+
+				System.out.println(statusResponse.getBody());
+			}
+
+		} catch (IOException e) {
+			// Resource path not found.
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// Failed to find hash key for HashMD5 encoding.
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// Failed to generate HashMD5 encodeing.
+			e.printStackTrace();
+		} catch (BiffException e) {
+			// Rsource not found.
+			e.printStackTrace();
+		} catch (UnirestException e) {
+			// Failed to provide response json.
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * 
+	 * Get nonce using Base64 encoding. Works on input with format e.g.
+	 * 2016-08-23 18:55:04
+	 */
+
+	private String getNonce() {
+		byte[] input = read.getKeyNonce().getBytes(StandardCharsets.UTF_8);
+		return Base64.encodeBase64String(input);
+	}
+
+	/**
+	 * 
+	 * Get AuthenticationKey using HashMD5 algorithm with Base64 encoding. Input
+	 * must be nonce. and secret key is privateKey of device.
+	 */
+	private String getAuthToken() throws NoSuchAlgorithmException,
+			InvalidKeyException, UnsupportedEncodingException {
+
+		SecretKeySpec key = new SecretKeySpec(read.getPrivateKey().getBytes(
+				"UTF-8"), "HmacMD5");
+		Mac mac = Mac.getInstance("HmacMD5");
+		mac.init(key);
+
+		byte[] bytes = mac.doFinal(getNonce().getBytes("ASCII"));
+		return Base64.encodeBase64String(bytes);
+	}
+
+	/**
+	 * 
+	 * Compare Response from UI and Manual stored.
+	 */
+	public void testResponse() {
+		try {
+			read.logincredentials();
+			Map<String, String> derivedResponseMap = readResourceFile(
+					StringConstants.EVENTDUMPMANUALRESPONSE).get(0);
+
+			// Get response from UI.
+			Map<String, Double> automatedResponseMap = getGoalSummaryReportResponse();
+
+			Assert.assertEquals(Double.parseDouble(derivedResponseMap
+					.get(StringConstants.GOAL_MET_PERCENTAGE)),
+					automatedResponseMap
+							.get(StringConstants.GOAL_MET_PERCENTAGE));
+			Assert.assertEquals(Double.parseDouble(derivedResponseMap
+					.get(StringConstants.AVERAGE_DELIVERY_TIME)),
+					automatedResponseMap
+							.get(StringConstants.AVERAGE_DELIVERY_TIME));
+			Assert.assertEquals(Double.parseDouble(derivedResponseMap
+					.get(StringConstants.AVERAGE_SIT_TIME)),
+					automatedResponseMap.get(StringConstants.AVERAGE_SIT_TIME));
+		} catch (BiffException e) {
+			// Rsource not found.
+			e.printStackTrace();
+		} catch (IOException e) {
+			// Resource path not found.
+			e.printStackTrace();
+		} catch (UnirestException e) {
+			// Failed to provide response json.
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * Get standard round values.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private Double getRoundOffValues(String value) {
+		BigDecimal bigDecimal = new BigDecimal(Double.parseDouble(value));
+		return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+
+	/**
+	 * 
+	 * Get events response for comparison.
+	 * 
+	 * @throws UnirestException
+	 */
+	private Map<String, Double> getGoalSummaryReportResponse()
+			throws UnirestException {
+		System.setProperty("org.apache.commons.logging.Log",
+				"org.apache.commons.logging.impl.Jdk14Logger");
+
+		// Get Goal Summary Report Response.
+		Map<String, Object> urlQueryMap = new HashMap<>();
+		urlQueryMap.put(StringConstants.QUERY_TYPES, read.getQueryTypes());
+		urlQueryMap.put(StringConstants.DATE_FROM, read.getDateFrom());
+		urlQueryMap.put(StringConstants.DATE_TO, read.getDateTo());
+		urlQueryMap.put(StringConstants.LOCATION_IDS, read.getLocationIds());
+		urlQueryMap.put(StringConstants.REPORT_SET_IDS, read.getReportSetIds());
+		urlQueryMap.put(StringConstants.ACCOUNT_GUID, read.getAccountGuid());
+		urlQueryMap.put(StringConstants.GOAL, read.getGoal());
+
+		HttpResponse<JsonNode> response = Unirest.get(read.getReportUrl())
+				.basicAuth(read.getAdminUserName(), read.getAdminPassword())
+				.queryString(urlQueryMap).asJson();
+
+		// Get % goal met, average sit time, average delivery time
+		// from Response object.
+		JSONObject responseObject = response.getBody().getObject();
+		JSONObject returnObject = responseObject
+				.getJSONObject(StringConstants.RETURN_OBJECT);
+		JSONObject ttSummaryObject = returnObject
+				.getJSONObject(StringConstants.TABLE_TRACKER_SUMMARY_DAILY_VIEW);
+		JSONObject totalGoalDatailObject = ttSummaryObject
+				.getJSONObject(StringConstants.TOTAL_GOAL_DETAIL);
+		Map<String, Double> responseMap = new HashMap<>();
+		responseMap.put(
+				StringConstants.GOAL_MET_PERCENTAGE,
+				getRoundOffValues(totalGoalDatailObject.get(
+						StringConstants.GOAL_MET_PERCENTAGE).toString()));
+		responseMap.put(
+				StringConstants.AVERAGE_DELIVERY_TIME,
+				getRoundOffValues(totalGoalDatailObject.get(
+						StringConstants.AVERAGE_DELIVERY_TIME).toString()));
+		responseMap.put(
+				StringConstants.AVERAGE_SIT_TIME,
+				getRoundOffValues(totalGoalDatailObject.get(
+						StringConstants.AVERAGE_SIT_TIME).toString()));
+		return responseMap;
+	}
+
+	/**
+	 * 
+	 * Check provided events are dumped in Mongo.
+	 */
+	@Test
+	public void testEventDumps() {
+		try {
+			read.logincredentials();
+			System.setProperty("org.apache.commons.logging.Log",
+					"org.apache.commons.logging.impl.Jdk14Logger");
+//
+//			// Get Access Token.
+//			HttpResponse<JsonNode> respGetAccessToken = Unirest
+//					.post("http://localhost:8080/rest/v3/oauth/token?client_id="
+//							+ read.getClientId()
+//							+ "&client_secret="
+//							+ read.getClientSecret()
+//							+ "&grant_type="
+//							+ read.getGrantType()).getHttpRequest().asJson();
+//			JSONObject tokenObject = respGetAccessToken.getBody().getObject();
+//			String accessToken = tokenObject.get("access_token").toString();
+//
+//			// Get orders from mongo.
+//			HttpResponse<JsonNode> reqOrders = Unirest
+//					.get("http://localhost:8080/rest/v3/orders")
+//					.header("Authorization", "Bearer " + accessToken).asJson();
+//
+//			JSONObject eventsResponse = reqOrders.getBody().getObject();
+//			JSONArray eventsArray = (JSONArray) eventsResponse.get("items");
+//			Map<Integer, Map<String, String>> responseEventsMap = getEventsMap(eventsArray);
+//			System.out.println(responseEventsMap);
+			// Get order input orders.
+			Map<Integer, Map<String, String>> inputEventMap = readResourceFile(StringConstants.MONGOEVENTDUMP);
+
+		} catch (BiffException e) {
+			// Rsource not found.
+			e.printStackTrace();
+		} catch (IOException e) {
+			// Resource path not found.
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Converts events json array to map of events.
+	 * 
+	 * @param eventsArray
+	 * @return
+	 */
+	private Map<Integer, Map<String, String>> getEventsMap(JSONArray eventsArray) {
+		Gson gson = new Gson();
+		Map<Integer, Map<String, String>> allEventsMap = new HashMap<>();
+		for (int count = 0; count < eventsArray.length(); count++) {
+			JSONObject jsonEvent = eventsArray.getJSONObject(count);
+			Map<String, String> eventMap = (Map<String, String>) gson.fromJson(
+					jsonEvent.toString(), Object.class);
+			allEventsMap.put(count, eventMap);
+		}
+		return allEventsMap;
+	}
+
+	/**
+	 * Read resource file to provide map output.
+	 * 
+	 * @param sheetName
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws BiffException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 */
+	private Map<Integer, Map<String, String>> readResourceFile(String sheetName)
+			throws BiffException, IOException, IllegalAccessException,
+			InvocationTargetException {
+		Map<Integer, Map<String, String>> inputEventsMap = new HashMap<>();
+
+		// Read from resource for inputs.
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource(
+				read.getEventDumpFilePath()).getFile());
+
+		FileInputStream inputStream = new FileInputStream(file);
+		Workbook wb = Workbook.getWorkbook(inputStream);
+
+		// TO get the access to the sheet.
+		Sheet sheet = wb.getSheet(sheetName);
+
+		// To get the number of rows present in sheet.
+		int totalNoOfRows = sheet.getRows();
+
+		// Sheet is EventDumpManualResponse then return.
+		if (StringConstants.EVENTDUMPMANUALRESPONSE.equalsIgnoreCase(sheetName)) {
+			Map<String, String> derivedResponseMap = new HashMap<>();
+			for (int row = 0; row < totalNoOfRows; row++) {
+				derivedResponseMap.put(sheet.getCell(0, row).getContents(),
+						getRoundOffValues(sheet.getCell(1, row).getContents())
+								.toString());
+			}
+			inputEventsMap.put(0, derivedResponseMap);
+			return inputEventsMap;
+		}
+
+		// To get the number of columns present in sheet.s
+		int totalNoOfCols = sheet.getColumns();
+
+		Map<String, String> eventParametrs = new HashMap<>();
+		for (int row = 1; row < totalNoOfRows; row++) {
+			for (int col = 0; col < totalNoOfCols; col++) {
+				eventParametrs.put(sheet.getCell(col, 0).getContents(), sheet
+						.getCell(col, row).getContents());
+			}
+
+			Events events = new Events();
+			BeanUtils.populate(events, eventParametrs);
+
+			HashMap<String, String> dumyEventParameters = new HashMap<>();
+			dumyEventParameters.putAll(eventParametrs);
+			inputEventsMap.put(row - 1, dumyEventParameters);
+		}
+		return inputEventsMap;
+	}
+}

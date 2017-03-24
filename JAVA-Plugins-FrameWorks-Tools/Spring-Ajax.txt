@@ -1,0 +1,61 @@
+CONTROLLER SPRING
+
+
+
+@ApiMethod(description = "To get the count of records.", summary = "Get records count.")
+@RequestMapping(value = "/tabletracker/orderCount", method = RequestMethod.GET)
+public @ApiResponseObject ResponseEntity<Map<String, Long>> getReportRecordsCount(
+			@ApiQueryParam(name = "queryTypes", description = "Query types.")@RequestParam(value = "queryTypes", required = true) String queryTypes,
+			@ApiQueryParam(name = "dateFrom", description = "From date.") @RequestParam(value = "dateFrom", required = true) String dateFrom,
+			@ApiQueryParam(name = "dateTo", description = "To date.") @RequestParam(value = "dateTo", required = true) String dateTo,
+			@ApiQueryParam(name = "locationIds", description = "List of location id.") @RequestParam(value = "locationIds", required = true) String[] locationIds,
+			@ApiQueryParam(name = "reportSetIds", description = "List of reportSet id.") @RequestParam(value = "reportSetIds", required = true) String[] reportSetIds,
+			@ApiQueryParam(name = "accountGuid", description = "An account guid.") @RequestParam(value = "accountGuid", required = true) String accountGuid,
+			@ApiQueryParam(name = "goal", description = "Goal.") @RequestParam(value = "goal", required = true) String goal,
+			HttpServletResponse response) {
+
+
+
+
+AJAX REQUEST
+
+       //=========================================================================
+       ordersCountLimit: function(recordsData){
+    	       	   
+    	   if(!(recordsData.orderCount > 0)){
+				LRS.Server.setAlert("alert", $.i18n.prop('content.page.dialog.nothingToExport'));
+				return; // don't allow to export if flag is not set to TRUE.    		   
+    	   }
+    	   else if(recordsData.orderCount > 200){
+    		   LRS.Server.setAlert("alert", $.i18n.prop('content.page.dialog.dataExceedsLimit'));
+				return; // don't allow to export if flag is not set to TRUE.
+    	   }
+    	   else{
+    		 //service request to export the data.
+               var requestConfig = {
+                 url: '/web/v3/reports/csv',
+                 requestObject: self.queryParams + "&Authorization=" + LRSAdmin.app.helpers.getAuthorizationToken(),
+                 callback: self.exportResponse
+               };
+    			
+    			//IFrame to render the exported data.
+    			var elemIF = document.createElement("iframe");
+    			elemIF.src = requestConfig.url+ "?" + requestConfig.requestObject;
+    			elemIF.style.display = "none";
+    			document.body.appendChild(elemIF);
+    			requestConfig.callback();   
+    	   }
+       },
+       
+        exportReport: function () {
+			//service request to get report data count.
+            
+        	//Create query string containing parameters.
+            self.createQueryParams();
+            //Service call to get reports for selection.
+            LRS.Server.get({
+              url: LRS.Config.apiUrl.v3 + 'reports/tabletracker/orderCount?' + self.queryParams,
+              callback: self.ordersCountLimit,
+              onFailCallback: self.showError
+            });  
+        },

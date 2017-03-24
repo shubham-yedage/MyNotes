@@ -1,0 +1,9 @@
+/home/synerzip/MyNotes/TempsNotes/team viewer
+
+	>> Mongo import data
+		> travel to location where ".json" file is present
+		>  mongoimport --host localhost --port 27017 --db events-historical --collection event  --file <enter file name with .json extension>
+
+	>>  Mongo Learn
+		> Database is a physical container for collections. Each database gets its own set of files on the file system. A single MongoDB server typically has multiple databases.
+		> Collection is a group of MongoDB documents. It is the equivalent of an RDBMS table. A collection exists within a single database. Collections do not enforce a schema. Documents within a collection can have different fields. Typically, all documents in a collection are of similar or related purpose.

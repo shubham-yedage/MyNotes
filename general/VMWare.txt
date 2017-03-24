@@ -1,0 +1,18 @@
+> Install vmware ubuntu
+	> Go to .bundle file location
+ 	> sudo sh VMware-workstation-Full-xxxx-xxxx.architecture.bundle [--option]
+
+	> options:
+		--gtk	Opens the GUI-based VMware installer, which is the default option.
+		--console	Use the terminal for installation.
+		--custom	Use this option to customize the locations of the installation directories and set the hard limit for the number of open file descriptors.
+		--regular	Shows installation questions that have not answered before or are required. This is the default option.
+		--ignore-errors 
+		or
+		-I	Allows the installation to continue even if there is an error in one of the installer scripts. Because the section that has an error does not complete, the component might not be properly configured.
+		--required	Shows the license agreement only and then proceeds to install Workstation
+
+
+Got error?
+	> cd /sbin
+	> sudo rcvboxdrv setup

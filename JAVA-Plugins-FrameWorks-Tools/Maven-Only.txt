@@ -1,0 +1,93 @@
+
+===========Check this link=============
+
+http://www.vogella.com/tutorials/ApacheMaven/article.html
+
+https://www.youtube.com/watch?v=eto_D1CY-qQ&index=2&list=PLwAX_Bwbts_c4iHfJBN9JU1tNdmzgo6E_
+
+========Problem with jre version========
+
+<build>
+	<plugins>
+		<plugin>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>2.3.2</version>
+			<!-- Copy above lines from effecitve POM's build section. -->
+
+			<configuration>
+				<source>1.7</source>
+				<target>1.7</target>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
+
+	1] Now right click on project --> Maven --> Update Project
+
+	
+
+
+	> Mven build project
+		1. Validates POM
+		2. initializes target folder for output
+		3. Generates sources and processes resources
+		4. test compilation and process
+		5. test execution
+		6. prepare packaging (war, jar etc)
+		7. Integration test
+			: pre : e.g. fire up server
+			  integrate : run test
+			  post : shut server
+		8. verify build, result etc.
+		9. install moves artifact to local maven repository
+		10. deploy move artifact to local or remote repository
+
+	> compile -> maven-compiler-plugin:compile
+	  
+
+========== Deployment with maven ===========
+	
+	> Two repositories
+		1. Local => stores
+			> Project artifacts that are needed in other project but not present in local or global repository. So build will faild. How to copy those artifacts in local repositories?
+			=> Install maven project so it will automatically add artifact id in local repository.
+
+		2. Global => Downloads
+			> How to let others remotely use project artifact present on local?
+			> Deploy it
+			> Add following to pom.xml
+				<distributionManagement>
+				   <!-- use snapshot repository to deploy current snapshot version -->
+				   <snapshotRepository>
+				      <id></id>
+				      <url></url>
+
+				   </snapshotRepository>
+				</distributionManagement>
+
+
+==================Helpfull=================
+
+	1. mvn site:site
+
+	2. ./catalina.sh jpda start  ==> Debug mode
+
+
+
+============================================
+
+Simple WEB-APP
+
+Create new maven Project => select archetype "maven-archetype-webapp" 
+
+You can archetype repository
+ Preferences => Maven => Archetype => Add 
+Use url "https://repo1.maven.org/maven2/archetype-catalog.xml"
+
+http://www.programcreek.com/2014/02/spring-mvc-helloworld-using-maven-in-eclipse/
+http://help.eclipse.org/kepler/index.jsp?topic=%2Forg.eclipse.jst.server.ui.doc.user%2Ftopics%2Ftwtomprf.html
+
+	> web.xml
+		http://shengwangi.blogspot.in/2015/08/understand-webxml-in-spring-mvc-project.html
+		http://docs.oracle.com/cd/E13222_01/wls/docs81/webapp/web_xml.html
+		

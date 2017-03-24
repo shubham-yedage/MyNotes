@@ -1,0 +1,17 @@
+1.http://localhost:9000/echo?name=shubham&lastName=yedage
+2.for debugging use intellij debugger
+edit configration->SBT task->give name in Tasks e.g. run
+first run then stop
+debug
+F5 to go into function
+F6 to go next
+F8 next break point
+select method and ctrl+u to execute it and see whats happening
+(right click and execute)
+ctr+shift+u
+alt+enter method details
+ctrl+shift+a find anything in intellij
+ctrl+left_click to go into method
+alt+ctrl+v implement input
+
+

@@ -1,0 +1,290 @@
+Sprint 78	
+	1 https://jira.pager.net:8443/browse/WEB-7038 X
+		Goal | Add Target Delivery Time key at the bottom of the graphs
+	2 https://jira.pager.net:8443/browse/WEB-7169 X
+	3 https://jira.pager.net:8443/browse/WEB-7167 X
+	4 https://jira.pager.net:8443/browse/WEB-7155 X 21st oct 2016
+	5 https://jira.pager.net:8443/browse/WEB-7032 X
+	6 https://jira.pager.net:8443/browse/WEB-7229 X 25 Oct 2016
+	7 https://jira.pager.net:8443/browse/WEB-7291
+	8 https://jira.pager.net:8443/browse/WEB-7224
+			Get reference from:
+			https://wiki.pager.net:8444/pages/viewpage.action?title=Operations+Report+-+Displays&spaceKey=LRS
+	9 https://jira.pager.net:8443/browse/WEB-7354
+	10 https://jira.pager.net:8443/browse/WEB-7223
+	11 https://jira.pager.net:8443/browse/WEB-7292		
+	12 https://jira.pager.net:8443/browse/WEB-7410
+	13 https://jira.pager.net:8443/browse/WEB-7409
+	14 https://jira.pager.net:8443/browse/WEB-7234
+	15 https://jira.pager.net:8443/browse/WEB-7437
+	17 https://jira.pager.net:8443/browse/WEB-7272
+	18 https://jira.pager.net:8443/browse/WEB-7481
+	19.https://jira.pager.net:8443/browse/WEB-7483
+	20.https://jira.pager.net:8443/browse/WEB-7466
+		Mapping Research
+			Requirements: 1. Map view to show oreders
+				      2. Map is basically structural representation of service station 				      		 (i.e. hotel).
+				      3. Allow user to add-update layouts, tables and space like 					      	 counters, kitchen, londge etc.
+				      4. Allow user to assign uniques ids to all area.
+				      5. Trackers are assigned to guest's orders, staff, assets
+				      6. Things to display on screen:
+						> Realtime location of trackers
+						> Clear differentaion between tracker assigned.
+						> Status of trackers (type-goal-expectations)
+						> Time intervals between activation to goal.
+				      7. Views for (Heat map)
+						> Refer heat map: https://en.wikipedia.org/wiki/Heat_map#/media/File:Excel_Heat_Map.png
+						> Traffic flow by tracker (guest-staff-assets)
+				      		> Traffic flow by staff (trackers assigned day-to-day)
+				      8. Platform requirements:
+						> Upload and store in the cloud - allow maps to be accessed from anywhere for alternative dashboard views of action taking place at various locations.
+
+						> Mobile integration - store maps as vectors so they are scalable for mobile.
+
+						> API integrations – ability to build LRS software around an existing tool, while modify the look and feel of the map based on various device types, status, assignments, etc.
+
+						> Ability to add layers on top of the map - as we change the look and feel of the map by layering table status colors, numbers, heat map info, etc.
+Easy to use interface for LRS and customers to build and maintain maps.
+
+						> CMS functionality to customize maps and make changes real time.
+						> Location aware for beacon uses.
+
+				     9. References:
+					> https://maplacejs.com/
+					> https://wiki.pager.net:8444/pages/viewpage.action?pageId=14418011
+					Go through it
+					> http://www.caliper.com/Maptitude/MapYourData.htm \/
+					> http://www.esri.com/software/arcgis/arcgisonline
+					> http://www.qgis.org/en/site/about/index.html
+					> https://www.micello.com/products/data-services (imp) X
+					> https://www.indooratlas.com/use-cases/#public-venues (Android & ios)
+				MUST	> https://www.smartdraw.com/
+		Floor plan demo		> https://floorplanner.com/demo
+					> https://matterport.com/
+
+
+				    10. http://www.caliper.com/Maptitude/MapYourData.htm
+					> Mapping soft.
+					> create maps using your own data.
+					>  store data in Microsoft Excel, Access, and SQL Server, or as CSV, text, dBASE, Oracle, or any ODBC compliant data source, Maptitude can work with your data.
+
+				    11 Try this
+					https://visioglobe.com/		
+
+
+
+		What to do?
+			> Tool accepts floor planning i.e. layout of place with table arrangement, counters etc. and shows as map.
+			> Heat map shows realtion ship between elemnts like,
+				Most trafficked area
+				Table utilization
+				above/below goal
+
+		Start reading this
+			> https://developer.visioglobe.com/tutorials/
+
+
+	21. https://jira.pager.net:8443/browse/WEB-7467
+
+	22. Contribute in email service
+		> Write java code to
+			1. Get all active accounts
+			2. Get all users for active accounts.
+			3. Create prospects for users. (Go through pardotclient.java)
+			4. Also write CRUD operations. (Refer pardotclient.java)
+			5. 
+
+	23. https://jira.pager.net:8443/browse/WEB-7413
+	    https://jira.pager.net:8443/browse/TTS-4021
+		> Display device OS and model
+		> Display report and Dsiplay section
+		> Displays OS (ios9, ios10)
+		> Display model (Apple iPad Mini, Apple iPad 2)
+		> Windows sending 
+			"OS Detail: Os caption:Microsoft Windows 7 Professional ;Os architecture:64-bit;Manufacturer:Dell Inc.;Model:OptiPlex 3010"			
+			1. Change backend where data related device is pushed into db
+				(in DeviceService and DeviceCollectionService)
+				> DeviceEvents table has event_name column
+					Under it we store firmware_version which reffers to OS_Version
+				> Ios will send osVersion in activation request or update request
+			2. TEST ONLY FOR ACTIVATION
+				> Activation Code: 376-0590-910
+				E.g. Request json for activation
+				{
+					"publicKey": "8e32c774-b3d7-49cc-80a6-3d2ab52c61b6",
+					"authToken": "Hat+IInkpVJI2oFDkp/1DA==",
+					"requestObject": {
+						"deviceGuid": "3ee1e983-8dfb-4279-96f9-8147a44310b4",
+						"activationCode": "734-5808-943",
+						"productType": "TABLE_TRACKER",
+						"model" : "iPad 4 (Global)",
+						"platform" : "iOS",
+						"osVersion" : "10.1.1"
+					}
+				}
+
+			3. Display section add MODEL in table.
+
+			4. Display report event data is null
+				Add event_type "Model" ==> "" in device_events
+				Read Model from request and store in device_events
+				(addTabletsEvents called by storeTerminalInventoryData from class DataCollectionService)
+				Add "Model" value in event_type at UI
+
+			5. DeviceCollectorService => storeTerminalInventory
+				terminalInventoryData that brings two data
+					1. User Agent => For ios
+					2. OS Version, diskSpace, winTtVersion, SQLServerVersion, 						   RXZVersion, PCInfo => For windows
+
+			6. Tests
+				1. WINTT
+					> Previous wintt device activation code (Firest deactivate) (ios and wintt)
+					> New device activation code ((ios and wintt))
+
+					> Check Display section (ios and wintt)
+
+					> Check Display report (ios and wintt)
+
+					> 376-0590-910, 683-6298-010, 891-5151-182
+
+	24. https://jira.pager.net:8443/browse/WEB-7542
+		dev-connect => Mahesh's Account => Location (M-G)
+		Last Seen: 2017-01-05T13:19:46.463Z
+
+	25 https://jira.pager.net:8443/browse/WEB-7225
+
+	26. https://jira.pager.net:8443/browse/WEB-7545
+		165358
+
+	28. Display export
+
+
+	29. Device activation
+		mujisafrud@housat.com
+		dakothemup@housat.com
+		tomoterupe@housat.com
+		jufruhekep@housat.com
+
+	30. https://jira.pager.net:8443/browse/WEB-7586
+
+
+	31. https://jira.pager.net:8443/browse/WEB-7612
+		http://stackoverflow.com/questions/17287920/highcharts-set-maximum-range-for-yaxis-but-keep-axis-dynamic-within-that-range
+		http://jsfiddle.net/s7fZu/39/
+		http://jsfiddle.net/PanicJ/s7fZu/1/
+		http://api.highcharts.com/highcharts/yAxis.softMax
+	What i understood from this problem?
+	 There are two y axis. 
+		1. for 1st tick interval is 60
+		grid alignment is true
+		2. No tick interval is set
+		
+		Here problem is 2 axis tries to inherit properties of first.
+
+	32. https://jira.pager.net:8443/browse/WEB-7508
+		> On export for records upto 100k download will take place directly
+		> Records above 100k upload file to amazon s3 bucket
+			> Create bucket : lrslocalexport
+			> Upload csv to file s3 bucket
+		> Send email of resource to user.
+		> Working Started: 
+			1. Create Mongo db entry: status: awaiting
+				i) collection name: exportlist
+				ii) account_name, account_guid, user_email, user_guid, loc_nguid, file_name, date_from, date_to, status
+			2. Run scheduler: Read entry with awaiting status 
+				i) upload to s3
+				ii) send email to user
+
+		> flow:
+			1. UploadMethod
+			2. Email generator
+			1. ui orders_count > 100k show message
+			2. create exportlist entry in mongo
+				upload to s3: https://aws.amazon.com/blogs/developer/amazon-s3-transfermanager/
+
+		> http://d2bbd1uxj4lpv6.cloudfront.net/file-key-04
+IOS version details
+[https://user-agents.me/cfnetwork-version-list]
+
+
+
+Method sample: 
+public void exportEventEntries(List<String> spaceGuidList, Date fromDate, Date toDate,
+      OutputStream output) throws IOException {
+File file = File.createTempFile("sample-01", ".docs");
+file.deleteOnExit();
+    // Create buffer to export records.
+    BufferedOutputStream bufferedOutput = new BufferedOutputStream(new FileOutputStream(file));
+    StringBuffer headerLineRow = getHeaderRow();
+    StringBuffer dataRow = new StringBuffer();
+    try {
+      bufferedOutput.write(headerLineRow.toString().getBytes());
+      bufferedOutput.write("\n".getBytes());
+    } catch (IOException e1) {
+      LOGGER.error("Failed to write output to csv. ", e1);
+    }
+
+    // Loop through location guid.
+    for (String spaceGuid : spaceGuidList) {
+      // Get space from guid.
+      Space space = spaceDB.findByGuid(spaceGuid);
+      int pageNumber = 0;
+
+      // Create query to get event entries.
+      Query query2 = new Query();
+      query2.addCriteria(Criteria.where(StringConstants.DOCUMENT_LOCATION_GUID).is(spaceGuid)
+          .and("document.originatingTimestampString").gte(fromDate).lte(toDate));
+      query2.with(new PageRequest(pageNumber, pageLimit));
+      query2.with(new Sort(Sort.Direction.DESC, "document.orderStarted"));
+      List<Event> eventDumpList = mongoEventDumpTemplate.find(query2, Event.class);
+      while (!eventDumpList.isEmpty()) {
+        processPageContent(eventDumpList, bufferedOutput, dataRow, space.getName());
+        query2.with(new PageRequest(++pageNumber, pageLimit));
+        query2.with(new Sort(Sort.Direction.DESC, "document.orderStarted"));
+        eventDumpList = mongoEventDumpTemplate.find(query2, Event.class);
+      }
+    }
+
+    try {
+      AWSCredentials awsCredentials =
+          new BasicAWSCredentials("AKIAIXNL6OLAZJ4MF6LA","8w2Xu6UNKR7gl3gqVw1lDa5fiqDspIlibx0lD5zk");
+      AmazonS3 amazonS3 = new AmazonS3Client(awsCredentials);
+      amazonS3.putObject("lrslocalexport", "sample-01", file);
+      bufferedOutput.close();
+    } catch (IOException e) {
+      LOGGER.error("Error occured while closing file ", e);
+    }
+  }
+
+	33. https://jira.pager.net:8443/browse/WEB-7657
+		http://jsfiddle.net/4cwpLvae/307/
+
+			imagePreview: http://codepen.io/waqasy/pen/rkuJf
+		image: onSelect: https://www.w3schools.com/tags/ref_eventattributes.asp
+
+	34. https://jira.pager.net:8443/browse/WEB-7658
+		TT International SMS Plans
+	
+	35. https://jira.pager.net:8443/browse/WEB-7745 
+		pulostastu@throwam.com Manager User
+		patribatho@throya.com Reporting User
+
+	36. https://jira.pager.net:8443/browse/WEB-7723 
+	
+	37. https://jira.pager.net:8443/browse/WEB-7729 Y
+		
+	38. https://jira.pager.net:8443/browse/WEB-7722 Y
+
+	37. https://jira.pager.net:8443/browse/WEB-7721 Y
+
+	39. https://jira.pager.net:8443/browse/WEB-7724
+
+	40. Start again : https://jira.pager.net:8443/browse/WEB-7612
+		Refference: 31
+		1. highcharts.js 
+		2. exporting.js
+		> Prod dates 03/04/17 - 03/10/17		
+		> location guid: ba4ee142-dbf4-4e77-98fa-5662626a11b2
+		> account guid: 6af270aa-f2fd-419f-8f0d-88672b44b21b
+
+

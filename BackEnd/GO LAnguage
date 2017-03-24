@@ -1,0 +1,47 @@
+	> https://www.digitalocean.com/community/tutorials/how-to-install-go-1-6-on-ubuntu-14-04
+	> Compile
+		go install <path-to-fileNameOnly> (!Without .go extension)
+	> Run
+		sudo $GOPATH/bin/fileNameOnly
+	
+	> Recomended to run
+		e.g.:
+		go run GO_Workspace/src/github.com/shubham-yedage/hello/hello.go
+
+	> Tour for GO lang
+		https://tour.golang.org/welcome/1
+		https://golang.org/pkg/math/rand/#Seed
+		https://gobyexample.com/
+
+	>
+		1. fmt package
+			to print something.
+			e.g. fmt.Println("Hello World!")
+		
+		2. math/rand package
+			Mathmatical ops
+			e.g. rand.Intn(10)
+			e.g. rand.Seed = Generates random numbers
+
+
+	> To download lib 
+		go get <url>
+		e.g. go get github.com/go-sql-driver/mysql
+
+	> Call web-apis from openwethermap.org
+		1. How to use api key
+			e.g.: http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID={APIKEY}
+		
+		2. API-KEY: bf3642256b41f4d93637ac41ba371b18
+
+	> Project Structure
+		> Package Structure
+		> GOPATH --> workSpace
+		> BINPATH --> workspace/bin
+
+	> Functions:
+		1. Functions starting with UPPERCASE letter can be called in other packages
+		2. Functions starting with LOWERCASE letter cannot be called in other packages
+
+	> Books
+		1. https://talks.golang.org/2014/organizeio.slide#15 By David Crawshaw (Organize GO code)

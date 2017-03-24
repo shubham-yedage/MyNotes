@@ -1,0 +1,30 @@
+	/**
+	 * 
+	 * Get nonce.
+	 * Need date any.
+	 */
+
+	public String getNonce() {
+		byte[] date = "2016-08-15 11:28:16".getBytes(StandardCharsets.UTF_8);
+		return Base64.encodeBase64String(date);
+	}
+
+
+	/**
+	 * 
+	 * Get AuthenticationKey.
+	 * Need private key and nonce.
+	 */
+
+	public void getAuthenticationKey() throws NoSuchAlgorithmException,
+			InvalidKeyException, UnsupportedEncodingException {
+		String privateKey = "34e923a4-135f-489e-931a-307a506fba36";
+
+		SecretKeySpec key = new SecretKeySpec(privateKey.getBytes("UTF-8"), "HmacMD5");
+		Mac mac = Mac.getInstance("HmacMD5");
+		mac.init(key);
+
+		byte[] bytes = mac.doFinal(getNonce().getBytes("ASCII"));
+		System.out.println(Base64.encodeBase64String(bytes));
+		
+	}

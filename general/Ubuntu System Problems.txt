@@ -1,0 +1,8 @@
+
+Problem: on sudo apt-get update gives error "unable to connect"
+
+// This line is removed from /etc/apt/apt.conf
+
+Acquire::http { Proxy "http://172.31.70.58:3142"; };
+
+=============================================================================

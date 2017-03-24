@@ -1,0 +1,36 @@
+Unirest Java lib
+
+//====================For GET Request===================
+
+		System.setProperty("org.apache.commons.logging.Log",
+				"org.apache.commons.logging.impl.Jdk14Logger");
+		HttpRequest httpRequest = Unirest
+				.get(url)
+				.basicAuth(read.getSuper_admin_user_name(),
+						read.getSuper_admin_password())
+				.header("Cache-Control", "no-cache")
+				.header("X-Requested-With", "XMLHttpRequest").getHttpRequest();
+		HttpResponse<JsonNode> response = httpRequest.asJson();
+		System.out.println(response.getBody().toString().trim());
+
+
+
+//===================For Post Request======================
+
+				System.setProperty("org.apache.commons.logging.Log",
+						"org.apache.commons.logging.impl.Jdk14Logger");
+				HttpRequest httpRequest = Unirest
+						.post("http://localhost:8080/api/collector/ttevent")
+						.header("content-type", "application/json")
+						.headers(headerMap).body(mainRequestObj)
+						.getHttpRequest();
+				HttpResponse<JsonNode> response = httpRequest.asJson();
+				System.out.println(response.getBody());
+
+
+Maven Dependency:
+		<dependency>
+			<groupId>com.mashape.unirest</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>1.4.9</version>
+		</dependency>

@@ -1,0 +1,8 @@
+	> Web Container
+	> Once project is wrapped using docker, all of project related dependencies, plugins etc are present with docker
+	> You can runt it at any remote machine without careing for its environment.
+
+	> Installation
+	> curl -fsSL https://get.docker.com/ | sh
+	> https://docs.docker.com/engine/getstarted/linux_install_help/
+	> 

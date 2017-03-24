@@ -1,0 +1,13 @@
+			Request from POSTMAN
+
+			Url: http://localhost:8080/api/product/activate
+			Body:
+			{
+			 "publicKey":"9dd65a4f-4f94-4bf5-b2ce-ab0008b14e3d",
+			 "authToken":"DRewdc0x47uU4p5VQWUHnQ==",
+			 "requestObject": {
+			 "deviceGuid":"15c4effb-56eb-4fb2-93c0-187630ec0983",
+			 "activationCode":"455-4997-336",
+			 "productType":"TABLE_TRACKER"
+			 }
+			 }

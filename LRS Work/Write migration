@@ -1,0 +1,48 @@
+	> From mysql device_event to device
+		1. Device Table
+			software_version (APP_VERSION/WINTT_VERSION)
+			os_version (FIRMWARE_VERSION/OS_VERSION)
+
+		2. Device Event Teble
+			event_name (FIRMWARE_VERSION/OS_VERSION, APP_VERSION/WINTT_VERSION)
+			event_data
+
+	What to do?
+		> Go to device table
+		> Consider non deleted devices only
+		> Read device_type (TABLE_TRACKER)
+		> Read guid
+		> Go to device_event table
+		> Compare guid
+		> Get latest entry for device
+		> For latest device entry check modified_by_date must be latest (2015-04-02 15:13:20)
+		> Read event_name
+		> If event_name = APP_VERSION/WINTT_VERSION
+			then store event_data into software_version (device table)
+		  else if event_name = FIRMWARE_VERSION/OS_VERSION
+			then store event_data into os_version (device table)
+
+		
+
+		> Query start 
+SELECT d1.guid, d1.deleted, de1.device_guid, de1.event_name, de1.event_data, max(de1.eventts)
+FROM lrs_connect_dev.device_events de1, lrs_connect_dev.device d1
+WHERE d1.device_type = "TABLE_TRACKER"
+		AND d1.deleted=0
+		AND d1.device_guid = de1.device_guid
+		AND de1.event_name in ('APP_VERSION', 'WINTT_VERSION', 'FIRMWARE_VERSION', 'OS_VERSION')
+GROUP BY de1.device_guid
+ORDER BY de1.eventts desc;
+
+			/* device_type tabletracker
+				deleted 0
+				guid xxx
+	
+				device_guid xxx
+				eventts latest
+				eventname os version, firmaware version, app version, wintt version*/
+
+
+
+		INSERT INTO device (software_version, os_version)
+		SELECT 

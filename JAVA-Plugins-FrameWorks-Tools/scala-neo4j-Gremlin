@@ -1,0 +1,12 @@
+for grmelin in scala
+
+libraryDependencies ++= Seq(
+  "com.michaelpollmeier" %% "gremlin-scala" % "3.1.0-incubating",
+  "org.apache.tinkerpop" % "neo4j-gremlin" % "3.1.0-incubating",
+  "org.neo4j" % "neo4j-tinkerpop-api-impl" % "0.3-2.3.0"
+ )
+// no needed =resolvers += Resolver.mavenLocal
+
+
+Grmlin Example:
+http://bleibinha.us/blog/2013/10/scala-and-graph-databases-with-gremlin-scala

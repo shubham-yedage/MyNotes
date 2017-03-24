@@ -1,0 +1,26 @@
+1.https://hrms.synerzip.in/
+
+2.
+32-bit:
+
+cd ~ && wget -O - "https://www.dropbox.com/download?plat=lnx.x86" | tar xzf -
+
+64-bit:
+
+cd ~ && wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
+
+Next, run the Dropbox daemon from the newly created .dropbox-dist folder.
+
+~/.dropbox-dist/dropboxd
+
+3.
+https://www.playframework.com/
+
+4.typesafe activator
+5.intellij
+
+6.http://www.wikihow.com/Install-Oracle-Java-JDK-on-Ubuntu-Linux
+
+7.http://mvnrepository.com
+
+

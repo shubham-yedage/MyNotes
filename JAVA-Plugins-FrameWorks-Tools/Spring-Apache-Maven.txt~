@@ -1,0 +1,101 @@
+Apache
+hibernate
+war files
+
+complete project management web app
+java code-> dependencies/ framework->
+war files to tomacat
+jpa to database
+maven architypes for web app
+
+project obj model POM
+
+junit frame work is not present in classpath it will through class not found exception
+
+combine all class in archtypes
+
+source files must be in src/main/java
+test files    ||    ||  src/test/java
+pom.xml must be at root
+
+when mvn is run it looks for pom.xml
+
+use maven > 3.0
+
+inside project dir>mvn compile or mvn test-compile (creates target folder with class files for source.java and teest.java)
+
+inside project dir>mvn clean (target dir remove)
+		  >mvn test (runs test)
+		  >mvn install (validates pom.xml--compiles sources.java--runs junit tests--pacakges jar or war--runs verify--installs)
+
+after mvn install successful--> snapshot.jar (like local repository) stores jar file
+
+pom.xm--> project name
+		version of current prject
+		packaging-->how to deliver jar/webapp--war/enerprise ediion--ear
+		dependdencies framework
+		plugins for deploying war to tomcat
+			mvn compile plugin-->compile code
+
+to refer project--> groupid and artifactid-->name
+	
+groupid--> package
+artifactid-->uniq-->project name
+version-->current version-->snapshot-->something is in  deployment
+
+packaging-->how to represent
+
+depedencies-->dependencies
+
+scope--> decides scope of perticular file or jar---->compile-runtime--etc
+
+super pom or effective pom--->default behaviour is present.
+
+web---business--data layers
+
+packaging is pom(not jar or war) that is parent pom
+
+deploying maven project to tomcat
+
+		<project>	
+			<build>
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<warFile>target/in28minutes.war</warFile>
+						<path>/</path>
+						<contextReloadable>true</contextReloadable>
+					</configuration>
+				</plugin>
+			</build>
+		</project>
+
+dependencies---> mvn dependency:tree
+
+to see  effective pom---> mvn help:effective-pom
+
+to see alll debug info----> mvn -X clean install
+
+to see source of dependency--->mvn dependency:sources
+
+shows local repository for mvn files--->mvn help:effective-settings
+
+To GENERATE projects--->mvn archetype:generate
+
+When need to find about pom.xml properties--->Project Model Variables
+					----->https://maven.apache.org/guides/introduction/introduction-to-the-pom.html
+					----->https://maven.apache.org/pom.html
+
+=======================Spring MVC Web-App============================
+
+  >> web.xml/ context.xml (Types)
+	> http://shengwangi.blogspot.in/2015/08/understand-webxml-in-spring-mvc-project.html
+	> http://www.codejava.net/frameworks/spring/how-to-enable-spring-mvc-in-webxml
+
+  >> hello world app
+	> http://www.mkyong.com/spring3/spring-3-mvc-hello-world-example/
+	> http://websystique.com/springmvc/spring-4-mvc-helloworld-tutorial-annotation-javaconfig-full-example/
+	> http://viralpatel.net/blogs/spring-4-mvc-tutorial-maven-example/
+

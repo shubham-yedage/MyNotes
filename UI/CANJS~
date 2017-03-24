@@ -1,0 +1,36 @@
+remove()
+
+display: none
+display: inline
+
+visibility: hidden
+visibility: visible
+
+	1. Refer this : http://www.javascriptmvc.com/docs/can.Mustache.helpers.each.html
+		      : https://canjs.com/docs/can.Map.html
+		Its come under lib "CAN.MUSTACHE".
+	2. "if" condition in html
+		{{#if <var_from_js> testVal = "<value_under_test>"}}
+		
+		{{/if}}
+
+	3. foreach loop
+
+		{{#each <var_from_js>}} 
+		
+		{{/each}}
+
+	4. Add attributes
+		<div class="special">
+		
+		$('.special').attr('id', 'your-id-value');
+		$('div.special').attr('id','your-id');
+
+	5. Find option from option-group in drop down
+
+		var reportSetOptgroup = $("#"+selectId).find('optgroup[label="'+$.i18n.prop('content.page.reporting.reportSets')+'"]')
+
+        	var option = reportSetOptgroup.find('option[value="'+value+'"]');
+			 if(option) {
+				 option.attr('selected', true);
+			 }

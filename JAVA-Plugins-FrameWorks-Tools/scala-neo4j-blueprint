@@ -1,0 +1,5 @@
+libraryDependencies ++= Seq(
+    "com.tinkerpop.blueprints" % "blueprints-neo4j2-graph" % "2.5.0"
+)
+//========use lib in project===
+Neo4j2

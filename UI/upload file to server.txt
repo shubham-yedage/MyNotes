@@ -1,0 +1,25 @@
+
+Refer: http://stackoverflow.com/questions/32556664/getting-byte-array-through-input-type-file
+	https://developers.google.com/web/updates/2012/06/How-to-convert-ArrayBuffer-to-and-from-String
+
+
+convert file to ArrayBuffer to Binary String
+
+<input type="file" />
+<div id="result"></div>
+
+document.querySelector('input').addEventListener('change', function() {
+
+  var reader = new FileReader();
+  reader.onload = function() {
+
+    var arrayBuffer = this.result,
+      array = new Uint8Array(arrayBuffer),
+      binaryString = String.fromCharCode.apply(null, array);
+console.log(arrayBuffer);
+    //console.log(binaryString);
+
+  }
+  reader.readAsArrayBuffer(this.files[0]);
+
+}, false);

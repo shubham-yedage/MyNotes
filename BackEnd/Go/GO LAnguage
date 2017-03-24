@@ -1,0 +1,44 @@
+	> https://www.digitalocean.com/community/tutorials/how-to-install-go-1-6-on-ubuntu-14-04
+	> Compile
+		go install <path-to-fileNameOnly> (!Without .go extension)
+	> Run
+		sudo $GOPATH/bin/fileNameOnly
+	
+	> Recomended to run
+		e.g.:
+		go run GO_Workspace/src/github.com/shubham-yedage/hello/hello.go
+
+	> Tour for GO lang
+		https://tour.golang.org/welcome/1
+		https://golang.org/pkg/math/rand/#Seed
+		https://gobyexample.com/
+
+	>
+		1. fmt package
+			to print something.
+			e.g. fmt.Println("Hello World!")
+		
+		2. math/rand package
+			Mathmatical ops
+			e.g. rand.Intn(10)
+			e.g. rand.Seed = Generates random numbers
+
+
+	> To download lib 
+		go get <url>
+		e.g. go get github.com/go-sql-driver/mysql
+
+	> Call web-apis from openwethermap.org
+		1. How to use api key
+			e.g.: http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID={APIKEY}
+		
+		2. API-KEY: bf3642256b41f4d93637ac41ba371b18
+
+	> Refer for requesting and getting body
+		https://golang.org/pkg/net/http/
+
+	> Closures
+		 http://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
+
+	> Best way to write code
+		http://dave.cheney.net/2016/08/20/solid-go-design

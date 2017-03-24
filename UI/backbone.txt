@@ -1,0 +1,504 @@
+	>> From link: http://codebeerstartups.com/2012/12/how-to-improve-templates-in-backbone-js-learning-backbone-js/
+
+	>> Backbone.js is basically an uber-light framework.
+
+	>> Structure your Javascript code in a MVC(Model, View, Controller) fashion.
+		> Model is part of your code that retrieves and populates the data,
+		> View is the HTML representation of this model(views change as models change, etc)
+ 		> Controller that in this case allows you to save the state of your javascript application via a hashbang url, for example: 
+
+	>> Dependency Required
+		> As per the default only dependency is underscore js, which provides a lot of helper methods  and jquery. So in this I will be using underscore js and jquery and will try to cover few things related to coffee script etc. I wil be using chrome browser and use chrome console to try out various things.
+
+
+	>> Data Representation:
+		> e.g.: var Person = function(config){
+			  this.name = config.name;
+			  this.age = config.age;
+			  this.occupation = config.occupation;
+			};
+
+			Person.prototype.work = function(){
+				return this.name + 'is working.';
+			};
+
+		Can be written as,
+			var Person = Backbone.Model.extend({
+				defaults: {
+					name: 'Guest User',
+					age: 23,
+					occupation: 'Worker'
+				},
+				work: function(){
+					return this.get('name')  +  'is working.';
+				}
+			});
+
+	>> Getters and Setters
+		> person.get('name')// will display the name ie Default User
+		  person.get('age')// will display the age  ie 23
+		  person.get('occupation')// will display the occupation ie Worker
+
+		> person.set('name', 'Taroon Tyagi')// will update the name
+		  person.set('age', 26)             // will update the age
+		  person.set('occupation', 'Graphics Designer')// will update the 
+		
+			or
+
+		> person.set({name:"Taroon Tyagi", age: 26, occupation: "Graphics Designer"})
+
+			or
+
+		> var person =new Person({name:"Taroon Tyagi", age: 26, occupation: "Graphics Designer"})
+
+	>> To json coversion
+		> person.toJSON();
+
+	>> Validations
+		> 
+			var Person = Backbone.Model.extend({
+				defaults: {
+					name: 'Guest User',
+					age: 23,
+					occupation: 'worker'
+				},
+
+				validate: function(attributes){
+					if ( attributes.age <  ){
+						return 'Age must be positive.';
+					}
+
+					if ( !attributes.name ){
+						return 'Every person must have a name.';
+					}
+				},
+
+				work: function(){
+					return this.get('name') + ' is working.';
+				}
+			});
+
+		Will work as,
+
+			var person = new Person({name: "Mohit Jain", age: -1, occupation: "Software Developer"}) // This will not trigger validate method as validate method will be triggered only in case of set.
+			person.get('age')// will return -1
+
+			var person = new Person;
+			person.get('age')// will return 23 as default value
+			person.set('age', -1)// will return false and value ie -1 will not be set
+			person.get('age')// will still return ie 23
+
+			var person = new Person;
+			person.get('age')// will return 23 as default value
+			person.set('age', 18)// will return true and value ie 18 will be set
+			person.get('age')// will return new value ie 18
+
+	>> Displaying error message
+		> person.on('error', function(model,error){
+		  console.log(error); // printing the error message on console.
+		});
+
+	>> Creating Views
+
+		> Model
+			var Person = Backbone.Model.extend({
+				defaults: {
+					name: 'Guest User',
+					age: 23,
+					occupation: 'worker'
+				}
+			});
+
+		> View
+			var PersonView = Backbone.View.extend({
+			tagName: 'li'
+			});
+
+		> 
+		var personView = new PersonView();
+		personView.el //will tell you the view for the object. Right now its a blank "li" tag.
+		personView.$el // is jquery tied up view for this object.
+
+		> Add HTML elements
+			var PersonView = Backbone.View.extend({
+				tagName: 'li',
+				className: 'person',
+				id: 'person-id' // although this is not a good way but I think got the idea.
+			});
+
+	>> Rendering the view
+		> initialize : Backbone provides constructor ie known as initialize.
+			It will get called automatically when view is initialized.
+			initialize: function(){
+			}
+
+		> render : It renders data for Model associated with view.
+
+
+	>> Finally we can write code
+		var Person = Backbone.Model.extend({
+			defaults: {
+				name: 'Guest User',
+				age: 23,
+				occupation: 'worker'
+			}
+		});
+
+		var PersonView = Backbone.View.extend({
+		   tagName: 'li',
+
+		   initialize: function(){
+		     this.render();
+		   },
+
+		   render: function(){
+		     this.$el.html( this.model.get('name') + ' (' + this.model.get('age') + ') - ' + this.model.get('occupation') );
+		  }
+		});
+
+		> Comands on console
+		var person = new Person;
+		var personView = new PersonView({ model: person });
+		personView.el;
+
+		// lets create a new person and display that person in view..
+		var person = new Person({name: "Mohit Jain", age: 25, occupation: "Software Developer"})
+		var personView = new PersonView({ model: person });
+		personView.el;
+		$(document.body).html(personView.el);  // this is not ideal but good enough for demo.
+
+	>> Adding template
+
+		var Person = Backbone.Model.extend({
+			defaults: {
+				name: 'Guest Worker',
+				age: 23,
+				occupation: 'worker'
+			}
+		});
+
+		var PersonView = Backbone.View.extend({
+			tagName: 'li',
+
+			my_template: _.template("<strong><%= name %></strong> (<%= age %>) - <%= occupation %>"),
+
+			initialize: function(){
+				this.render();
+			},
+
+			render: function(){
+				this.$el.html( this.my_template(this.model.toJSON()));
+			}
+		});
+
+		> Backbone js has feature that you can define template using underscore and it will compile the template and then when ever you pass the data, it will return the html view as per the code. So in the above line we defined a template using
+
+		my_template: _.template("<strong><%= name %></strong> (<%= age %>) - <%= occupation %>")
+
+		 And we can render it by,
+		this.$el.html( this.my_template(this.model.toJSON()));
+
+	>> Improve template
+
+		> Improvements in js file
+
+		> We have defined this script as text/template so that browser don’t execute this as normal javascript code. So once we have defined the template we can call this external template in our PersonView file using jquery. Here is the new PersonView Class.
+			var Person = Backbone.Model.extend({
+				defaults: {
+					name: 'Guest User',
+					age: 23,
+					occupation: 'worker'
+				}
+			});
+
+			var PersonView = Backbone.View.extend({
+				tagName: 'li',
+
+				template: _.template( $('#personTemplate').html()),
+
+				initialize: function(){
+					this.render();
+				},
+
+				render: function(){
+					this.$el.html( this.template(this.model.toJSON()));
+				}
+			});
+
+			// calls from console
+
+			// var person = new Person;  // a person object created...
+			// var personView = new PersonView({ model: person });
+			// personView.el   // ---->; You can call this method and it will display the view..
+			//$(document.body).html(personView.el);  //  --->; This will add output to the dom. This is not ideal but good enough for demo.
+
+		> How to show on html
+			<script id="personTemplate" type="text/template">
+				<strong><%= name %></strong> (<%= age %>) - <%= occupation %>
+			</script>
+
+		> Write template in different ways
+				// In view
+			1. template: _.template( $('#personTemplate').html()),
+				// In html
+			   <script id="personTemplate" type="text/template">
+				<strong><%= name %></strong> (<%= age %>) - <%= occupation %>
+			</script>
+
+				// In html
+			2. var template = function(id){
+				return _.template( $('#' + id).html() );
+			   };
+				// In view		
+				template: template('personTemplate'),
+
+	>> Collection
+
+		> Helpfull for adding multiple persons is simple with collection.
+			// Person Model
+			var Person = Backbone.Model.extend({
+				defaults: {
+					name: 'Guest User',
+					age: 30,
+					occupation: 'worker'
+				}
+			});
+
+			// A List of People
+			var PeopleCollection = Backbone.Collection.extend({
+				model: Person
+			});
+
+			// The View for a Person
+			var PersonView = Backbone.View.extend({
+				tagName: 'li',
+
+				template: _.template( $('#personTemplate').html()),
+
+				initialize: function(){
+					this.render();
+				},
+
+				render: function(){
+					this.$el.html( this.template(this.model.toJSON()));
+				}
+			});
+
+		> Console commands
+			var person = new Person;
+			 var personView = new PersonView({ model: person });
+			 var peopleCollection = new PeopleCollection();
+			 peopleCollection.add(person);
+			 var person2 = new Person({name: "Mohit Jain", age: 25, occupation: "Software Developer"});
+			 var personView2 = new PersonView({ model: person2 });
+			 peopleCollection.add(person2);
+			 peopleCollection
+			 peopleCollection.toJSON(); // --> returns a list of data attributes
+
+		> Another way to create collection
+			var peopleCollection = new PeopleCollection([
+				{
+					name: 'Mohit Jain',
+					age: 26
+				},
+				{
+					name: 'Taroon Tyagi',
+					age: 25,
+					occupation: 'web designer'
+				},
+				{
+					name: 'Rahul Narang',
+					age: 26,
+					occupation: 'Java Developer'
+				}
+			]);
+
+		> View for collection
+			> Gives lots of functions to work with.
+
+			> "this" is returned just for chaining purpose.
+
+			> People is collection can be representd by people view.
+
+					// Person Model
+			var Person = Backbone.Model.extend({
+				defaults: {
+					name: 'Guest User',
+					age: 30,
+					occupation: 'worker'
+				}
+			});
+			// A List of People
+			var PeopleCollection = Backbone.Collection.extend({
+				model: Person
+			});
+			// View for all people
+			var PeopleView = Backbone.View.extend({
+				tagName: 'ul',
+				render: function(){
+					this.collection.each(function(person){
+						var personView = new PersonView({ model: person });
+						this.$el.append(personView.render().el); // calling render method manually..
+					}, this);
+					return this; // returning this for chaining..
+				}
+			});
+			// The View for a Person
+			var PersonView = Backbone.View.extend({
+				tagName: 'li',
+				template: _.template($('#personTemplate').html()),
+			       //////////   initialize function is gone from there. So we need to call render method manually now..
+				render: function(){
+					this.$el.html( this.template(this.model.toJSON()));
+					return this;  // returning this from render method..
+				}
+			});
+			var peopleCollection = new PeopleCollection([
+				{
+					name: 'Mohit Jain',
+					age: 26
+				},
+				{
+					name: 'Taroon Tyagi',
+					age: 25,
+					occupation: 'web designer'
+				},
+				{
+					name: 'Rahul Narang',
+					age: 26,
+					occupation: 'Java Developer'
+				}
+			]);
+			var peopleView = new PeopleView({ collection: peopleCollection });
+			$(document.body).append(peopleView.render().el);   // adding people view in DOM.. Only for demo purpose...
+
+
+		> use of "each" function for loping
+
+	>> Namespace
+		> A function wrapping model and views for making storage meaningfull.
+
+			(function(){  // whole blocked is wrapped into anonymous Jquery function..
+
+			window.App = {   // defining app name space, You can rename it as per your project name..
+				Models: {},
+				Collections: {},
+				Views: {}
+			};
+
+			window.template = function(id){
+				return _.template( $('#' + id).html() );
+			};
+
+
+			// Person Model
+			App.Models.Person = Backbone.Model.extend({   // Person model referencing the App namespace model.
+				defaults: {
+					name: 'Guest User',
+					age: 30,
+					occupation: 'worker'
+				}
+			});
+
+			// A List of People
+			// Same here. People is referencing now collection from App namespace
+			App.Collections.People = Backbone.Collection.extend({
+				model: App.Models.Person   // Change here for Person Reference from App models namespace
+			});
+
+
+			// View for all people
+			/// Same here. People is referencing now views from App namespace
+			App.Views.People = Backbone.View.extend({
+				tagName: 'ul',
+
+				render: function(){
+					this.collection.each(function(person){
+						// Change here for Person Reference from App Views namespace
+						var personView = new App.Views.Person({ model: person });
+						this.$el.append(personView.render().el);
+					}, this);
+
+					return this;
+				}
+			});
+
+			// The View for a Person
+			// Change here for Person Reference from App Views namespace
+			App.Views.Person = Backbone.View.extend({
+				tagName: 'li',
+
+				template: template('personTemplate'),
+				render: function(){
+					this.$el.html( this.template(this.model.toJSON()));
+					return this;
+				}
+			});
+			// Change here for Person Reference from App Collections namespace
+			var peopleCollection = new App.Collections.People([
+				{
+					name: 'Mohit Jain',
+					age: 26
+				},
+				{
+					name: 'Taroon Tyagi',
+					age: 25,
+					occupation: 'web designer'
+				},
+				{
+					name: 'Rahul Narang',
+					age: 26,
+					occupation: 'Java Developer'
+				}
+			]);
+
+			// Change here for Person Views from App Views namespace
+			var peopleView = new App.Views.People({ collection: peopleCollection });
+			$(document.body).append(peopleView.render().el);
+			})();
+
+	>> Dom events
+
+		> On js file.
+		// The View for a Person
+		App.Views.Person = Backbone.View.extend({
+			tagName: 'li',
+
+			template: template('personTemplate'),
+
+			initialize: function(){
+				this.model.on('change', this.render, this);
+				this.model.on('destroy', this.remove, this); // 3. Adding a destroy announcer..
+			},
+
+			events: {
+			 'click .edit' : 'editPerson',
+			 'click .delete' : 'DestroyPerson'	/// 1. Binding a Destroy for the listing to click event on delete button..
+			},
+
+			editPerson: function(){
+				var newName = prompt("Please enter the new name", this.model.get('name'));
+				if (!newName)return;
+				this.model.set('name', newName);
+			},
+
+			DestroyPerson: function(){
+				this.model.destroy();  // 2. calling backbone js destroy function to destroy that model object
+			},
+
+			remove: function(){
+				this.$el.remove();  // 4. Calling Jquery remove function to remove that HTML li tag element..
+			},
+
+			render: function(){
+				this.$el.html( this.template(this.model.toJSON()));
+				return this;
+			}
+		});
+
+		> On ui.
+		<script id="personTemplate" type="text/template">
+			<span><strong><%= name %></strong> (<%= age %>) - <%= occupation %></span>
+			<button class="edit">Edit</button>
+			<button class="delete">Delete</button>
+		</script>

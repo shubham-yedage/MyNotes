@@ -1,0 +1,239 @@
+-----------localhost:9000/@documentation/-------------
+
+~~~Play API~~~ 
+	> Java API (Under play package)
+	> Scala API (Under play.api package)
+~~~Action~~~
+	> Request received by play application are handled by action
+	> Action is java method
+	> public Result index() {
+		return ok("Got request"+request()+"!")
+	}
+	> returns play.mvc.Result which is "HTTP response"
+	> ok constructs  a 200 OK response containing text/plain response body
+~~~Controllers~~~
+	> conroller is a class extending from play.mvc.Controller group of action methods.
+	> import play.*;
+	  import play.mvc.*;
+	  public class Application extends Controller{
+		public Result index(){
+			return ok("It works");	
+		 }
+	> Action method can have parameters.
+	> public Result index(String name) {
+    		return ok("Hello " + name);
+	   }
+	> Parameters will be resolved by Router
+	> Parameters will be filled with values from request URL
+	> Parametr values can be extracted from URL path or URL query string.
+~~~Results~~~
+	> HTTP result with a status code and set of HTTP headers and body
+	> "play.mvc.Result" and "play.mvc.Results" classes helps to standardise message with methods like "ok"
+	> e.g.:(play.mvc.Results)
+	  1. Result ok = ok("Hello world!");
+	  2. Result notFound = notFound();
+	  3. Result pageNotFound = notFound("<h1>Page not found</h1>").as("text/html");
+	  4. Result badRequest = badRequest(views.html.form.render(formWithErrors));
+	  5. Result oops = internalServerError("Oops");
+	  6. Result anyStatus = status(488, "Strange response type");
+~~~Redirects~~~
+	> Redirecting is simple result without response body
+	> e.g.
+	  1. public Result index() {
+		    return redirect("/user/home");
+		}
+	  2. public Result index() {
+ 		   return temporaryRedirect("/user/home");
+		}
+~~~HTTP routing~~~
+	> router component translates each incoming HTTP requests to an action call i.e. method in controller
+	> HTTP request is an event for MVC framework. Contains two important things:
+		  1. request path(/photos/list) and query string
+		  2. the HTTP method (GET, POST, ...)
+	> Routes are available in "conf/routes"
+~~~Dependency Injection~~~
+	> play supports 2 types of routers
+		1. Dependency injected router (by default present)
+		2. static routs (if controllers method are static or "@" is used while controller invocation)
+		    in "build.sbt" add,
+		     routesGenerator := StaticRoutesGenerator
+
+~~~routes file syntax~~~
+	> router uses conf/routes configration file
+	> all the routes are present which are needed by app
+	> route has HTTP method and URI pattern associated with call to action method     
+	> e.g. :
+	  #comments
+	  1.GET	   /	 controllers.Application.index()
+	  2.GET    /clients/:id     controllers.Clients.show(id:long)
+	> HTTPMethod /URI_Pattern Call_Defination
+
+~~~HTTP Method~~~
+	> GET, PATCH, POST, PUT, DELETE, HEAD, OPTIONS
+
+~~~URI pattern~~~
+	> routes request path. some part can be dynamic.
+	> Static Path
+		-GET  /clients/all   controllers.Clients.list()
+	> Dynamic path:to get client by id,
+		-GET  /clients/:id   controllers.Clients.show(id: Long)
+		-more than one dynamic part can be present
+	> Dynamic parts replacing long URI paths
+		e.g. if request is for "GET/files/images/long.png" then we can write
+		-GET  /files/*name  controllers.Application.download(name)
+			the "name" will replace "/images/long.png/"
+	> Dynamic part with custom regular expression, here "$id<regex>" syntax is used forexpression:
+	e.g. GET  /items/$id<[0-9]+>  controllers.Items.show(id: Long)
+
+~~~call to action generator method~~~
+	> if no parameters
+	> Get  /     controllers.Application.homePage()
+	
+	> parameterised method:
+		- value of parameter is taken from URI path
+		# Extract page parameter from the path
+		#i.e. http://myserver.com/index
+		GET  /:page   controllers.Application.show(page)
+		
+		- value is extracted from query string
+		#Extract from query string
+		#i.e. http://myserver.com//root?page=index
+		GET  /root  controllers.Application.show(page)
+	
+	> "show()" method:
+		public Result show(String){
+			String content=Page.getContentof(page);
+			response.setContentType("text/html");
+			return ok(content);
+		}
+
+~~~parameter type~~~
+	> for "String" type
+		GET  /  controllers.Application.show(page)
+	> for other type if play needs to transform to specific scala type
+		GET  /clients/:id  controllers.Clients.show(id: Long)
+	same must be present in action method.
+	> for using generic types use way "List[String]" instead of "List<String>"
+
+~~~parameters with fixed values~~~
+	> GET  /  controllers.Application.show(page="home");
+	> GET  /:page  controllers.Application.show(page)
+
+~~~parameters with default values~~~
+	> GET  /clients  controllers.Clients.list(page: Int ?=1)
+	> like /clients?page=3
+
+~~~optional parameter~~~
+	> version parameter is optional
+		e.g. /api/list-all?version=3.0
+	> or GET  /api/list-all  controllers.Api.list(version ?=null)
+
+~~~Routing priority~~~
+	> many routes can match same request
+	> to avoid conflict order in which routes are written is used
+
+~~~Reverse routing~~~
+	> routing means mapping URL with action reverse routing is mapping action to URL
+	> as reverse routes are autogenerated so instead of using rout use reverse rout.
+	> routes are compiled so if action signature is changed then URL wont work properly so use reverse controller
+	> return redirect(routes.Application.index()); 
+	> router can generate URL from java call
+	> router generates reverse controller for each controller in it, in routes package with same action methods  and signature.
+	> it returns "play.mvc.Call" instead of "play.mvc.Result"
+	> "routes" subpackage for each controller package
+	> action "controllers.admin.Application.hello" can be reversed via "controllers.admin.routes.Application.hello"
+
+~~~routing DSL: http://localhost:9000/@documentation/JavaRoutingDsl~~~
+
+
+~~~Application Setting~~~
+	> Running instance of play is build arround Application class
+	> Application is loaded through application loader 
+
+~~~model class~~~
+	> @Entity: when declared as entity works as storage unit.
+		@Entity
+		public class Person(
+			}
+
+~~~~Controller~~~
+	> play.data.FormFactory
+		- https://www.playframework.com/documentation/2.5.x/api/java/play/data/FormFactory.html
+		- helps to create forms in HTML.
+		- wraps the class.
+		- formFactory.form(Person.class)
+
+	>play.data.Form
+		- https://www.playframework.com/documentation/2.0/api/java/play/data/Form.html
+		- form submission, description and validation 
+		- formFactory.form(Person.class).bindFormRequest().get;
+		- bindFormRequest() attaches request data to form
+		- get() gets concrete value
+
+~~~Ebean~~~
+	> sessionless structure.
+
+
+important:http://presos.jamesward.com/introduction_to_the_play_framework-java/#/1
+
+~~~JPA~~~
+	> java persistance API
+	> handles flow between classes and relational database
+ 	> http://www.objectdb.com/java/jpa/persistence/retrieve
+
+~~~tomcat vs play~~~
+	> application server---framework inbuild embedded server
+	> written in java------scala java
+	> ---------------------provides minimal resources
+
+
+~~~download jar~~~
+	> http://mvnrepository.com/artifact/com.typesafe.play
+
+~~~nETTY~~~
+	> Netty is a NIO client server framework which enables quick and easy development of network applications such as protocol servers and clients. It greatly simplifies and streamlines network programming such as TCP and UDP socket server.
+
+~~~Ebean vs JPA~~~
+	> in jpa necessary to attach/detach contents with entity
+		---in ebean no need. theres JDBC batch buffer attached to transaction (it also helps to batch up persistance callls)
+	> implicitly flushes all dirty states and all beans must be in valid state to flush also flush can reorder statements in unexpected ways----------------in bean each bean manages its own flush
+
+
+
+~~~Body Parser~~~
+	> HTTP request is header followed by body
+	> RequestHeader class stores header
+	> Body is modified as stream. BodyParser abstractor for mapping Request Body
+	> request body can be accesssed by applying method body() on Request class and is present in RequestBody class.
+	> Default body parser parses bodies of POST, PUT and PATCH not on GET, Delete or Head.
+	> to use parsers for GET, DELETE and HEAD use AnyCOntent Body parser.
+	> play.http.parser.maxMemoryBuffer = 256kb
+	> play.http.parser.maxDiskBuffer = 10mb
+	> https://www.playframework.com/documentation/2.5.x/JavaBodyParsers
+
+~~~play enhancer~~~
+	> it generates auto getter and setter for the fields that are public, non-static and non-final
+	> to enable it add following line in project/plugins.sbt
+	addSbtPlugin("com.typesafe.sbt" % "sbt-play-enhancer" % "1.1.0")
+	> when you want to disable it add in build.sbt
+	lazy val nonEnhancedProject = (project in file("non-enhanced"))
+  .disablePlugins(PlayEnhancer)
+	> or playEnhancerEnabled := false
+	> If you want to control exactly which files get byte code enhanced, this can be done by configuring the sources task scoped to the playEnhancerGenerateAccessors and playEnhancerRewriteAccessors tasks. For example, to only enhance the java sources in the models package, you might do this:
+
+sources in (Compile, playEnhancerGenerateAccessors) := {
+  ((javaSource in Compile).value / "models" ** "*.java").get
+}
+
+~~~Form Submission~~~
+	> https://www.playframework.com/documentation/2.5.x/JavaForms
+
+~~~Database~~~
+	> https://www.playframework.com/documentation/2.5.x/Developing-with-the-H2-Database
+	> H2 database:
+	  http://www.h2database.com/html/cheatSheet.html
+	> Accessing Database:
+	  https://www.playframework.com/documentation/2.5.x/JavaDatabase
+	> Ebean
+	  https://www.playframework.com/documentation/2.5.x/JavaEbean
+	> http://ebean-orm.github.io/docs/mapping/

@@ -1,0 +1,176 @@
+	http://docs.spring.io/spring/docs/current/spring-framework-reference/html/overview.html
+	(spring 3) http://www.javatpoint.com/spring-3-mvc-tutorial
+
+1. Enterprise Java Bean(EJB) has issues like heavy componenets, large no. of xml files, diff servers diff xml files, 
+
+//========================
+
+Spring!
+
+	> Spring Modules for SPring 1.x and 2.x
+		IOC Inversion of COntrol
+		JDBC
+		JEE
+		ORM
+		AOP Aspect Orinted Programming
+		MVC
+		WEB MVC
+		
+		for Spring 3.x and 4.x
+		>IOC->Dependency Injection
+
+
+
+
+
+
+		> MVC	  } WEB MVC
+		> WEB MVC }
+		
+//============================
+IOC / Dependency Injection
+	> Singletone Class and Objects
+	> Java Class to config.xml to SPring Container
+	> Container is JAVA Class
+	> Container dont understands .xml
+	> DTD(Doc Type Def) is used to conver .xml so Container can 		  understand
+	> SAX (Simple API for XML) or DOM (Doc Object Modal)
+	> These are actually compilers/Parsers that convers .xml
+	> Java SAX
+	> Other than JAVA DOM
+	> Class are converted to Bean
+
+e.g.
+1] Simple Class
+public class WelcomeBean{
+	private String message;
+
+	public voide setMessage(String message){
+		this.message=message;
+	}
+
+	public void show(){
+		s.o.p(message);
+	}
+}
+
+2] SPpcofig.xml
+	<DTD.....>
+	<beans>
+		<bean id="id1" class="WelcomeBean">
+			<property name="message">
+				<value>welcome to Spring Framework</value>
+			</property>
+		</bean>
+	</beans>
+
+3] client.java
+
+
+
+
+
+
+	public static void main(String[] args)
+	{
+		Resource res=new classPathResource("SPconfig.xml"); //Config Resources
+		BeanFactory factory= new XmlBeanFactory(res); //Container
+		Object o= factory.getBean("id1"); 
+		WelcomeBean wb= (WelcomeBean) o;
+		wb.show()
+	//=====Setter Injection======//
+	}
+	
+//=================
+Resource (org.SpringFramework.core.io.*;)
+	> Spring provides an interface Resourcee
+	> It helps to handover config.xml to container
+	> it means to load config.xml from harddrive to main memory
+	> Resource are implemented by 2 Classes
+		1. ClassPathResource()
+		2. FileSystemResources()
+
+//======================
+ClassPathResource
+	> when our config.xml and java bean file are at same location use this
+
+
+//=======================
+FileSystemResource
+	> Java beans and config.xml are in diff directory
+
+//========================
+Containers
+	> Basic container
+	> Advanced container
+-------------------------------------------------
+	> Basic Container	
+	> BeanFactory implemented by XmlBeanFactory
+	  (org.SpringFramework.beans.factory.*;)
+	  (org.SpringFramework.beans.factory.xml.*)
+	> Factory class produces collection of objects
+	> Factory method provides 
+
+//=============================
+Dependancy Injection
+	> calling factory.getBean() in main()/ Client application method gives an object
+	> Its called dependancy injection
+	> Types: 1] Setter Injection      }Spring Supports.
+		 2] Construction Injection}
+		 3] Interface Injection -> Spring dont support (Struts 2.X supports.)
+
+//===========================
+Setter Injection
+	1. Dependency in the form of primitive and spring based values
+		e.g. class Demo{
+			private String msg;
+			private int i;
+		}
+	2. Dependency in the form of objective
+		e.g. class Demo{
+			private DemoBean db;
+		}
+	3. Dependency in the form of collections
+		e.g. class Demo{
+			private List data;
+			private Map<String, Integer> Employee;
+		}
+//===========================
+Inner bean
+	> First inner bean object is created then outer bean object
+
+//============================
+Checkout
+		1. For info on @Component, @Service, @Repository, @Controller
+		http://howtodoinjava.com/spring/spring-core/how-to-use-spring-component-repository-service-and-controller-annotations/
+
+//============================
+Aggregation
+	> link: 
+		http://docs.spring.io/spring-integration/docs/2.0.0.RC1/reference/html/aggregator.html
+		https://docs.mongodb.com/v3.2/tutorial/query-documents/
+		
+	> Message handler that receives multiple messages and combines it into single message
+	> Combines group of corelated message and creates single message out of it after processing group of message.
+	> 3 main aspects: 1] Creating single message out of many
+			  3] Correlation (Grouping of messages)
+			  3] Release
+	> Correlaion
+		Each message is provided with CORRELATION_ID
+		Messages with same CORRELATION_ID are grouped together.
+
+//============================
+Spring web-app
+	1. CRUD with database (my sql)
+
+//=============================
+
+Spring web app JAva configration.
+http://websystique.com/springmvc/spring-4-mvc-helloworld-tutorial-annotation-javaconfig-full-example/
+http://websystique.com/maven/create-a-maven-web-project-with-eclipse/
+
+https://www.youtube.com/watch?v=6LO40oH5abg&list=PLBgMUB7xGcO31B2gBmy1igpZn6LK78-CJ&index=4
+
+
+//================Spring Annotation
+http://www.techferry.com/articles/hibernate-jpa-annotations.html

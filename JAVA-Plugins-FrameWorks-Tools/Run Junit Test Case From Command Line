@@ -1,0 +1,116 @@
+References:
+		1. http://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html
+	
+		2. https://dzone.com/articles/running-junit-tests-parallel	
+		
+		3. http://memorynotfound.com/run-junit-tests-parallel-using-maven/
+
+		4. http://howtodoinjava.com/junit/executing-junit-testcases-with-maven/
+
+
+	1. Code example
+
+	import junit.framework.TestCase;
+
+	public class TestBasicLinkedList extends TestCase {
+	  public void testTrue() {
+	    assertTrue(true);
+	  }
+	}
+
+
+	2. The test class should extend TestCase, and test methods should start with "test", accept 		no arguments and return void.
+
+	3. To compile
+	javac -cp /usr/share/java/junit4.jar TestBasicLinkedList.java
+
+	4. To run
+	java -cp /usr/share/java/junit4.jar:. org.junit.runner.JUnitCore TestBasicLinkedList
+
+
+
+	Junit 4.7+
+	 
+	A. The following configuration will run your test methods in parallel:
+	<plugin>   
+		<groupId>org.apache.maven.plugins</groupId>   
+		<artifactId>maven-surefire-plugin</artifactId>   
+		<version>2.18</version>   
+		<configuration>     
+			<parallel>methods</parallel>   
+		</configuration>
+	</plugin>
+	
+	B. Another useful trick is to run your test classes in parallel, rather than the methods. You can do this by setting the configuration item to 'classes' instead of 'methods'. This may or faster depending on the number of test classes you have, but it might also be safer for some test cases not designed with concurrency in mind:
+	<plugin>  
+		<groupId>org.apache.maven.plugins</groupId>  
+		<artifactId>maven-surefire-plugin</artifactId>  
+		<version>2.18</version>  
+		<configuration>    
+			<parallel>classes</parallel>  
+		</configuration>
+	</plugin>
+
+	C.For finer control over the number of threads, you should check out the the configurable-parallel-computer library (see also this blog entry from the author of the library). (This actually made little difference on my dual-core laptop, but I would expect more significant differences on a large build server). Once you add this dependency to your dependencies (it's not in the standard Maven repositories, so you have to install it yourself), you could run your tests in parallel using 4 threads as shown here:
+
+	Refer
+		a] https://github.com/krosenvold/configurable-parallel-computer
+		b] http://incodewetrustinc.blogspot.in/2010/01/run-your-junit-tests-concurrently-with.html
+
+	<plugin>   
+		<groupId>org.apache.maven.plugins</groupId>   
+		<artifactId>maven-surefire-plugin</artifactId>   
+		<version>2.18</version>   
+		<configuration>     
+			<parallel>methods</parallel>     
+			<threadCount>4</threadCount>   
+		</configuration>
+	</plugin>
+
+	D. You can also configure the maximum number of threads per CPU core, which allows for a bit more flexibility when the tests are run on different machines:
+	<plugin>  
+		<groupId>org.apache.maven.plugins</groupId>  
+		<artifactId>maven-surefire-plugin</artifactId>  
+		<version>2.18</version>  
+		<configuration>    
+			<parallel>methods</parallel>    
+			<threadCount>4</threadCount>    
+			<perCoreThreadCount>true</perCoreThreadCount>  
+		</configuration>
+	</plugin>
+
+	E. The 'useUnlimitedThreads' will create as many threads as there are classes or methods, and attempt to run them all concurrently. This works fine for unit tests, but when I used this option for web tests, it quickly saturated the server
+
+	<plugin>  
+		<groupId>org.apache.maven.plugins</groupId>  
+		<artifactId>maven-surefire-plugin</artifactId>  
+		<version>2.18</version>   
+		<configuration>    
+			<parallel>classes</parallel>    
+			<useUnlimitedThreads>true</useUnlimitedThreads>  
+		</configuration>
+	</plugin>
+
+
+
+	AAA] Forking
+
+		> Forking in particular can also help keeping the memory requirements low.
+
+
+
+	BBB] Run single test using maven
+		mvn -Dtest=TestApp1 test
+
+		e.g public class TestApp1 {
+
+			@Test
+			public void testPrintHelloWorld1() {
+
+				Assert.assertEquals(App.getHelloWorld2(), "Hello World 1");
+
+				}
+			}
+
+	CCC] Running single test with surefire
+		mvn surefire:test -Dtest=TestCircle

@@ -1,0 +1,62 @@
+Event dumps for this issue:
+
+	1.
+		{
+			"publicKey": "2b3f0337-c863-47c6-9b96-b95997b6f21c",
+			"nonce": "MjAxNi0wOC0yMyAxODo1NTowNA==",
+			"authToken": "AG94Au6wStPolsq4dXXtQg==",
+			"requestObject": {
+				"locationGuid": "9b5c982c-d930-49f5-a9db-35d9ca9c7f8d",
+				"events": [{
+					"orderLocated": "2016-07-20T20:28:16+00:00",
+					"orderCleared": "2016-07-20T22:28:16+00:00",
+					"orderType": "ON_PREMISE",
+					"orderGuid": "10ab3010f5-46a8-4ee9-9a10-d723f1dedcd2",
+					"puckId": "20",
+					"spaceId": "23894",
+					"type": "ORDER_SUMMARY",
+					"orderStarted": "2016-07-20T20:28:16+00:00"
+				}]
+			}
+		}
+
+	
+	2.
+		{
+			"publicKey": "2b3f0337-c863-47c6-9b96-b95997b6f21c",
+			"nonce": "MjAxNi0wOC0yMyAxODo1NTowNA==",
+			"authToken": "AG94Au6wStPolsq4dXXtQg==",
+			"requestObject": {
+				"locationGuid": "9b5c982c-d930-49f5-a9db-35d9ca9c7f8d",
+				"events": [{
+					"orderLocated": "2016-07-21T20:28:16+00:00",
+					"orderCleared": "2016-07-21T22:28:16+00:00",
+					"orderType": "ON_PREMISE",
+					"orderGuid": "11ab3010f5-46a8-4ee9-9a10-d723f1dedcd2",
+					"puckId": "20",
+					"spaceId": "23894",
+					"type": "ORDER_SUMMARY",
+					"orderStarted": "2016-07-21T20:28:16+00:00"
+				}]
+			}
+		}
+
+	3.
+		{
+			"publicKey": "2b3f0337-c863-47c6-9b96-b95997b6f21c",
+			"nonce": "MjAxNi0wOC0yMyAxODo1NTowNA==",
+			"authToken": "AG94Au6wStPolsq4dXXtQg==",
+			"requestObject": {
+				"locationGuid": "9b5c982c-d930-49f5-a9db-35d9ca9c7f8d",
+				"events": [{
+					"orderLocated": "2016-07-29T20:28:16+00:00",
+					"orderCleared": "2016-07-29T20:28:16+00:00",
+					"orderType": "ON_PREMISE",
+					"orderGuid": "12ab3010f5-46a8-4ee9-9a10-d723f1dedcd2",
+					"puckId": "20",
+					"spaceId": "23894",
+					"type": "ORDER_SUMMARY",
+					"orderStarted": "2016-07-29T20:28:16+00:00"
+				}]
+			}
+		}

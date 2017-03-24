@@ -1,0 +1,259 @@
+youtube -> Introduction to the Art of Programming Using Scala
+
+https://www.youtube.com/watch?v=XBbaZwGt8YY
+https://www.youtube.com/watch?v=oJ6l3kbrOkE
+
+user
+neo4j
+server address
+http://localhost:7474/browser/
+shubham5252
+
+cd $NEO4J_HOME/bin ./neo4j start
+
+Cypher Reference:
+http://neo4j.com/docs/cypher-refcard/current/?utm_source=browser&utm_medium=motd&utm_content=blog&utm_campaign=browser
+
+//========Things To remember
+	> Nodes = Data Records
+		  Similar nodes can have diff properties
+		  
+	> Relation = Connects nodes
+		     It has always Direction-Type-Form Patterns Data
+	> Properties = name-value pair
+			properties for node
+			Values can be String, Number or Boolean	
+	> Label = Assigned to node. Can be 0 or more
+		  No values are assigned to it
+	> 
+	> 
+
+//================Neo4J driver for java
+http://neo4j.com/developer/
+http://neo4j.com/docs/java-reference/current/
+http://www.anormcypher.org/
+
+//===========cypher remove all nodes with relationships
+	match n
+	with n
+	optional match n-[r]-()
+	delete r,n
+
+//================Load CSV
+		LOAD CSV FROM "file:///Airports.csv " AS row
+		CREATE (:Location {locName: row[0], locCode:row[1]});
+//================
+
+
+
+ match (l:Location), (f:Flight)
+> where (l.locCode=f.depLoc)
+> create (l)-[:connectedTo{time:f.time,duration:f.duration,fare:f.fare}]->(f)
+> ;
+//================
+match (l:Location), (f:Flight)
+> where (l.locCode=f.arrLoc)
+> create (l)<-[:connectedFrom{time:f.time,duration:f.duration,fare:f.fare}]-(f);
+//================
+match (f:Flight),(loc:Location)
+where (f.depLoc='FRA' or f.arrLoc='LHR' and f.date='20/11/2010')
+return loc;
+//================
+			match (f:Flight),(loc:Location)
+                        where (f.depLoc='FRA' and f.arrLoc='LHR' and f.date='20/11/2010')
+                        with distinct f.date as date, f.duration as duration, f.fare as fare, f.flightNum as name, f.arrLoc as arrLoc, f.depLoc as depLoc, f.time as time 
+                        return  date, duration, fare, name, arrLoc, depLoc, time
+                        order by fare, duration
+//=================
+MATCH (fra:Location { locCode:"FRA" }),(lhr:Location { locCode:"LHR" }), loc = shortestPath((fra)-[*..15]-(lhr))
+WHERE NONE(flight IN rels(loc) where type(flight)="20/11/2010") 
+RETURN loc;
+//===Where clause not works==
+MATCH (fra:Location { locCode:"FRA" }),(lhr:Location { locCode:"LHR" }), loc = allshortestPaths((fra)-[*]-(lhr))
+WHERE NONE(flight IN rels(loc) where type(flight)="20/11/2010") 
+RETURN loc;
+//=============
+start dep=node:Location(locCode="FRA")
+	arr=node:Location(locCode="LHR")
+match p=(dep)-[:connectedTo]->(arr)
+return p as shortestPath
+
+
+//===========================================================================================================
+//==Important=======Location to Location Connect
+match(from:Location),(to:Location),(f:Flight)
+where (from.locCode=f.depLoc and to.locCode=f.arrLoc)
+create (from)-[rel:FlyingTo{name:f.name,duration:f.duration,depLoc:f.depLoc,arrLoc:f.arrLoc,time:f.time,date:f.date,fare:f.fare}]->(to)
+
+//==Important======
+match(f:Flight)where(f.depLoc="FRA"and f.arrLoc="LHR") return f
+
+//==Important Find Flights
+MATCH p=(from:Location{locCode:"FRA"})-[r:FlyingTo*1..4{date:"20/11/2010"}]->(to:Location{locCode:"LHR"}) RETURN p
+MATCH p=(from:Location{locCode:"FRA"})-[r:FlyingTo*1{date:"20/11/2010"}]->(to:Location{locCode:"LHR"}) RETURN r
+
+//===Improvments to filter conn flights
+match (from:Location{locCode:"FRA"})-[r:FlyingTo*1..4{date:"20/11/2010"}]->(),()-[q:FlyingTo*1..4{date:"20/11/2010"}]->(to:Location{locCode:"LHR"})
+return q
+
+
+match p=(from:Location{locCode:"FRA"})-[r:Flight*1..4{date:"20/11/2010"}]->(),s=()-[q:Flight*1..4{date:"20/11/2010"}]->(to:Location{locCode:"LHR"})
+//where((r.time+(r.duration*100))>(q.time))
+return q
+//====Load csv
+LOAD CSV FROM "file:///Flights/AIR_FRANCE.csv " AS row
+match(from:Location),(to:Location)
+where (from.locCode=row[1] and to.locCode=row[2])
+create (from)-[rel:FlyingTo{name:row[0],duration:row[5],depLoc:row[1],arrLoc:row[2],time:row[4],date:row[3],fare:row[6]}]->(to)
+
+or
+LOAD CSV FROM "file:///Delete/LUFTHANSA_AIRWAYS.csv" AS row
+MATCH p=()-[r:FlyingTo{name:row[0]}]->() RETURN p
+
+//=Shortest path
+match p=(from:Location{locCode:"FRA"})-[f:Flight*1..2{date:"20/11/2010"}]->(to:Location{locCode:"LHR"})
+return p AS shortestPath,
+reduce(fare=0, r in relationships(p)| fare+r.fare) AS totatlfare
+order by totatlfare asc
+
+
+//===========filter conn Flights
+match p=(from:Location{locCode:"FRA"})-[rel1:Flight*2{date:"20/11/2010"}]->(), ss=()-[rel2:Flight*1..2{date:"20/11/2010"}]->(to:Location{locCode:"LHR"})
+//return filter(f in nodes(p) where f.depLoc="FRA" and f.arrLoc="LHR")
+with (relationships(p)) as t1
+return all(t2 in relationships(ss) where t1.arrLoc=t2.depLoc and (t1.time+(t1.duration*100))<t2.time)
+
+
+or 
+
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+unwind flights1 AS flight1
+unwind flights2 AS flight2  
+with (flight1.arrLoc=flight2.arrLoc and (flight1.time+round(toFloat(flight1.duration))) < flight2.time) as ff 
+return ff
+
+or
+
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+//unwind flights1 AS flight1
+//unwind flights2 AS flight2  
+//with (flight1.arrLoc=flight2.arrLoc and (flight1.time+round(toFloat(flight1.duration))) < flight2.time) as ff 
+with distinct filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2
+return fl2
+
+or
+
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+with distinct filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2
+unwind fl1 AS flight1
+unwind fl2 AS flight2  
+return flight2
+
+or
+
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+with distinct filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2
+unwind fl1 AS flight1
+with (toInt(flight1.time)+toFloat(flight1.duration)*100) as totalTime
+//unwind fl2 AS flight2  
+return totalTime
+
+or
+
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+with distinct filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2
+unwind fl1 AS flight1
+unwind fl2 AS flh2  
+with (toInt(flight1.time)+toFloat(flight1.duration)*100) < toInt(flh2.time)) as totalTime
+return 
+
+
+or
+
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+with distinct filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2
+unwind fl1 AS flight1
+//unwind fl2 AS flh2  
+with filter(flight2 in fl2 where (toInt(flight1.time)+toFloat(flight1.duration)*100) < toInt(flight2.time)) as b
+with filter()
+return b, flight1
+
+
+
+or
+
+
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+with distinct filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2
+unwind fl1 AS flight1
+//unwind fl2 AS flh2  
+//with flight1 as a
+return filter(flight2 in fl2 where (toInt(flight1.time)+toFloat(flight1.duration)*100) < toInt(flight2.time)) as b
+//return a,b
+
+
+
+
+or
+
+match (:Location{locCode:"FRA"})-[r1:FlyingTo{date:"20/11/2010"}]->(:Location), (:Location)-[r2:FlyingTo{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with collect(r1) AS flights1, collect(r2) AS flights2
+with distinct filter(n in flights1 where not n in flights2) as connFlights1, filter(m in flights2 where not m in flights1) as connFlights2
+return connFlights1, connFlights2
+
+or
+
+match f1=(:Location{locCode:"FRA"})-[r1:FlyingTo{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:FlyingTo{date:"20/11/2010"}]->(:Location{locCode:"LHR"})
+with distinct collect(r1) AS flights1, collect(r2) AS flights2
+with filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2
+unwind fl1 AS flight1
+with filter(flight2 in fl2 where (toFloat(flight1.duration)*100+toInt(flight1.time)) < toInt(flight2.time)  and flight1.arrLoc=flight2.depLoc) as connFlights2
+unwind connFlights2 as connFlight2
+return distinct connFlight2
+
+
+or
+
+
+								===========FINAL===========
+
+MATCH path=(from:Location{locCode:"FRA"})-[rel1:FlyingTo{date:"20/11/2010"}]->(conn:Location)-[rel2:FlyingTo{date:"20/11/2010"}]->(to:Location{locCode:"LHR"})
+WHERE (toInt(rel1.time)+toFloat(rel1.duration)*100) < toInt(rel2.time)
+RETURN path
+ORDER BY (toFloat(rel1.duration)+toFloat(rel2.duration)), (toFloat(rel2.fare)+toFloat(rel1.fare))
+
+
+//============stackoverflow
+I want all paths here from "FRA" to "LHR", but not direct paths all connecting paths. Here flights are relationships and locations are nodes. I will tell you how to filter it. Lets suppose as you can see path from FRA-CDG-LHR. there are two flights F1 from FRA to CDG and F2 from CDG to LHR. so departure time of F2 must be grater than arrival time of F1. Result must be list of both F! and F2. Properties of location are "locCode" i.e. FRA and "locName" i.e. FRANKFUIT. And properties of Flight are "flightName", "depLoc", "arrLoc", "depDate", "deptime", "duration", "fare". 
+my query till is, 
+match f1=(:Location{locCode:"FRA"})-[r1:Flight{date:"20/11/2010"}]->(:Location), f2=(:Location)-[r2:Flight{date:"20/11/2010"}]->(:Location{locCode:"LHR"}) 
+with collect(r1) AS flights1, collect(r2) AS flights2 
+with distinct filter(n in flights1 where not n in flights2) as fl1, filter(m in flights2 where not m in flights1) as fl2 
+unwind fl1 AS flight1 
+unwind fl2 AS flh2
+with (toInt(flight1.time)+toFloat(flight1.duration)*100) < toInt(flh2.time)) as totalTime 
+return
+
+[FRA-LHR traversal path][1]
+
+
+  [1]: http://i.stack.imgur.com/iRzRB.png
+
+//============
+
+
+LOAD CSV FROM "file:///Delete/LUFTHANSA_AIRWAYS.csv" AS row
+MATCH p=()-[r:FlyingTo{name:row[0]}]->() RETURN p
+
+
+
+
+//==========================
+

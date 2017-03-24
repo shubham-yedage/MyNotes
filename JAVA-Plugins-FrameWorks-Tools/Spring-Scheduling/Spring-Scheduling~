@@ -1,0 +1,101 @@
+Contents:
+
+
+	1. 
+		Java Class---> src/main/java/com/MyApp.java
+	import org.springframework.context.annotation.ComponentScan;
+	import org.springframework.context.annotation.Configuration;
+	import org.springframework.scheduling.annotation.EnableScheduling;
+	import org.springframework.scheduling.annotation.Scheduled;		
+
+	@EnableScheduling
+	public class MyApp{
+		@Scheduled(fixedRate/ cron/ initialDelay/ fixedDelay = )
+		public void run1(){
+			// Do Soomething
+		}
+
+		@Scheduled(fixedRate/ cron/ initialDelay/ fixedDelay = )
+		public void run2(){
+			// Do Soomething
+		}
+	}
+
+
+
+	2. 
+		app-config.xml
+
+		<beans xmlns="http://www.springframework.org/schema/beans"
+		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		    xmlns:task="http://www.springframework.org/schema/task"
+		    xsi:schemaLocation="http://www.springframework.org/schema/beans
+		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		    http://www.springframework.org/schema/task 
+		    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+		 
+		<task:scheduler id="taskScheduler" pool-size="10" />
+		<task:annotation-driven scheduler="taskScheduler" />
+		<bean id="myApp" class="com.MyApp" />
+		     
+		</beans>
+
+	
+	3. 
+		class DemoApp{
+			public static void main(String[] args) {
+				ApplicationContext context = SpringApplication.run(AppConfig.class);
+			}
+		}
+
+
+		OR
+
+	1. 
+		Java Class---> src/main/java/com/MyApp.java
+		
+
+	public class MyApp{
+
+		public void run1(){
+			// Do Soomething
+		}
+
+
+		public void run2(){
+			// Do Soomething
+		}
+	}
+
+
+
+	2. 
+		app-config.xml
+
+		<beans xmlns="http://www.springframework.org/schema/beans"
+		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		    xmlns:task="http://www.springframework.org/schema/task"
+		    xsi:schemaLocation="http://www.springframework.org/schema/beans
+		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		    http://www.springframework.org/schema/task 
+		    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+		     
+		    <bean id="myApp" class="com.MyApp" />
+
+			 <task:scheduler id="taskScheduler" pool-size="10"/>
+			     <task:annotation-driven scheduler="taskScheduler"/>     
+			     <bean id="bookApp" class="com.concretepage.BookApp"/>
+			     <task:scheduled-tasks scheduler="taskScheduler">
+			     	<task:scheduled ref="bookApp" method="cleanDustOne" fixed-rate="2000"/>
+			     	<task:scheduled ref="bookApp" method="cleanDustTwo" fixed-rate="3000"/>
+			     </task:scheduled-tasks>
+		</beans>
+
+	3. 
+
+		class DemoApp{
+			public static void main(String[] args) {
+				ApplicationContext context = SpringApplication.run(AppConfig.class);
+			}
+		}
+

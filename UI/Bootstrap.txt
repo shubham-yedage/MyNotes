@@ -1,0 +1,161 @@
+1. https://www.youtube.com/watch?v=c5xVxSFoyQw#t=114.257415
+
+---------------All below is under <div class="container-fluid" or "container"></div>---------------------
+2. Grid system 12 columns 
+	- classes
+		> xs extra small for phone
+		> sm small tablet
+		> md medium for desktop, laptop 
+		> lg large for i-macs
+
+3. <div class="container"></div> fixed size
+
+4. <div class="container-fluid"></div> takes size of screen
+
+5. combining columns 3 sets of 4 columns
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4" style="background-color:#00FF99">left</div>
+				<div class="col-md-4" style="background-color:#00FF99">middle</div>
+				<div class="col-md-4" style="background-color:#00FF99">right</div>
+			</div>
+		</div>
+
+6. highilighting
+	<p>some text here.</p>
+	<p>some <mark>text</mark> here.</p>
+
+7. text appearance 
+	<blockquote>
+		<p>some text here.</p>
+		<footer>name</footer>
+	</blockquote>
+
+8. List
+	<dl>
+		<dt>Indoors</dt>
+			<dd>- sleep</dd>
+			<dd>- watch netflix</dd>
+		<dt>Outdoors</dt>
+			<dd>- go inside home</dd>
+	</dl>
+
+9. Making image responsive : size changes with change in screen size
+	<img src="images/name.jpg" class="img-responsive">
+
+10. Image effects
+	<img src="images/name.jpg" class="img-rounded" width="250" height=250">
+	<img src="images/name.jpg" class="img-circle" width="250" height=250">
+
+11.Making videos responsive: video auto shrinks when screen size changed
+				only copy url of video
+	<div class="embed-responsive embed-responsive-16by9">
+		<iframe class="embed-responsive-item" src="http://youtube.com/embed/-ujuq7sT"></iframe>
+	</div>
+
+12. write multiple code lines:
+	<pre>write here.</pre>
+
+13. single code line
+	<p>write <code>code;</code> here</p>
+
+14. for keyboard input
+	<kbd>Ctrl+Alt+Del</kbd>
+
+15. Auto colors for text
+	<p class="text-mutad">not editable</p>
+	<p class="text-success">success response</p>
+	<p class="text-danger">warning</p>
+
+16. Auto colors for background
+	<p class="bg-success">green background</p>
+	<p class="bg-danger">red background</p>
+
+17. Table
+	- Simple table
+		<table class="table">
+			<thead>
+				<tr>
+					<th>header1</th>
+					<th>header2</th>
+				</tr>			
+			</thead>
+			<tbody>
+				<tr>
+					<td>data</td>
+					<td>data</td>
+				</tr>
+				<tr>
+					<td>data</td>
+					<td>data</td>
+				</tr>
+			</tbody>
+		</table>
+
+	- Condensed table
+		<table class="table table-condensed">
+					
+		</table>
+
+
+	- Stripped table
+		<table class="table table-stripped">
+				
+		</table>
+---------------All Above is under <div class="container-fluid" or "container"></div>---------------------
+---------------All below is under <nav></nav>---------------------
+18. Navigational Bar
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!--Logo Name-->
+			<div class="nav-header">
+				<a href="#" class="navbar-brand">Navigational Bar</a>
+			</div>
+			
+			<!--Menu-->
+			<div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li> <!--active gives default menu dark background-->
+					<li><a href="#">Menu</a></li>
+					<li><a href="#">Exit</a></li>
+
+			<!--dropdown menu-->
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" datatoggle="dropdown">My Profil <span class="caret"></span></a> <!--caret gives special character lower mark-->
+						<ul class="dropdown-menu">
+					<li><a href="#">Friends</a></li>
+					<li><a href="#">Photos</a></li>
+					<li><a href="#">Settings</a></li>
+						</ul>
+					</li>
+
+
+				</ul>
+			</div>		
+		</div>
+	</nav>
+		
+	- change styling of navigation bar
+		<nav class="navbar navbar-inverse">
+		</nav>
+	- adding button
+		https://www.youtube.com/watch?v=CPvZzJlUz20#t=289.779479
+
+19. Wells and alert boxes, Fade in, closeing
+		https://www.youtube.com/watch?v=El7tg0uqJL0
+
+20. Navigation sidebar
+		https://www.youtube.com/watch?v=AOuPGmekLRM#t=58.461293
+		https://www.youtube.com/watch?v=tuuLDy1dev0#t=4.13932
+
+21. Layouts
+		https://www.youtube.com/watch?v=9BrFkSywFAs
+
+22. Push and Pull cloumns according to screen size to left or right
+			- adding button
+		https://www.youtube.com/watch?v=CPvZzJlUz20#t=289.779479
+
+19. Wells and alert boxes, Fade in, closeing
+		https://www.youtube.com/watch?v=El7tg0uqJL0
+22. Login form
+		https://www.youtube.com/watch?v=lNJXoYcnQVk

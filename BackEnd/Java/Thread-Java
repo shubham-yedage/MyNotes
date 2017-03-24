@@ -1,0 +1,52 @@
+
+	> Methods 
+		1. static void dumpStack()
+
+	> Read Thradsfrom here
+		http://www.vogella.com/tutorials/JavaConcurrency/article.html
+
+	> Best way to write: Usefull
+
+		final MyClass myClass = new MyClass( <Constructor Parameters> );
+
+		try {
+			Callable<Boolean> task = new Callable<Boolean>() {
+
+				@Override
+				public Boolean call() throws Exception {
+					return myClass.doMyTask();
+				}
+			};
+
+			List<Callable<Boolean>> tasks = Collections.nCopies(threadCount,
+					task);
+			ExecutorService executorService = Executors
+					.newFixedThreadPool(threadCount);
+			List<Future<Boolean>> futures = executorService.invokeAll(tasks);
+
+			Boolean exitMark = false;
+			do {
+				for (Future<Boolean> future : futures) {
+					if (!future.isDone()) {
+						exitMark = true;
+						Assert.fail("Test failed!");
+					}
+				}
+			} while (!exitMark);
+
+			Assert.assertTrue(true);
+
+		} catch (InterruptedException e) {
+			LOGGER.info("Tests faild because of " + e.getMessage() + "!");
+		}
+
+		 public class MyClass {
+			public MyClass( <Constructor Parameters> ) {
+				/* initialization */
+			}
+
+			public boolean doMyTask () {
+				/* Do something */
+				return <true / false> ;
+			}
+		}

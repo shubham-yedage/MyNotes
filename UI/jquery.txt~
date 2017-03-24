@@ -1,0 +1,17 @@
+	> map 
+		var map = new Object();
+		map[key] = value;
+
+	> Datepicker
+		http://www.peregrinesalon.com/blog/2012/06/jquery-ui-is-awesome-datepicker-functionality-explained-easily/
+		
+		http://keith-wood.name/uiDatepickerValidation.html
+
+		http://api.jqueryui.com/datepicker/
+
+	> Date range picker
+		< Best Resource> https://www.npmjs.com/package/daterangepicker
+		https://longbill.github.io/jquery-date-range-picker/
+
+	> Moment js
+		https://www.sitepoint.com/managing-dates-times-using-moment-js/

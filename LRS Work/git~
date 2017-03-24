@@ -1,0 +1,28 @@
+	> Pull request
+		1. https://github.com/sunilsavalia/lrsadmin
+		2. Go to branches. Select branch.
+		3. New pull request
+
+			base fork: LRSEngg../lrsadmin  
+			base: master  
+			head fork:sunilsavalia/lrsadmin   
+			compare:current_branch
+ 
+		4. Dont write.
+		5. Just create.
+
+	> Git checkout --> To remove change
+
+	> git branch -a
+
+	> git checkout -b <branch_Name>
+
+	> git diff --> to check changes
+
+	> git statsh ---> to store changes
+	> git stash pop ---> retrive changes
+
+
+	> If cant see pull request
+		1. Go to branch
+		2. 

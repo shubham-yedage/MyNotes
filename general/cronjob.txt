@@ -1,0 +1,12 @@
+Each line has five time-and-date fields, followed by a command, followed by a newline character ('\n'). The fields are separated by spaces. The five time-and-date fields cannot contain spaces. The five time-and-date fields are as follows: 
+		1. minute (0-59), 
+		2. hour (0-23, 0 = midnight), 
+		3. day (1-31), 
+		4. month (1-12), 
+		5. weekday (0-6, 0 = Sunday).
+
+e.g.
+01 04 1 1 1 /usr/bin/somedirectory/somecommand
+
+
+The above example will run /usr/bin/somedirectory/somecommand at 4:01am on January 1st plus every Monday in January.

@@ -1,0 +1,7 @@
+
+
+
+bower init --save
+bower install jquery --save
+bower install bootstrap --save
+bower install angular --save

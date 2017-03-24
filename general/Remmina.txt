@@ -1,0 +1,4 @@
+Reminna
+		IDTP303 
+		domain : synerzipune.local
+		login through main account.

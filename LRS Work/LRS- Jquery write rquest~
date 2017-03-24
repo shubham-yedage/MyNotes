@@ -1,0 +1,11 @@
+> There are already written written request, you only need to send strings.
+
+	LRS.Server.getAsDeferred({
+            	url: LRS.Config.apiUrl.v3 + 'spaces/' + spaceGuid + '/device?deviceType=' + deviceType,
+                unwrapped: true,
+                type: 'GET'
+            }).done(function (lrsResponse) {
+            	self.getDetailObjectDone(lrsResponse);
+            }).fail(function () {
+                //TODO: Add error message, to display error while getting device.
+         });

@@ -1,0 +1,9 @@
+
+Go to this location:
+
+	cd LRS_Codebase/Main/lrsadmin/lrs-admin-web/src/
+
+
+Command:
+	sudo ln -s /home/synerzip/LRS_Codebase/Main/lrsadmin/lrs-admin/target/lrs-admin-3.0.4-SNAPSHOT/WEB-INF WEB-INF
+/home/synerzip/LRS_Codebase/Main/lrsadmin/lrs-admin/target/lrs-admin-3.0.4-SNAPSHOT

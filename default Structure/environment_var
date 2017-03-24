@@ -1,0 +1,6 @@
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games"
+JAVA_HOME="/usr/local/java/jdk1.7.0_80"
+OPENSHIFT_DATA_DIR="/home/synerzip/LRS_Codebase"
+JPDA_ADDRESS=8000
+NEO4J_HOME="/home/synerzip/software/neo4j-community-3.0.2/bin"
+M2_HOME="/usr/share/maven3/bin"

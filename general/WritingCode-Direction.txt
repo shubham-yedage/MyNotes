@@ -1,0 +1,23 @@
+writing code:
+1. Client-server architecture
+2. No logic in class containing client related data
+3. logic remains at server side only
+4. no calls must be made from class related to server to the class related to client
+5. only client to server calls
+6. try to make variables scope limited to block only. initialise and use
+7. use raw data types for declarations
+8. no warnings and unnecessary imports 
+9. try to use class for objects having attributes. use getter, setter, hash code, equals, compareto and compare methods as per necessary
+
+----junit----
+
+10.one class one test class
+11.public method with some concrete logic can have one test method
+12.only apply it to that methods attributes
+
+
+------IntelliJ-------
+13."jar containing play.db.ebean.Model">> search on google>"mvnrepository.com" >> "com.typesafe.play">>go for 2.11>>copy and paste it tobuild.sbt>>libraryDependencies += <"com.typesafe.play" % "play-java-ebean_2.11" % "2.4.0-M2">
+14.https://www.playframework.com/documentation/2.5.x/Anatomy
+15. ctrl+shift+r type the class name look for the library in mvnrepository
+

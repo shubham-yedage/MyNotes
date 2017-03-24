@@ -1,0 +1,34 @@
+Concept of token...
+
+
+Any api tha needs authentication like username and password can be called using "accessToken"
+Just add Header
+Authorization:Bearer<accessToken>
+
+//=========Get AccessToken
+
+	URL: https://devconnect.lrsus.com/rest/v3/oauth/token
+	Method: POST
+	Pass Refersh Token instead of access token
+	apiKey.id = 3MOMUY5ZQ9FE7N00NU4Q43C9A
+	apiKey.secret = anCDOk0/vXpra3XzJIPWYYZILx99JHNBlJ8ZV7QcIa0
+	main url => http://localhost:8080/rest/v3/oauth/token?client_id=3MOMUY5ZQ9FE7N00NU4Q43C9A&client_secret=anCDOk0/vXpra3XzJIPWYYZILx99JHNBlJ8ZV7QcIa0&grant_type=client_credentials
+get Access token
+
+
+e.g. Access API that need Username and PAssword with only Access Token
+
+	Url : http://localhost:8080/web/v3/accounts/6955a74b-0140-4cfb-9c1a-82ff6f0e0e23/plan_products
+	Headers:
+	Authorization :Bearer<Access token e.g. 		
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzTU9NVVk1WlE5RkU3TjAwTlU0UTQzQzlBIiwiaXNzIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvNXN1bXRnaHdwNlZMNnFHU21Dd1QyYyIsImV4cCI6MTQ3MTYwMTQ5OCwiaWF0IjoxNDcxNjAwMjk4fQ.kPrDHbeEv3ua1dKAruJZWOFLvfRghaN8AExlTC7sNWk
+>
+
+
+Something is fishy when you provide details as above it dont works.
+
+So there is one hack for it,
+		
+		1. In Postman Login using username and credentials (Basic Auth) 
+		2. Then try it will work above..
+
