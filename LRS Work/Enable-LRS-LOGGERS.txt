@@ -1,0 +1,7 @@
+	> Robomnogo 
+		collection: reports
+		db: applicationSettings
+		Set enable collector logger to true.
+
+	> hit api
+		http://localhost:8080/web/v3/activity_log/settings/load

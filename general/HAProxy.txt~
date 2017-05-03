@@ -1,0 +1,20 @@
+> Refer: https://www.haproxy.org/download/1.4/doc/configuration.txt
+	 https://www.vultr.com/docs/installing-and-configuring-haproxy-on-ubuntu-14-04
+
+> Setup HAProxy On ubuntu for tomcat: 1> http://krams915.blogspot.in/2011/10/tomcat-clustering-and-load-balancing_9324.html
+				      2> https://sysadminci.wordpress.com/2015/05/09/haproxy-basic-configuration-on-ubuntu-14-04/	      3> https://tecadmin.net/how-to-configure-haproxy-statics/#
+				      
+
+> Tar file extract
+	cd haproxy.<version>
+	sudo make install
+
+
+
+> make TARGET=linux2628
+
+> To see status of servers http://localhost:8080/admin?stats
+
+> Single mchine as two different servers.
+  > Two apache-tomcat server instances with different ports (i.e conf=>server.xml=>change ports)
+  > Configure haproxy

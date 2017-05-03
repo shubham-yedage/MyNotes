@@ -25,4 +25,7 @@
 
 	> If cant see pull request
 		1. Go to branch
-		2. 
+		2. New pull request. Bindhast....
+
+	> Switch to previous branch
+		git checkout -

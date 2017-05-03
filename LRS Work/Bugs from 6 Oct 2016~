@@ -285,6 +285,23 @@ file.deleteOnExit();
 		2. exporting.js
 		> Prod dates 03/04/17 - 03/10/17		
 		> location guid: ba4ee142-dbf4-4e77-98fa-5662626a11b2
-		> account guid: 6af270aa-f2fd-419f-8f0d-88672b44b21b
+		> account guid: 6af270aa-f2fd-419f-8f0d-88672b44b21b  old: 0ca09506-713d-4df7-bba7-1a6cb17565ce
 
+	41. https://jira.pager.net:8443/browse/WEB-7714
+		> Beacon conf page
 
+	42. https://jira.pager.net:8443/browse/WEB-7773
+		> move 4 years old data to history collection
+		> event 1771017
+		  historicalEvent 2818
+		> ref : http://mongodb.github.io/mongo-java-driver/2.13/getting-started/quick-tour/
+
+	43. https://jira.pager.net:8443/browse/WEB-7777
+		1. Read from excel file and update sql db data.
+			> remove duplicate location  where device id is not activated
+		2. Add fields to to space db (check in)
+		3. Update new fields values from excel file
+		4. Start working on backend and ui
+
+	44. https://jira.pager.net:8443/browse/WEB-7666
+		1. api for ios.

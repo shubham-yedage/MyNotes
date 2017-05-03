@@ -175,3 +175,10 @@ https://www.youtube.com/watch?v=6LO40oH5abg&list=PLBgMUB7xGcO31B2gBmy1igpZn6LK78
 //================Spring Annotation
 http://www.techferry.com/articles/hibernate-jpa-annotations.html
 http://www.concretepage.com/java/jpa/jpa-entitylisteners-example-with-callbacks-prepersist-postpersist-postload-preupdate-postupdate-preremove-postremove
+
+//===============Multipart file upload
+	> https://spring.io/guides/gs/uploading-files/
+	> http://stackoverflow.com/questions/27050018/spring-file-upload-getting-expected-multiparthttpservletrequest-is-a-multipar
+	> http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/multipart/MultipartResolver.html
+	> http://www.journaldev.com/2573/spring-mvc-file-upload-example-single-multiple-files
+	> Multipart File request with json body.

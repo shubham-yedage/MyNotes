@@ -16,4 +16,5 @@ shubham5252
 	Queries:
 		1. Get Count of records or number of records
 			select count(* or column name) ==> Total data count
-		2. Get data of latest date
+		2. Get data of latest date:
+			

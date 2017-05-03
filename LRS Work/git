@@ -26,3 +26,12 @@
 	> If cant see pull request
 		1. Go to branch
 		2. New pull request. Bindhast....
+
+	> Switch to previous branch
+		git checkout -
+
+	> git init
+git add *
+git commit -m "first commit"
+git remote add origin https://github.com/shubhamyedage/my_java_codes.git
+git push -u origin master
