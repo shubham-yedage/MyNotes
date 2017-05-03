@@ -1,7 +1,0 @@
-
-		> To find any doucment
-			db.getCollection('event').find({"document.dateParts.date" : 20160801})
-
-		> mongo db----> to see todays dump data fire this query
-			events-historical--->Collections(3)--->event
-			db.getCollection('event').find({}).sort({"receivedOn":-1});
