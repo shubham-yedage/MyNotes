@@ -1,0 +1,183 @@
+value investing fundamentals:
+> Price to earnings (P/E) ratio
+	Market price of share / Earnings per share
+	trailing P/E: last 4 quaters EPS gives P/E
+	forward P/E: EPS forecasting for next 4 quarters 
+
+> Earnings per share (EPS)
+	          Net income - preffered dividends
+	-------------------------------------------------
+			  Outstanding Shares
+
+> PEG (Price to Earnings to Growth)
+	=< 1
+	Used to determine stock is cheap or expensive
+	>1 Stock is expensive
+	=< Stock price is reasonable or cheap 
+	Dont provide information about dividends paid
+	P/E ratio
+      -----------------------------
+	Extimated EPS growth rate
+
+> Retained earnings
+	% OF NET profit that company invests for expansion
+
+> Dividend
+	Amount from profit paid to share holders
+
+> Dividend yield
+	Financial ratio: % of dividend paid to share price
+	Company is financialy healthy then it pays stable dividend to share holders.
+
+> Price to Earnings to Growth and Yield (Dividend Yield) (PEGY) 
+		P/E ratio
+	------------------------
+	EPS growth rate + Yield
+	
+	=< 1
+	High dividend yields should be ignored.
+
+High retained earnings
+			    } High growth. Share price will go up.
+Low or no dividends yields
+
+Low retained earnings
+			} Low groth. More debt for expansion.
+High dividends yield
+
+> Stock Intrensic value
+Stock undervalued: intrensic value > current share price (Cheap to buy)
+Stock overvalued: intrensic value < current share price (Expensive to buy)
+
+> Market Capitalization
+	Market cap = current share price * outstanding shares
+	
+
+> Margin of safety(%)
+		Current share price
+	1 -  ------------------------
+		Intrensic Value
+
+	at least 25%
+	e.g.: While investing in stock
+	current share price: 18
+	margin of safety: 40%
+	intrensic value: 35
+	
+	1st Observation:
+	intrensic value > current share price => (Undervalued) Good to buy
+	
+	2nd Observation:
+	Margin of safety factor = 1 - 0.40 = 0.60
+	Adjusted value = intrensic value * Margin of safety factor
+	
+	Adjusted value > current share price : Good to buy
+	Adjusted value = current share price : hold
+	Adjusted value < current share price : sell
+
+	
+
+> Value investment strategies: To pick high potential stocks
+	Value investment Process:
+		1. Fundamental analysis: Helps to find strong companies
+
+		2. Technical analysis: Gets you in market at right time.
+
+	>> Stock screening process:
+		criterias to eleminate less liquid companies and not fundamentally strong
+		Find companies with good performance over last 3 or max years.
+		Finviz.com
+		Zacks.com
+
+		criteria
+			1. Mid or higher cap
+			2. Positive dividends
+			3. Average share volume (over 500k)
+			4. Positive EPS growth for last 3-5 years
+			5. Postive EPS growth for this year
+			6. Positive EPS growth for next 3-5 years
+			7. Postive sales growth for last 3-5 yers 
+			8. Positive return on equity (>= 10%)
+			9. Positve return on Investment
+			10. Positve Gross margin
+			11. Positve Operating margin
+			12. Positive profit margin
+			13. Positive inside transaction
+			14. Market sector (Rotation strategies)
+				e.g. Market is goinmg up look for week stocks.
+				Market grtting down look for defensive stocks
+
+	>> Set criteria
+		Financial performance (Income and cash flow statement)
+		
+		1. Profitability Statement
+			Analysis income statement and cash-flow-statement
+			Analysis revenue, net income, eps, return on equity, cash flow from operation
+			
+		2. Financial health statement
+			Debt settlement capacity
+			3 * free cash flow = long-term debts
+			current ration > 1.5
+
+	>> Stock valuation
+		use PEGY ratio to determine overvalued and undervalued stocks
+		undervalued stock are open to buy
+		overvalued stock are added in watch list
+		Intrensic value = Real Value
+			If Market value (Actual selling price) = intrensic value (Fair price)
+			If Market value < intrensic value (undervalued)
+			If market value > intrensic value (overvalued)
+		Calculate intrensic value
+			1. Find Financial figures
+			2. Find discount rate (WACC Weighted average cost of capital)
+				Used to predict present value of stock
+				capital from equity investors and debts (banks or financial institutions)
+				
+				^MV Equity  * RE   +   ^MV of Debt *  RD
+			      --------------------------------------
+				     (^MV Equity + ^MV of Debt)
+
+			MV = Market Value
+			RE = Cost of equity = ^Risk Free Rate + ^Stock Beta * ^Market Risk Premium    (Calculated using Capital Asset Pricing Model (CAPM))
+			RD = Cost of debt  = ^Intrest rate * ( 1 - Tax Rate)
+
+			3. Find Discounted free cash flow (Project for next 10 years)
+				
+
+			4. Present value 10 year free cash flow.
+			5. Find intrensic value
+
+							  Present Value + Terminal value + Cash -Debt
+			   intrensic value per share =  ----------------------------------------------
+						              ^Total outstanding shares
+
+			   Cash = Cash and Cash equivalent
+			   Debt = Total liabilites
+			   ^Current share price 
+			   ^shares outstanding
+			   ^free cash flow
+			   ^long-term growth rate
+			   Discount Rate (WACC)
+			   
+			6. Compare intrensic value with market value
+
+	===============Use Intrensic Value Calculator Tool========================
+			
+
+	>> Insiders activity
+		Check activites going with companies stock holders from insider for double check.
+		gurufocus.com
+
+	>> Technical
+	Use trading technic to get in market
+
+
+> Return on equity (ROE)
+
+
+> Margin of safety (MOS)
+	Intrensic value per share * MOS factor
+
+
+> Buy high sell higher
+	Use Simple Moving Averages 
