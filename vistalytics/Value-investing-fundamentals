@@ -181,3 +181,12 @@ Stock overvalued: intrensic value < current share price (Expensive to buy)
 
 > Buy high sell higher
 	Use Simple Moving Averages 
+
+> Rolling mean / Moving Averages
+	Unweighted mean of last n values
+
+> Weighted Moving Average
+	Gives priority to recent prices than on older prices
+	WMA = ( Price * n + Price(1) * n-1 + ... Price( n-1 ) * 1) / ( n * ( n + 1 ) / 2 )
+
+	Where: n = time period

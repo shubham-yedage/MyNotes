@@ -1,0 +1,6 @@
+
+Generate ssh key : ssh-keygen -t rsa -C "shubham@ultp497" -b 4096
+
+username: shubham@ultp497
+
+Get ssh key : cat ~/.ssh/id_rsa.pub 

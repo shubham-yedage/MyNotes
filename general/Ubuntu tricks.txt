@@ -1,1 +1,4 @@
-	
+> Refer to get ubuntu fail to download ppa.
+	https://askubuntu.com/questions/91815/how-to-install-software-or-upgrade-from-an-old-unsupported-release#237118	
+	https://askubuntu.com/questions/125111/failed-to-download-repository-information-due-to-missing-cdrom
+	https://askubuntu.com/questions/776721/problem-with-sudo-apt-get-update-the-repository-cdrom-does-not-have-a-releas/776724

@@ -6,3 +6,107 @@
 	> curl -fsSL https://get.docker.com/ | sh
 	> https://docs.docker.com/engine/getstarted/linux_install_help/
 	> https://docs.docker.com/engine/getstarted/
+
+> Important:
+
+> Install from 
+
+ https://docs.docker.com/engine/installation/linux/ubuntu/#install-using-the-repository
+# sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+# sudo apt-key fingerprint 0EBFCD88
+
+# sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+# sudo apt-get update
+
+# sudo apt-get install docker-ce
+
+# apt-cache madison docker-ce
+
+# sudo docker run hello-world
+
+
+> Share images, automate workflows, and more with a free Docker ID:
+ https://cloud.docker.com/
+
+> For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
+
+ubuntu1 = container name
+ubuntu = image name
+tag = xenial
+
+> docker create --name=ubuntu1 ubuntu:xenial
+
+> docker ps =  current running container
+
+> docker ps -a = past running container
+
+> docker rm <ID>
+
+> Example command to get current running container
+	docker run -t --name=ubuntu2 ubuntu /bin/bash
+
+> Process running
+	ps -ef | grep docker
+
+> docker start
+docker stop
+
+
+> Without stopping 
+docker run -it --name=ubuntu3 ubuntu /bin/bash
+ctrl + p + q
+
+> docker attach ubuntu3
+
+> usage
+	man docker
+	man docker-run
+
+> Creating deamons
+	sudo gedit /etc/docker/daemon.json
+
+ 	{
+	"dns": ["172.31.70.13", "172.31.70.12"]
+}
+
+> Get contents from containers file and commit
+
+	docker exec alpine1 cat /datefile
+
+	docker commit -m "Created datefile" -a "Shubham" alpine1 alpine1_datefile
+new image = alpine1_datefile
+
+> Logs of container
+	docker logs alpine1
+
+> All ids of container
+docker ps -a -q
+
+> docker history image_id
+
+> Inspect container
+	docker inspect nginx1
+
+Default port
+
+
+Change port
+docker run -d --name=nginx3 -p 5000:80 nginx
+
+
+MAnage by daemon
+docker run -d --name=nginx4 -P nginx
+
+> Referrence
+	docs.docker.com
+
+> Bridge network
+	bridge-utils
+
+> Shows all network drivers:
+docker network ls

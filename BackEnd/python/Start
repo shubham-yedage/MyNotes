@@ -1,0 +1,90 @@
+Sources:
+> Python course
+	https://linuxacademy.com/cp/modules/view/id/79
+	amit.patel@synerzip.com/Amit@123
+
+> Python interpreter and libs
+	 https://www.python.org/
+
+> Coding Standards
+	https://www.python.org/dev/peps/pep-0008/#function-names
+
+> Tutorials
+	https://docs.python.org/3/tutorial/
+
+> Editior
+	Pycharm
+	https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=linux&code=PCC
+
+> Install Panda
+	http://pandas.pydata.org/pandas-docs/stable/install.html
+	Needs Anaconda
+
+> Install Anaconda
+	https://docs.continuum.io/anaconda/install-linux		
+
+> Pandas
+	https://www.analyticsvidhya.com/blog/2016/01/12-pandas-techniques-python-data-manipulation/
+
+	>> Clustering, Forecasting, Predicting Errors.
+		https://www.dataquest.io/blog/machine-learning-python/
+	>> Query Columns
+		https://chrisalbon.com/python/pandas_indexing_selecting.html
+
+> ARIMA Model
+	http://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
+	http://machinelearningmastery.com/autoregression-models-time-series-forecasting-python/
+	
+	Mathematical model equations:	
+	http://support.minitab.com/en-us/minitab-express/1/help-and-how-to/modeling-statistics/time-series/how-to/trend-analysis/interpret-the-results/all-statistics-and-graphs/
+
+> Forecasting
+https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/
+
+> Moving Avg, Weighted Moving Avg, Exponential Avg
+	Simple Moving Avg
+	https://www.portent.com/blog/analytics/rolling-averages-math-moron.htm
+
+	Weighted moving avg
+	http://www.investopedia.com/ask/answers/071414/whats-difference-between-moving-average-and-weighted-moving-average.asp
+
+	Comparative study (Simple, Weighted, Exponential)
+	https://www.tradestation.com/education/labs/analysis-concepts/a-comparative-study-of-moving-averages
+	https://www.thebalance.com/simple-exponential-and-weighted-moving-averages-1031196
+
+
+
+> Get exponential values from function
+	https://math.stackexchange.com/questions/475803/how-can-i-find-which-function-corresponds-to-a-set-of-data-points
+
+> Simple and Exponential Moving Avg
+	http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
+
+> Trend line
+	https://www.gurufocus.com/financials/AAPL
+
+> Polyfit works:
+	https://developer.ibm.com/answers/questions/282350/how-does-numpy-polyfit-work.html
+
+
+> Slope to function
+	http://mymathforum.com/algebra/12022-find-slope-segment-exponential-equation.html
+
+> Attach requirements.txt with project
+	Add all versions of lib used.
+	e.g.: "pandas==0.20.1
+		numpy==.052"
+pip install -r requirements.txt 
+
+
+> reportlab
+	https://www.blog.pythonlibrary.org/2010/03/08/a-simple-step-by-step-reportlab-tutorial/
+	https://www.blog.pythonlibrary.org/2010/09/21/reportlab-tables-creating-tables-in-pdfs-with-python/
+
+===============================================================================================================================
+Go through,
+1. http://www.investopedia.com/university/movingaverage/movingaverages2.asp
+2. https://stackoverflow.com/questions/10048571/python-finding-a-trend-in-a-set-of-numbers
+3. 
+
+
