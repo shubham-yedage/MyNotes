@@ -1,0 +1,56 @@
+# Setting up python environments in ubuntu and windows 10
+
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+
+sudo apt-get install python-tk
+
+Virtual Env:
+source ~/test/bin/activate
+
+
+
+Windows 10
+Install python2.7
+
+pip install -r requirement.txt
+
+
+python -m /app/generate_report.py
+
+Run python code from __main__.py
+https://stackoverflow.com/questions/4042905/what-is-main-py
+
+# Python inheritance.
+
+# Python Coding styles
+
+https://www.python.org/dev/peps/pep-0008/
+
+> Python virtual environment
+
+	Create Virtual Environment:
+		virtualenv <Name>
+	
+	Activate environment
+		source /<test>/bin/activate
+	
+	Deactivate:
+		deactivate
+
+	To run module:
+		Travel to repository and run "python <repository_name>" or "python <repository_name/module_nm.py>"
+
+> Logging
+	https://docs.python.org/3.1/library/logging.html
+
+> Python test case
+	https://docs.python.org/2/library/unittest.html
+
+> Python running test case
+	https://stackoverflow.com/questions/1896918/running-unittest-with-typical-test-directory-structure/44814211#44814211
+
+> Datetime formats
+	http://strftime.org/
+
+> Report lab
+	http://nullege.com/codes/search/reportlab.platypus.flowables.DocAssign

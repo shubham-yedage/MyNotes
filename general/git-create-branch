@@ -1,0 +1,52 @@
+Crate branch in master branch
+Fork master branch
+clone fork
+	git remote -v
+	git fetch --all
+	git remote add upstream <master-branch-link>
+	git fetch --all
+	git checkout -b <branch-name> upstream/<branch-1>
+	git push origin <branch-name>
+
+
+Three types of branch:
+1. master
+2. developer
+3. feature
+
+To add master as origin
+	git remote add origin <ssh link to master> 
+	Its  ssh link <git@gitlab.com:vistalytics/report-analysis.git>.
+
+Create feature (git checkout -b <feature-a>)
+	On complete review and merge to developer (delete feature branch git branch -d <feature-1>)
+		After week merge to master	
+
+Clone repository
+git clone git@gitlab.com:vistalytics/report-analysis.git
+
+Switch to develop branch. It has latest code.
+git checkout develop
+
+Create your own branch from develop branch to add, fix or update feature from develop branch.
+git checkout -b <add/fix/update-branch-name> develop
+Now it is latest working branch.
+
+Merge changes to develop branch at the end of feature complition.
+
+Always pull code from develop branch first.
+
+
+1.Clone repository
+git clone git@gitlab.com:vistalytics/report-analysis.git
+
+2. Create your own feature branch from branch "develop" to add, fix or update feature from develop branch.
+git checkout -b <add/fix/update-branch-name> develop
+e.g. update-generate-report, update-free-cash-flow-template
+
+Now it is latest working feature branch. Riha you can commit your code on this.
+
+3. After completing feature merge changes with on "develop" branch and generate a pull request so we can review. I will give you a demo on merging if needed.
+
+Always pull code from "develop" branch so you will have latest code. We can merge code from develop branch to master once it tested so "master" branch will always have last working code.
+
