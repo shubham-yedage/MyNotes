@@ -1,2 +1,7 @@
 >> Python flask web app
 	http://flask.pocoo.org/docs/0.10/tutorial/views/#add-new-entry
+
+>> Python db connecting
+	https://www.blendo.co/blog/access-your-data-in-amazon-redshift-and-postgresql-with-python-and-r/
+	https://pypi.python.org/pypi/sqlalchemy-redshift
+	http://docs.sqlalchemy.org/en/latest/faq/connections.html

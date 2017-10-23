@@ -1,0 +1,2 @@
+> To get serial version uid
+	serialver -classpath . <Class Name>
