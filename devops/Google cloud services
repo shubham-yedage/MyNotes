@@ -1,0 +1,137 @@
+Deploy Python app on Google App Engine:
+
+
+1. Setup Google Cloud SDK
+
+	export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+
+	echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+	curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+	sudo apt-get update && sudo apt-get install google-cloud-sdk
+
+	
+
+2. Install Python "gcloud" component:
+
+	gcloud components install app-engine-python  
+	or	
+	sudo apt-get install google-cloud-sdk-app-engine-python
+
+3. Google API client  Lib
+
+	pip install --upgrade google-api-python-client
+
+4. Flask Framework
+	Add code
+
+5. Deploy with app engine
+	>> Needs app.yaml as deploy script
+	Contains following lines,
+		runtime: python27
+		api_version: 1
+		threadsafe: true
+
+		handlers:
+		- url: /.*
+		  script: main.app
+	
+	>> Needs appengine_config.py to let app engine know where the 3rd party libs are present.
+
+		from google.appengine.ext import vendor
+		
+		vendor.add("lib")
+		
+6. Deployment commands
+	>> Deploy project locally:
+		dev_appserver.py app.yaml # Deploys app locally
+	
+
+	>> Deploy on app engine:
+		gcloud init # Enables google cloud engine on terminal
+		gcloud app deploy # deploys app on app engine
+		gcloud app browse # Run url in browser
+
+7. Authenticate for google signed users.
+
+	>> Users API
+		Detect whether the current user is signed in.
+		Redirect the user to the appropriate sign-in page to sign in.
+		Request the user create a new Google account if they don't have one already.
+	
+
+App Engine Details:
+
+https://cloud.google.com/appengine/docs/standard/python/quickstart?authuser=1
+
+*Scroll down to end.
+
+
+
+>> Ran into a problem where cannot see modules under "google.appengine" do below stps in terminal:
+import google
+
+gae_dir = google.__path__.append('/path/to/appengine_sdk//google_appengine/google')
+sys.path.insert(0, gae_dir) # might not be necessary
+
+import google.appengine # now it's on your import path`
+
+
+
+========================================================================
+
+1. Upload training job to ML Engine
+
+https://cloud.google.com/ml-engine/docs/training-jobs
+https://www.youtube.com/watch?v=EIRD3HAp-QQ
+
+
+https://cloud.google.com/ml-engine/docs/getting-started-training-prediction
+
+
+=======================================================================
+
+
+Refer:
+	>> https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource
+
+Create IAM user / service account
+	gcloud iam service-accounts create service-account-1 --display-name "Service Account Sample App Testing 186113"
+
+
+List service account
+	gcloud iam service-accounts listD
+
+assign ownership
+	gcloud projects add-iam-policy-binding sample-app-testing-186113 --member serviceAccount:sample-app-testing-186113@appspot.gserviceaccount.com --role roles/editor
+
+Get policy
+ gcloud iam service-accounts get-iam-policy sample-app-testing-186113@appspot.gserviceaccount.com --format json > policy.json
+
+Edit json
+
+Change ploicy
+gcloud iam service-accounts set-iam-policy sample-app-testing-186113@appspot.gserviceaccount.com policy.json
+
+
+
+
+==============================================================================
+refer
+https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#changeserviceaccountandscopes
+
+Changing the service account and access scopes for an instance
+	gcloud compute instances set-service-account app-text-summary --service-account sample-app-testing-186113@appspot.gserviceaccount.com
+
+
+================================================================================
+
+Connect to instance via terminal
+gcloud compute ssh app-text-summary
+
+
+===================================================================================
+
+>> Google cloud ap samples
+http://learntogoogleit.com/

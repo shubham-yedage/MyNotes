@@ -15,6 +15,9 @@ Install python2.7
 pip install -r requirement.txt
 pip freeze > requirements.txt
 
+to avoid pkg-resources
+pip freeze | grep -v "pkg-resources" > requirements.txt
+
 
 python -m /app/generate_report.py
 
