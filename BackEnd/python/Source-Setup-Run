@@ -1,0 +1,188 @@
+>> Refer: 
+	1. https://stackoverflow.com/questions/41489439/pip3-installs-inside-virtual-environment-with-python3-6-failing-due-to-ssl-modul?answertab=votes#tab-top
+	2. https://stackoverflow.com/questions/30763614/installing-twisted-through-pip-broken-on-one-server
+
+>> Update python version
+	> Error  Could not find a version that satisfies the requirement Twisted==17.9.0 (from -r synerbot_backend/requirements.txt (line 83)) 			(from versions: )
+	  No matching distribution found for Twisted==17.9.0 (from -r synerbot_backend/requirements.txt (line 83))
+		sudo apt-get install libbz2-dev
+	> Error pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available. Collecting pep8
+		sudo apt-get install python3-dev libffi-dev libssl-dev
+	
+	wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz  
+	tar xvf Python-3.6.0.tgz
+	cd Python-3.6.0
+	./configure --enable-optimizations  
+	make -j8  
+	sudo make altinstall
+	python3.6
+
+	>If error
+		zipimport.ZipImportError: can't decompress data; zlib not available make: *** [altinstall] Error 1
+
+		sudo apt-get install zlib1g-dev
+
+	python3.6 -m venv testenv
+	source testenv/bin/activate
+	pip install pep8
+
+Sources:
+> Python course
+	https://linuxacademy.com/cp/modules/view/id/79
+	amit.patel@synerzip.com/Amit@123
+
+> Python interpreter and libs
+	 https://www.python.org/
+
+> Coding Standards
+	https://www.python.org/dev/peps/pep-0008/#function-names
+
+> Tutorials
+	https://docs.python.org/3/tutorial/
+
+> Editior
+	Pycharm
+	https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=linux&code=PCC
+
+> Install Panda
+	http://pandas.pydata.org/pandas-docs/stable/install.html
+	Needs Anaconda
+
+> Install Anaconda
+	https://docs.continuum.io/anaconda/install-linux		
+
+> Pandas
+	https://www.analyticsvidhya.com/blog/2016/01/12-pandas-techniques-python-data-manipulation/
+
+	>> Clustering, Forecasting, Predicting Errors.
+		https://www.dataquest.io/blog/machine-learning-python/
+	>> Query Columns
+		https://chrisalbon.com/python/pandas_indexing_selecting.html
+
+> Jupyter notebook install
+	online editor
+	python -m pip install jupyter
+
+# Setting up python environments in ubuntu and windows 10
+# Install pip
+sudo apt-get install python-pip
+pip install --upgrade pip
+
+
+Virtual Env:
+source ~/test/bin/activate
+
+
+
+Windows 10
+Install python2.7
+
+pip install -r requirement.txt
+pip freeze > requirements.txt
+
+to avoid pkg-resources
+pip freeze | grep -v "pkg-resources" > requirements.txt
+
+
+python -m /app/generate_report.py
+
+Run python code from __main__.py
+https://stackoverflow.com/questions/4042905/what-is-main-py
+
+# Python inheritance.
+
+# Python Coding styles
+
+https://www.python.org/dev/peps/pep-0008/
+
+> Python virtual environment
+
+	Create Virtual Environment:
+		virtualenv <Name>
+	
+	Activate environment
+		source /<test>/bin/activate
+	
+	Deactivate:
+		deactivate
+
+	To run module:
+		Travel to repository and run "python <repository_name>" or "python <repository_name/module_nm.py>"
+
+> Logging
+	https://docs.python.org/3.1/library/logging.html
+
+> Python test case
+	https://docs.python.org/2/library/unittest.html
+
+>> Python Mock test
+	https://www.elastic.co/guide/en/elasticsearch/reference/1.6/integration-tests.html
+	https://github.com/vrcmarcos/elasticmock
+	https://robots.thoughtbot.com/how-to-stub-external-services-in-tests
+
+> Python running test case
+	https://stackoverflow.com/questions/1896918/running-unittest-with-typical-test-directory-structure/44814211#44814211
+
+> Datetime formats
+	http://strftime.org/
+
+> Report lab
+	http://nullege.com/codes/search/reportlab.platypus.flowables.DocAssign
+
+
+>> Python flask web app
+	http://flask.pocoo.org/docs/0.10/tutorial/views/#add-new-entry
+
+>> Flask with gunicorn
+	http://flask.pocoo.org/docs/0.12/deploying/wsgi-standalone/
+	Blog: https://ironboundsoftware.com/blog/2016/06/27/faster-flask-need-gunicorn/
+
+>> Python db connecting
+	https://www.blendo.co/blog/access-your-data-in-amazon-redshift-and-postgresql-with-python-and-r/
+	https://pypi.python.org/pypi/sqlalchemy-redshift
+	http://docs.sqlalchemy.org/en/latest/faq/connections.html
+
+>> Python webapp2
+	http://webapp2.readthedocs.io/en/latest/tutorials/quickstart.nogae.html
+
+>> Webapp2 - Jinja2 - Javascript
+	>> Pass data object to script
+
+
+
+>> Flask with jinja2
+	https://github.com/realpython/flask-single-page-app
+
+
+>> Jupyter notebook
+	Reference: pip install --upgrade pip
+	Run: jupyter notebook
+
+
+>>> Standard coding with static files Flask Assets
+	https://adambard.com/blog/fresh-flask-setup/
+	https://flask-assets.readthedocs.io/en/latest/
+
+>> Package building from setup.py
+	https://cloud.google.com/ml-engine/docs/packaging-trainer#building_your_trainer_package_manually
+
+>> Numpy
+	Configure numpy to print upto 2 decimal ponits only
+		https://stackoverflow.com/questions/22222818/how-to-printing-numpy-array-with-3-decimal-places
+
+
+>> AWS Instance
+	Call with requests lib: pip install "requests[security]"
+
+>> Why gunicorn for flask
+	https://ironboundsoftware.com/blog/2016/06/27/faster-flask-need-gunicorn/
+
+
+>> Flask + Gunicorn + Nginx
+	Flask uWSGI Server
+	Gunicorn WSGI + HTTP + Server
+	Nginx Web server
+	https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-14-04
+
+
+>>> Run python HTTP server: python2.7 -m SimpleHTTPServer 8080

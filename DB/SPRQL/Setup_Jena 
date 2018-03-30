@@ -1,0 +1,3 @@
+Download and extract: http://jena.apache.org/documentation/query/
+Set path JENA_HOME till "apache_jena_x.y.z"
+Export path of "bin/" and "bat/"

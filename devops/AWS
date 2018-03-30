@@ -1,0 +1,6 @@
+>> Must do For new instance:
+	New instance -> VPC -> Subnet -> Rout tables -> Internet gateway
+
+>> Add rule for port:
+	1. HTTP for port 80
+	2. Custom TCP for 5000

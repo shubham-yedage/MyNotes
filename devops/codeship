@@ -1,0 +1,35 @@
+1. start debugging from local
+	cat ~/.ssh/id_rsa.pub --> Get public ssh key
+	ssh rof@<ip> -p 65503 --> Connect in debug mode
+
+Basic conf:
+	Not working stucked at permissions
+
+Pro conf:
+	1. Reference: https://documentation.codeship.com/pro/continuous-deployment/google-cloud/#app-engine
+	2. Google cloud --> Create credentials (new service account) --> download json key file
+	3. Create file in current repository
+		with following environment variables,
+		GOOGLE_AUTH_JSON=...
+		GOOGLE_AUTH_EMAIL=...
+		GOOGLE_PROJECT_ID=...
+	4. jet encrypt env google-credentials.encrypted
+	4. codeship-services.yml
+		https://github.com/codeship-library/google-cloud-utilities/blob/master/codeship-services.yml
+		https://documentation.codeship.com/pro/builds-and-configuration/services/
+		Configure each service you need to run your CI/CD builds with Codeship.
+	5. codeship-steps.yml 
+		(https://documentation.codeship.com/pro/builds-and-configuration/steps/)
+		Contains all the Steps for your CI/CD process. Steps are used for the jet steps command, which defines your continuous integration and delivery steps. Jet will look for a steps file in this order. If you are running Jet locally, you can override the filename with the --steps-path flag. Both YAML and JSON formats are accepted.
+	6. 
+
+Currently working with
+	https://documentation.codeship.com/pro/continuous-deployment/google-cloud/#app-engine
+	https://documentation.codeship.com/pro/builds-and-configuration/environment-variables/#encrypting-your-environment-variables
+	https://app.codeship.com/projects/261255/configure
+	https://documentation.codeship.com/general/projects/project-ssh-key/
+	https://documentation.codeship.com/pro/continuous-deployment/google-cloud/#authentication
+	https://documentation.codeship.com/pro/quickstart/getting-started/
+
+
+

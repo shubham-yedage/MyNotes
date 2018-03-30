@@ -1,0 +1,242 @@
+Day 2 :-
+--------
+
+Container consists of :
+1) OS
+2) Software that you build/want to deploy
+3) Dependencies to run the software(Nginx, apache)
+4) Environment variables
+5) etc
+
+Install Docker
+https://docs.docker.com/engine/installation/linux/ubuntu
+
+Docker version
+
+docker
+
+docker -v
+
+docker info
+
+docker images
+
+docker ps
+== docker container ls
+
+docker ps -a
+== docker container ls -a
+
+Images are a new way of distributing application/software along with its dependencies and runtime.
+
+Images inside hub.docker.com may not be trusted that much or to be used in production that's why Docker is coming up with store.docker.com for enterprise ready images.
+
+=> rkt (rock-it) another container runtime by coreos
+
+=> OCI (Open Container Initiative) consortium (a association of several companies) was formed to create a specification for containers.
+- runC is the implementation of OCI specification
+- runC mostly contains the code from libcontainer library from docker
+
+=> Docker is more than just a container rumtime
+- It provides a platform for developing, shipping and running applications
+- At the core it has a Docker engine which runs and manages containers
+
+=> CoreOS created new container runtime specification named App container "appc"
+rkt is the implementation of appc
+rkt has no daemon process
+rkt works well with systemd
+There is active work happening to make rkt OCI compliant
+
+----------------------------------------------------------------------------------
+Inside docker container if "apt-get update" is not working then follow these steps
+nm-tool | grep DNS
+OR
+nmcli dev show | grep IP4.DNS
+OR
+nmcli dev list | grep IP4.DNS
+
+create file /etc/docker/daemon.json
+sudo vim /etc/docker/daemon.json
+{
+    "dns": ["172.31.70.12", "172.31.70.13"]
+}
+
+The CentOS equivalent is the /etc/sysconfig/docker
+----------------------------------------------------------------------------------
+
+All the docker commands are also available as man pages. Just add hyphen for multi word command. For ex: man page for docker run command
+man docker-run
+man docker run
+man docker-network-create
+These man commands don't work in Mac.
+
+If you want to just create a container and not run it
+docker create -it --name="my_container" ubuntu:latest /bin/bash
+you can start it using
+docker start my_container
+
+docker create -i -t --name=alpine_test alpine sh
+Creates a container
+
+docker run -i -t ubuntu:xenial /bin/bash
+Creates and start a container
+
+docker inspect ubuntu:xenial
+
+docker stop
+
+docker start
+
+docker rename <container_id/container_name> <new_container_name>
+
+docker run -itd ubuntu:xenial /bin/bash
+
+docker attach
+
+# To create a process inside an already running container use docker exec
+docker exec <container_name> <command>
+docker exec <container-name> /bin/cat /etc/profile
+
+For docker exec command : the container in which exec command is fired should be running
+
+docker logs <container_name>
+
+docker rm
+
+docker rmi
+docker rmi <image-name>|<image-id>
+
+--rm flag : If you want to delete the container after exiting
+docker run -it --rm --name=test_ubuntu ubuntu:xenial /bin/bash
+
+docker pause <container_name>
+docker unpause <container_name>
+
+For exiting without stopping the container type: ctrl+p+q
+
+docker pull nginx:latest
+
+docker run -d -p 80 nginx:latest
+
+docker run -d -p 8080:80 nginx:latest
+This command binds host port 8080 to container port 80
+
+-P(High port mapping scheme): expose and remap automatically any ports that are exposed within the container. Port need to exposed from container using EXPOSE command.
+docker run -d --name=nginx1 -P nginx
+
+docker run ubuntu:xenial echo "Hello from this container"
+The above command just runs the echo command and exits. Even if you restart the above container it will just run the echo command again and will exit because thats the default command mentioned.
+
+docker top <container_name>
+
+docker stats <container_name>
+This commands shows the live stats related to CPU, memory etc means realtime view of the resources the container is using.
+
+List only container ids
+docker ps -a -q
+
+docker ps -a -q | wc -l
+
+To remove all stopped containers
+docker container prune
+
+docker run -it --name=alpine_test -w=/var  alpine sh
+-w option can be used to set working directory
+
+Environment variables can be added to the container using --env or -r option
+docker run -it --env="WEB_HOST=172.168.1.1" apline sh
+
+docker search <image_name>
+docker search training/sinatra
+
+docker commit -m "commit message" -a "<User name>" <docker-container-name> <new_image_name>
+docker commit -m "Installed SSH and created test user" -a "Amit Thawait" flamboyant_edison amitthawait/ubuntu-sshd:v1
+
+With docker commit, a new image image is created with the new changes on top of base image from which it was created.
+
+docker container run -it --name=myalpine alpine sh
+
+Inside container:
+/# date > /data
+ctrl+p+q
+
+docker diff myalpine
+gives you the difference bewteen its current state and previous state
+
+docker commit myalpine amitthawait/alpine:1.0
+
+see the docker diff again
+
+Labelling a container
+docker run -it --name=alpine_test --label=app  alpine sh
+docker ps
+docker ps --filter label=app
+
+While starting the container, we can set its restart policy
+man docker run
+docker run -d --restart=always --name=web1 nginx
+docker run -d --restart=on-failure:3 --name=web2 nginx
+
+========================================================
+
+Rkt (Rock-it)
+
+Installation:
+gpg --recv-key 18AD5014C99EF7E3BA5F6CE950BDD3E0FC8A365E
+wget https://github.com/rkt/rkt/releases/download/v1.26.0/rkt_1.26.0-1_amd64.deb
+wget https://github.com/rkt/rkt/releases/download/v1.26.0/rkt_1.26.0-1_amd64.deb.asc
+gpg --verify rkt_1.26.0-1_amd64.deb.asc
+sudo dpkg -i rkt_1.26.0-1_amd64.deb
+
+To fetch an image
+rkt fetch <image_url>
+rkt fetch coreos.com/etcd:v2.0.0
+
+rkt image list
+
+To download docker image with rkt
+rkt fetch --insecure-options=image docker://busybox
+
+To run a pod
+rkt run --insecure-options=image docker://nginx
+# This will run a nginx pod in foreground, go to another terminal and enter the below command and hit the IP listed there.
+
+To list running pods
+rkt list
+
+To remove an image
+rkt image rm <image-name>
+
+https://coreos.com/rkt/docs/latest/subcommands/fetch.html
+https://coreos.com/rkt/docs/latest/subcommands/image.html
+
+rkt --insecure-options=image run docker://busybox --name=busybox_test
+
+To change the default executable use --exec option
+rkt run --insecure-options=image docker://nginx --exec /bin/date
+# This doesn't runs nginx actually
+
+To set env variables use --set-env option
+rkt --insecure-options=image run docker://busybox --set-env=WEB=172.16.28.19 --exec env
+
+To enter into an already running pod
+rkt enter 6f5f8eba
+
+To stop a running pod
+rkt stop 6f5f8eba
+
+To remove a pod
+rkt rm 6f5f8eba
+
+https://docs.docker.com/engine/reference/run/
+https://coreos.com/rkt/docs/latest/subcommands/run.html
+https://runc.io
+
+========================================================
+
+References : runc, docker, rkt
+https://www.opencontainers.org
+https://runc.io
+https://docs.docker.com/engine/installation/
+https://coreos.com/rkt/docs/latest/distributions.html
+

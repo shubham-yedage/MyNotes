@@ -1,36 +1,3 @@
-Sources:
-> Python course
-	https://linuxacademy.com/cp/modules/view/id/79
-	amit.patel@synerzip.com/Amit@123
-
-> Python interpreter and libs
-	 https://www.python.org/
-
-> Coding Standards
-	https://www.python.org/dev/peps/pep-0008/#function-names
-
-> Tutorials
-	https://docs.python.org/3/tutorial/
-
-> Editior
-	Pycharm
-	https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=linux&code=PCC
-
-> Install Panda
-	http://pandas.pydata.org/pandas-docs/stable/install.html
-	Needs Anaconda
-
-> Install Anaconda
-	https://docs.continuum.io/anaconda/install-linux		
-
-> Pandas
-	https://www.analyticsvidhya.com/blog/2016/01/12-pandas-techniques-python-data-manipulation/
-
-	>> Clustering, Forecasting, Predicting Errors.
-		https://www.dataquest.io/blog/machine-learning-python/
-	>> Query Columns
-		https://chrisalbon.com/python/pandas_indexing_selecting.html
-
 > ARIMA Model
 	http://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
 	http://machinelearningmastery.com/autoregression-models-time-series-forecasting-python/

@@ -3,16 +3,21 @@ youtube -> Introduction to the Art of Programming Using Scala
 https://www.youtube.com/watch?v=XBbaZwGt8YY
 https://www.youtube.com/watch?v=oJ6l3kbrOkE
 
-user
-neo4j
+Default
+user: neo4j
 server address
+host: bolt://localhost:7687
 http://localhost:7474/browser/
-shubham5252
+password: synerzip
 
 cd $NEO4J_HOME/bin ./neo4j start
 
 Cypher Reference:
 http://neo4j.com/docs/cypher-refcard/current/?utm_source=browser&utm_medium=motd&utm_content=blog&utm_campaign=browser
+
+//========Jump to login page
+	:server disconnect
+
 
 //========Things To remember
 	> Nodes = Data Records
@@ -27,6 +32,39 @@ http://neo4j.com/docs/cypher-refcard/current/?utm_source=browser&utm_medium=motd
 		  No values are assigned to it
 	> 
 	> 
+
+//===============Basic create, find, update and delete queries
+	>> Create node with 
+		label: Person
+		Properties: name, from, age
+	query: create(ee:Person{name:"shubham", from:"Kolhapur", age:23})
+
+	>> Create multiple nodes with relationship
+	query:  CREATE (ee:Person{name:"shubham", from:"Kolhapur", age:23})
+		(js:Person { name: "Johan", from: "Sweden", learn: "surfing" }),
+		(ir:Person { name: "Ian", from: "England", title: "author" }),
+		(rvb:Person { name: "Rik", from: "Belgium", pet: "Orval" }),
+		(ally:Person { name: "Allison", from: "California", hobby: "surfing" }),
+		(ee)-[:KNOWS {since: 2001}]->(js),
+		(ee)-[:KNOWS {rating: 5}]->(ir),
+		(js)-[:KNOWS]->(ir),(js)-[:KNOWS]->(rvb),
+		(ir)-[:KNOWS]->(js),(ir)-[:KNOWS]->(ally),
+		(rvb)-[:KNOWS]->(ally)
+
+	>> Find by name,
+	query: match (ee:Person) where ee.name="shubham" return ee;
+
+	>> Update
+	query: match (ee:Person) where ee.name="shubham" set ee.surname="Yedage" return ee;
+
+	>> Delete
+	query: match (ee:Person) where ee.name="Shubham" delete ee;
+
+	>> Delete properties
+		match (j {name:'Javascript'})
+		remove j.lables
+		return j
+
 
 //================Neo4J driver for java
 http://neo4j.com/developer/
@@ -255,5 +293,17 @@ MATCH p=()-[r:FlyingTo{name:row[0]}]->() RETURN p
 
 
 
-//==========================
+//=========Import ontology in neo4j
+	Import RDF stored procedure:
+		https://jesusbarrasa.wordpress.com/2016/06/07/importing-rdf-data-into-neo4j/
 
+	Lib
+		https://github.com/jbarrasa/neosemantics/blob/master/src/main/java/semantics/RDFImport.java
+		https://github.com/jbarrasa/neosemantics
+
+
+//==========Python neo4j lib
+	1. Provided by neo4j only. Dont go for it.
+		https://neo4j.com/docs/api/python-driver/1.5/ 
+
+	2. 

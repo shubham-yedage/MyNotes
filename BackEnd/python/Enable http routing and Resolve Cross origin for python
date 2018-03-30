@@ -1,0 +1,19 @@
+# Enable https routing for trainer on Compute Engine Instance
+
+    // Install pyopenssl 
+    pip install pyopenssl
+    // Download Certifiactes and key
+    // Keep under trainer/
+    openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+    // Usage with Flask
+    app.run(host=0.0.0.0, ssl_context=('cert.pem', 'key.pem'))
+
+
+# Resolve Cross Origin problem with Flask
+	// Install flask-cors
+	    pip install -U flask-cors
+	// Usage in code
+		 // Import
+		    from flask_cors import CORS, cross_origin 
+		// Add
+		    CORS(app)

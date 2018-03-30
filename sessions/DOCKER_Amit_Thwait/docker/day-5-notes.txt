@@ -1,0 +1,153 @@
+Day 5 :-
+--------
+https://docs.docker.com/engine/reference/builder/
+
+Docker Compose :
+----------------
+Using --link option we can create a mapping between two containers
+
+docker run --name=mysql_wordpress -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -d mysql
+
+docker inspect mysql_wordpress | grep IP
+
+mysql -u root -h 172.17.0.2 -p
+
+mysql -u wordpress -h 172.17.0.2 -p
+
+docker run -d --name=wordpress_cont -p 9000:80 --link=mysql_wordpress:mysql -d wordpress
+
+docker exec wordpress_cont cat /etc/hosts
+
+docker exec wordpress_cont env
+
+# Command for connecting to some external MySQL instance
+docker run --name some-wordpress -e WORDPRESS_DB_HOST=10.1.2.3:3306 \
+    -e WORDPRESS_DB_USER=wordpress -e WORDPRESS_DB_PASSWORD=wordpress -d wordpress
+
+But there is a problem with --link option because if the db container goes down then the link isn't there.
+That's why --link option is getting deprecated.
+
+This problem can be solved using docker-compose.
+Docker compose create a user defined network so that these containers can communicate.
+
+Install Docker Compose
+sudo curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+
+https://docs.docker.com/samples/
+
+https://docs.docker.com/compose/wordpress/
+
+mkdir wordpress_app
+
+cd wordpress_app
+
+Create a docker-compose.yml (You can use either a .yml or .yaml extension for this file)
+vim docker-compose.yml
+----------------------
+version: '3'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: password
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     ports:
+       - "8000:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+volumes:
+    db_data:
+----------------------
+
+docker-compose up
+# You can see a new user defined network is created.
+
+check
+docker network ls
+docker volume ls
+
+
+docker-compose stop
+# Stops the containers
+
+docker-compose ps
+docker ps
+
+docker-compose up -d
+
+docker-compose logs
+
+docker ps
+
+ctrl+c
+Stops the containers gracefully (doesn't removes the container)
+
+# To see db_data
+docker volume ls
+
+# Create a post and start stop docker-compose
+
+# View the site - 0.0.0.0:8000
+# 0.0.0.0:8000/wp-admin
+
+docker-compose down
+# Stops both the containers
+# Removes both the containers
+# Removes the Network
+
+docker-compose rm
+# Stops both the containers
+# Doesn't remove the Network
+
+# To remove the volume as well
+docker-compose up
+docker ps
+docker-compose down --volumes
+
+docker-compose build
+# Builds the image
+
+Docker Stack
+https://blog.nimbleci.com/2016/09/14/docker-stacks-and-why-we-need-them/
+
+Extras :
+--------
+
+https://blog.codeship.com/reduce-docker-image-size/
+
+https://blog.xebialabs.com/2017/05/18/5-docker-utilities-you-should-know/
+
+docker command auto completion
+
+docker events
+
+docker ps -a --filter="exited0"
+
+docker run --read-only -it alpine sh
+/ touch abc.txt
+
+docker system df -v
+
+What should be PID 1 in a container
+https://www.youtube.com/watch?v=np5WFv-FWvE
+https://github.com/Yelp/dumb-init
+https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/
+https://medium.com/@gchudnov/trapping-signals-in-docker-containers-7a57fdda7d86

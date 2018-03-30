@@ -1,0 +1,11 @@
+Reference: 
+1. https://mediatemple.net/community/products/developer/204405534/install-nginx-on-ubuntu
+
+2. https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04
+
+sudo -i
+apt-get update	
+apt-get install Nginx
+
+
+

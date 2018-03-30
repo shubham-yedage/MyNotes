@@ -97,24 +97,22 @@ Refer:
 	>> https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource
 
 Create IAM user / service account
-	gcloud iam service-accounts create service-account-1 --display-name "Service Account Sample App Testing 186113"
+	gcloud iam service-accounts create <account-name> --display-name "Service Account Sample App Testing 186113"
 
 
 List service account
-	gcloud iam service-accounts listD
+	gcloud iam service-accounts list
 
 assign ownership
-	gcloud projects add-iam-policy-binding sample-app-testing-186113 --member serviceAccount:sample-app-testing-186113@appspot.gserviceaccount.com --role roles/editor
+	gcloud projects add-iam-policy-binding sample-app-13 --member serviceAccount:sample-app-13@appspot.gserviceaccount.com --role roles/editor
 
 Get policy
- gcloud iam service-accounts get-iam-policy sample-app-testing-186113@appspot.gserviceaccount.com --format json > policy.json
+ gcloud iam service-accounts get-iam-policy sample-app-13@appspot.gserviceaccount.com --format json > policy.json
 
 Edit json
 
 Change ploicy
-gcloud iam service-accounts set-iam-policy sample-app-testing-186113@appspot.gserviceaccount.com policy.json
-
-
+gcloud iam service-accounts set-iam-policy sample-app-13@appspot.gserviceaccount.com policy.json
 
 
 ==============================================================================
@@ -122,7 +120,7 @@ refer
 https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#changeserviceaccountandscopes
 
 Changing the service account and access scopes for an instance
-	gcloud compute instances set-service-account app-text-summary --service-account sample-app-testing-186113@appspot.gserviceaccount.com
+	gcloud compute instances set-service-account app-text-summary --service-account sample-app-13@appspot.gserviceaccount.com
 
 
 ================================================================================
@@ -135,3 +133,127 @@ gcloud compute ssh app-text-summary
 
 >> Google cloud ap samples
 http://learntogoogleit.com/
+
+
+=================================================================================
+
+Github Appengine integration
+	https://blog.codeship.com/django-github-continuous-deployment-google-app-engine/
+
+
+=============================================================================================
+
+Setting up service account
+	gcloud auth list
+	gcloud config set account <user_defined_name/email>
+		e.g.: gcloud config set account predictionservice@sample-app-13.iam.gserviceaccount.com
+
+
+
+================================================================================================
+Cloud storage bucket access for ML-Engine
+	Refer:
+		https://cloud.google.com/ml-engine/docs/working-with-data#setting_up_your_cloud_storage_buckets
+
+	Prior:
+		gcloud auth activate-service-account text-sum-manager@text-sum-app-52.iam.gserviceaccount.com
+
+	1. PROJECT_ID=$(gcloud config list project --format "value(core.project)")
+	2. AUTH_TOKEN=$(gcloud auth print-access-token)
+	3. SVC_ACCOUNT=$(curl -X GET -H "Content-Type: application/json" \
+	    -H "Authorization: Bearer $AUTH_TOKEN" \
+	    https://ml.googleapis.com/v1/projects/${PROJECT_ID}:getConfig \
+	    | python -c "import json; import sys; response = json.load(sys.stdin); \
+	    print response['serviceAccount']")
+	4. BUCKET_NAME="your_bucket_name"
+	5. gsutil -m defacl ch -u $SVC_ACCOUNT:R gs://$BUCKET_NAME
+	6. gsutil -m acl ch -u $SVC_ACCOUNT:R -r gs://$BUCKET_NAME
+	7. gsutil -m acl ch -u $SVC_ACCOUNT:W gs://$BUCKET_NAME
+
+
+Deploy from git hub
+	1. Codeship:
+		https://blog.codeship.com/django-github-continuous-deployment-google-app-engine/
+	2. CircleCI:
+		https://circleci.com/docs/1.0/deploy-google-app-engine/
+====================================================================================================
+
+App engine Flexible vs standard environment
+
+	1. No need of maintaining 3 party api list.
+
+	2. SSH access to VM instances in the flexible environment is disabled by default.
+
+
+
+================================================================================================
+
+Configure standard environment
+	https://cloud.google.com/appengine/docs/flexible/python/quickstart
+	https://cloud.google.com/appengine/docs/flexible/python/runtime
+
+
+
+=================================================================================================
+
+Google cloud common issues
+
+https://issuetracker.google.com/issues?q=componentid:187143%2B
+
+1.  gcloud crashed (ValueError): No key could be detected.
+	Check json key file
+
+==============================================================================================
+
+	Stack Driver Logging Flexible Environment
+	Reference: https://cloud.google.com/logging/docs/setup/python
+
+	Setup:
+		# Imports the Google Cloud client library
+		import google.cloud.logging
+
+		# Instantiates a client
+		client = google.cloud.logging.Client()
+
+		# Connects the logger to the root logging handler; by default this captures
+		# all logs at INFO level and higher
+		client.setup_logging()
+	Usage:
+		# Imports Python standard library logging
+		import logging
+
+		# The data to log
+		text = 'Hello, world!'
+
+		# Emits the data using the standard logging module
+		logging.warn(text)
+
+
+========================================================================================================
+
+	Google Sign In Flexible Environment
+		Reference: https://developers.google.com/identity/sign-in/web/devconsole-project
+			   https://developers.google.com/identity/sign-in/web/
+
+		Setup OAuth Client Id for project to enable Google SignIn:
+			https://developers.google.com/identity/sign-in/web/devconsole-project
+
+
+=======================================================================================================
+
+	App Engine Flexible Env Python Samples
+		https://www.the-swamp.info/blog/google-app-engine-flexible/
+
+
+
+======================================================================================================
+
+	Submit training job to ml engine through python api
+		>> https://cloud.google.com/ml-engine/docs/training-jobs
+		>> https://cloud.google.com/ml-engine/docs/python-guide
+
+	Build package mannually:
+		>> https://cloud.google.com/ml-engine/docs/packaging-trainer#building_your_trainer_package_manually
+
+	Prediction API Client lib:
+		>> https://cloud.google.com/ml-engine/reference/rest/

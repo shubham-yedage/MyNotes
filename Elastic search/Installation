@@ -1,0 +1,76 @@
+Download and extract:
+	wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.1.2.tar.gz
+	wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.1.2.tar.gz.sha512
+	shasum -a 512 -c elasticsearch-6.1.2.tar.gz.sha512 
+	tar -xzf elasticsearch-6.1.2.tar.gz
+	cd elasticsearch-6.1.2/ 
+
+Install:
+	Set ES_HOME=/path-to/elasticsearch-6.1.2/
+	export PATH=$PATH:$ES_HOME/bin
+
+Run:
+	elasticsearch
+
+Run as daemon:
+	elasticsearch -d -p pid
+
+Kill: 
+	kill 'cat pid'
+
+Setup:
+	Elasticsearch has three configuration files:
+		1. elasticsearch.yml for configuring Elasticsearch
+		2. jvm.options for configuring Elasticsearch JVM settings
+		3. log4j2.properties for configuring Elasticsearch logging
+
+Indexing:
+	1. curl -XPUT 'http://localhost:9200/twitter/doc/1?pretty' -H 'Content-Type: application/json' -d '
+		{
+		    "user": "kimchy",
+		    "post_date": "2009-11-15T13:12:00",
+		    "message": "Trying out Elasticsearch, so far so good?"
+		}'
+
+	2. curl -XPUT 'http://localhost:9200/twitter/doc/2?pretty' -H 'Content-Type: application/json' -d '
+		{
+		    "user": "kimchy",
+		    "post_date": "2009-11-15T14:12:12",
+		    "message": "Another tweet, will it be indexed?"
+		}'
+
+	3. curl -XPUT 'http://localhost:9200/twitter/doc/3?pretty' -H 'Content-Type: application/json' -d '
+		{
+		    "user": "elastic",
+		    "post_date": "2010-01-15T01:46:38",
+		    "message": "Building the site, should be kewl"
+		}'
+
+
+Check if indexed:
+	curl -XGET 'http://localhost:9200/twitter/doc/1?pretty=true'
+	curl -XGET 'http://localhost:9200/twitter/doc/2?pretty=true'
+	curl -XGET 'http://localhost:9200/twitter/doc/3?pretty=true'
+
+Query exaples:
+	1. curl -XGET 'http://localhost:9200/twitter/_search?pretty=true' -H 'Content-Type: application/json' -d '
+		{
+		    "query" : {
+			"match" : { "user": "kimchy" }
+		    }
+		}'
+
+	2. curl -XGET 'http://localhost:9200/twitter/_search?pretty=true' -H 'Content-Type: application/json' -d '
+		{
+		    "query" : {
+			"match_all" : {}
+		    }
+		}'
+	3. curl -XGET 'http://localhost:9200/twitter/_search?pretty=true' -H 'Content-Type: application/json' -d '
+		{
+		    "query" : {
+			"range" : {
+			    "post_date" : { "from" : "2009-11-15T13:00:00", "to" : "2009-11-15T14:00:00" }
+			}
+		    }
+		}'

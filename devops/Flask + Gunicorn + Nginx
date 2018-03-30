@@ -1,0 +1,110 @@
+Reference: https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-14-04
+
+>> Must do For new instance:
+	New instance -> VPC -> Subnet -> Rout tables -> Internet gateway
+
+>> Add rule for port:
+	1. HTTP for port 80
+	2. Custom TCP for 5000
+
+>> ssh -i <.pem> <>
+
+>> Install nginx:
+	apt-get update
+
+	apt-get install nginx
+
+	sudo systemctl status nginx.service
+
+
+>> Install pip
+	sudo apt-get install python-pip
+	pip install --upgrade pip
+
+>> Install virtualenv
+	pip install virtualenv
+
+>> Install gunicorn and flask
+	pip install gunicorn flask
+
+>> Write gunicorn-conf.py
+	example:
+
+	import multiprocessing
+
+	bind = "127.0.0.1:5000"
+	workers = multiprocessing.cpu_count() - 1
+	max_request = 1000
+
+>> Run with gunicorn localy:
+	gunicorn -c gunicorn-conf.py app:app
+
+>> Nginx update configuration
+	/etc/nginx/sites-available
+
+	e.g. script:
+		server {
+		    listen 80;
+
+		    server_name <server-ip-(elastic-ip/public-ip)>;
+
+		    access_log  /var/log/nginx/access.log;
+		    error_log  /var/log/nginx/error.log;
+
+		    location / {
+			proxy_pass         http://127.0.0.1:5000/;
+			proxy_redirect     off;
+
+			proxy_set_header   Host                 $host;
+			proxy_set_header   X-Real-IP            $remote_addr;
+			proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+			proxy_set_header   X-Forwarded-Proto    $scheme;
+		    }
+		}
+
+>> sudo systemctl restart nginx.service
+
+>> Create upscript
+	sudo apt install upstart
+
+	example script:
+	sudo vim /etc/init/myproject.conf
+
+--------------------------------------------------------------------------------------
+
+description "Gunicorn application server running myproject"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+
+env PATH=/home/ec2-user/myproject/venv/bin
+env PROGRAM_NAME="myproject"
+env USERNAME="ec2-user"
+
+# Main script to be run
+script
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Ready to run..." >> /var/log/$PROGRAM_NAME.sys.log
+
+    export HOME="/home/ec2-user"
+    echo $$ > /var/run/$PROGRAM_NAME.pid
+
+    cd /home/ec2-user/myproject
+    # exec sudo -u ec2-user gunicorn --workers 3 --bind unix:myproject.sock -m 000 wsgi >> /var/log/$PROGRAM_NAME.sys.log 2>&1
+    # exec su -s /bin/sh -c 'exec "$0" "$@"' ec2-user -- gunicorn --workers 3 --bind unix:myproject.sock -m 000 wsgi >> /var/log/$PROGRAM_NAME.sys.log 2>&1
+    exec gunicorn --workers 3 --bind unix:myproject.sock -m 000 wsgi >> /var/log/$PROGRAM_NAME.sys.log 2>&1
+end script
+
+# Script for debug purpose, run before starting
+pre-start script
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> /var/log/$PROGRAM_NAME.sys.log
+end script
+
+# Script for debug purpose, run before stopping
+pre-stop script
+    rm /var/run/$PROGRAM_NAME.pid/
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/$PROGRAM_NAME.sys.log
+end script
+
+---------------------------------------------------------------------------------------------------------

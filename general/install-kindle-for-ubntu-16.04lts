@@ -1,0 +1,14 @@
+https://www.hiroom2.com/2016/09/26/ubuntu-16-04-run-kindle-for-pc-windows-with-wine/
+
+Install wine:
+
+	http://ubuntuhandbook.org/index.php/2015/12/install-wine-1-8-stable-new-ppa/
+	1. sudo dpkg --add-architecture i386
+	2. sudo add-apt-repository ppa:wine/wine-builds
+	3. sudo apt-get update
+	4. sudo apt-get install --install-recommends winehq-devel
+	5. winecfg -> windows7
+
+Install kindle:
+	1. Download e.g. https://filehippo.com/download_kindle_for_pc/
+	2. wine KindleForPC-installer-1.17.44183.exe

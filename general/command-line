@@ -1,0 +1,6 @@
+1. Check path of installed packages
+	dpkg -L <package-name>
+
+2. Request from commandline
+	sudo systemctl status elasticsearch.service
+

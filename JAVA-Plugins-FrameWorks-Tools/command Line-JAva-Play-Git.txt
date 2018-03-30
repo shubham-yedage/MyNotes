@@ -86,7 +86,7 @@ git commit --amend
 17.Java Shortcuts
 
 sudo update-alternatives --config java 
-USe this when you download new jdk and keep it in remote folder. If you want to use it.
+Use this when you download new jdk and keep it in remote folder. If you want to use it.
 sudo update-alternatives --install /usr/bin/java java path-to-downloaded-jdk/bin/java 1
 
 

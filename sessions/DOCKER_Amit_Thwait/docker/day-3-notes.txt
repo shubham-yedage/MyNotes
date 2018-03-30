@@ -1,0 +1,302 @@
+Day 3 :-
+--------
+
+https://github.com/docker/docker
+
+https://mobyproject.org/#moby-and-docker
+
+https://blog.docker.com/2017/04/introducing-the-moby-project/
+
+http://www.cio.com/article/3191344/linux/why-docker-created-the-moby-project.html
+
+https://github.com/rancher/rancher/issues/8541#issuecomment-296083353
+
+
+Docker can create containers for images that are only supported by the kernel of the host machine.
+docker pull microsoft/nanoserver
+https://github.com/moby/moby/issues/28892
+https://github.com/moby/moby/pull/29001
+
+https://github.com/moby/moby/blob/master/CHANGELOG.md
+
+https://github.com/moby/moby/blob/master/CHANGELOG.md#windows
+
+http://img.scoop.it/kZ7lPEDwkIFnoq4nqnhtRbnTzqrqzN7Y9aBZTaXoQ8Q=
+ps -ef | grep docker
+=> Docker ---> containerd ----> runc, runc, runc
+https://github.com/containerd/containerd
+https://containerd.io/
+
+Docker CLI commands reference :
+https://docs.docker.com/engine/reference/commandline/cli/
+
+Docker Networking :
+-------------------
+When docker daemon starts, it creates a network bridge "docker0" on the host system.
+
+ip a
+
+By default, all the containers connect to it. To attach a container to the bridge, Docker creates a veth pair.
+One end of which is attached to the bridge and the other end to the container.
+"Bridge end" is referred by "veth" with some string (veth06b3806)
+
+docker run -d --name=nginx1 nginx
+
+ip a
+
+sudo apt install bridge-utils
+
+brctl show
+
+# use diff tool to compare ip a
+
+docker run -d --name=nginx2 nginx
+
+ip a
+
+brctl show
+
+=> The IP address which container get is not routable from the external world. To access the container from the external world we would need to map a port of host system with the container's port.
+
+=> Next discuss about port mapping -p and -P options with docker run
+
+=> Docker Network Drivers
+- Bridge
+- Host
+- None
+- Overlay
+- MACvlan
+
+With Host we share the network namespace of the host with the container.
+With None we instruct docker not to create any interfaces inside the network namespace of the container.
+
+Scope of Bridge, Host and None is local which means it is used only for single host.
+
+In practicle scenario or production scenarios generally we have more than 1 host and container of 1 machine should be able to communicate to the container of another machine.
+Docker Swarm, Kubernetes, Mesos Marathon are examples.
+Docker Swarm uses the Overlay driver to setup networking between different machines of the cluster.
+
+With MACvlan driver a container can get a routable IP address in the physical network.
+
+docker network ls
+
+docker network ls --no-trunc
+
+docker network inspect bridge
+
+docker network inspect <network-id>|<network-name>
+docker network inspect bridge
+docker network inspect host
+
+=> Creating a container with none network interface
+docker run --rm -it --network=none alpine sh
+/ ip a
+
+Creating a container under host's network
+docker run -it --network=host alpine sh
+# All the network interfaces of the host system will be available inside the container
+/ ip a
+
+Sharing network namespace among containers
+--network=container:CONTAINER_ID/CONTAINER_NAME
+
+docker run -d --name=web1 nginx
+docker exec web1 ip a
+
+docker run -it --network=container:nginx1 alpine sh
+/ ip a
+
+docker run --rm -it alpine sh
+/ ip a
+
+=> Creating a network
+docker network create mynet
+# By default it creates a bridge network
+
+docker run -d --name=nginx_mynet --network=mynet nginx
+docker exec nginx_mynet ip a
+# Create a network in different subnet
+
+docker run --rm -it --network=mynet alpine sh
+/ ping nginx_mynet
+
+=> Attaching a running container to a network
+docker network connect <network-name> <container-name/id>
+
+docker ps
+docker exec nginx1 ip a
+docker exec nginx_mynet ip a
+
+docker network ls
+
+docker network connect mynet nginx1
+
+docker exec nginx1 ip a
+
+docker network create sample_net
+docker network connect sample_net nginx1
+
+docker exec nginx1 ip a
+docker network --help
+
+docker network disconnect mynet nginx1
+docker exec nginx1 ip a
+
+=> To remove a network from docker engine :
+docker network rm <network-name>
+
+You can only remove a network if there isn't any container attached to it.
+
+docker network rm sample_net
+
+docker network ls
+To know the containers in sample_net network
+docker network inspect <network-id-of-sample_net>
+
+References
+https://docs.docker.com/engine/userguide/networking/
+https://github.com/docker/libnetwork
+https://github.com/containernetworking/cni
+https://coreos.com/rkt/docs/latest/subcommands/run.html
+https://coreos.com/rkt/docs/latest/networking/overview.html
+
+==========================================================
+Docker Volumes :
+----------------
+The storage used by container is called as ephemeral storage
+
+Storage backend drivers for Docker
+- On Linux
+  - aufs (Advanced Multi-Layered Unification Filesystem)
+  - btrfs
+  - overlay
+  - device-mapper
+  etc
+
+docker info
+# Storage Driver
+
+sudo -i
+
+/var/lib/docker/aufs
+
+Data stored inside container is stored in ephemeral storage using aufs
+
+As the ephemeral storage is deleted when the container is deleted, it is not a good idea to keep the data inside the container which you will need in future.
+
+Docker provides a way access the external storage inside containers using volumes.
+These volumes are not managed bu AUFS.
+
+Docker Volumes :
+- Container volume
+- Volume with host mount directory
+- Volume Plugins
+  - Flocker
+  - GlusterFS (for CentOS Family)
+  etc
+
+1)
+docker run -it -v /test_volume_1 --name=test_volumes alpine sh
+/ ls
+
+/ cd test_volume_1
+
+/ vi sample.txt
+
+docker inspect test_volumes
+# Looks for Mounts
+
+ls <mount-source>
+
+docker rm test_volumes
+ls <mount-source>
+
+The volume will still be there even if we delete the container.
+Here you will not loose the data but still not properly automated to access the data when you start a new container.
+
+docker volume list
+docker volume ls
+
+docker volume create --help
+
+2) To create a named volume
+docker volume create --name=vol1
+
+docker volume ls
+
+docker run -it -v vol1:/mydata --name=named_vol_test alpine sh
+
+echo "This is sample file." > mydata/sample.txt
+
+cat mydata/sample.txt
+
+docker volume inspect vol1
+
+- The same volume can be mounted to different containers and accessed from all the containers on which that volume is mounted.
+
+docker run -it -v vol1:/mydata2 --name=named_vol_test2 alpine sh
+
+Delete the volume if it is no longer needed
+
+docker rm named_vol_test2
+
+docker volume rm <volume-name>
+
+3) mkdir shared_data
+
+echo "shared data file" > shared_data/sample.txt
+
+docker run -it -v /home/synerzip/shared_data:/mydata alpine sh
+Edit the file
+
+docker volume ls
+
+To make shared folder read-only
+docker run -it -v /home/synerzip/shared_data:/mydata:ro alpine sh
+
+=> Docker disk usage
+docker system df
+
+=> To remove all unused volumes :
+docker volume prune
+
+https://docs.docker.com/engine/tutorials/dockervolumes/
+https://docs.docker.com/engine/reference/commandline/inspect/
+
+Docker Copy Command :-
+----------------------
+docker cp <source-file-path> <destination-file-location>
+
+To copy file from container to localhost and vice-versa.
+
+docker cp <container_id>:<path-of-file> <destination-in-localhost>
+
+docker cp test.txt <container_id>:/tmp/
+
+docker run -d --name=web1 nginx
+docker run -d --name=web2 nginx
+echo "We are learning docker" > index.html
+cat index.html
+docker start web2
+docker inspect web2 | grep IPA
+curl http://172.17.0.2
+docker cp index.html web1:/usr/share/nginx/html
+elinks http://172.17.0.2
+
+Docker Events :-
+----------------
+docker events
+Attaches to docker daemon and waits for any event to happen and the lists it
+
+See man docker-events
+
+docker events --filter event=attach
+
+docker events --filter event=attach --filter event=die --filter event=stop
+
+----------------------------------
+For External Volumes: (Production Grade)
+
+Flocker
+
+GlusterFS

@@ -23,7 +23,7 @@ Create feature (git checkout -b <feature-a>)
 		After week merge to master	
 
 Clone repository
-git clone git@gitlab.com:vistalytics/report-analysis.git
+git clone <git-url>
 
 Switch to develop branch. It has latest code.
 git checkout develop
@@ -50,3 +50,17 @@ Now it is latest working feature branch. Riha you can commit your code on this.
 
 Always pull code from "develop" branch so you will have latest code. We can merge code from develop branch to master once it tested so "master" branch will always have last working code.
 
+
+
+>> Check terminal for changes
+	git diff --cached
+
+>> Check terminal for whom has done changes
+	git blame <file_name>
+
+>> Git squash -- append current commit to previous commit
+
+	after git commit...
+	git rebase -i HEAD~2
+	do git push...if not works
+	git push --force-with-lease origin master

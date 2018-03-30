@@ -1,0 +1,11 @@
+Requirements:
+	Python 3.6.4
+	Django 1.11.2
+
+Setup project:
+	1. Create virtual env and install django
+	2. mkdir src && cd src
+	3. django-admin.py startproject <project-name> .
+	4. Create '/settings' dir to store settings for local and production development,
+		cd <project-name>
+		mkdir settings

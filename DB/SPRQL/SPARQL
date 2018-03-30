@@ -1,0 +1,37 @@
+>> SPARQL: SPA : Protocol with set of rules that exchange query from client side to server side.
+	   RQL : RDF Query Language
+
+>> RDF: Resource Data Framework
+	Data interchange model for web
+
+>> SPARQL with some available interfaces can work with differ types of data formats (like xml, json, spreadsheets etc.)
+
+>> RDF is data model whic expresses facts (three-part statements). These facts or triples are "subject, predicate, object"
+	e.g.:
+	Subject		Predict		Object
+        Richard		homeTel	    (229) 276-5135
+
+>> "Subject, predicate and object" can be also called as "resource, property name and property value"
+
+>> Triples sentence usually end with 'period (.)'. In SPARQL comments starts with '#' usually.
+
+>> ".ttl" files are Turtle RDF format files.
+
+>> ARQ: Query engine for Jena supports SPARQL RDF Query language.
+	Java based program from Apache Jena framework.
+
+>> Data can be imported within query by "FROM <<dataset_name.ttl>>" or by protocol "arq --data <data_set.ttl>"
+	Data set name by protocol will ralways have high priority.
+
+>> Multiple triples in curly braces forms graph patterns. 
+	Tree data structure without the hierarchy—any node can connect to any other one
+	Nodes represent subject or object resources, and the predicates are the connections between nodes.
+
+>> Browser query interface: http://dbpedia.org/snorql/
+	Source: DBpedia (collection of data from the gray infoboxes of fielded data that you often see on the right side of Wikipedia pages)
+
+>> Ontology on DBPedia: http://dbpedia.org/ontology/
+
+
+>> Run query file:
+	arq --data <data.ttl> --query <query.rq>

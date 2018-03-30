@@ -1,0 +1,7 @@
+Chrome does not start after update:
+	Run: /usr/bin/google-chrome
+	If msg: ATTENTION: default value of option force_s3tc_enable overridden by environment.
+		Gkr-Message: secret service operation failed: The name org.freedesktop.secrets was not provided by any .service files
+
+	Run from terminal: google-chrome %U --password-store=basic
+

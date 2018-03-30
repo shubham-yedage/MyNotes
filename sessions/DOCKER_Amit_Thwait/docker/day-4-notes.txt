@@ -1,0 +1,318 @@
+Day 3 :-
+--------
+Dockerfile
+
+mkdir examples
+cd examples
+
+mkdir apline_date_test1 && cd apline_date_test1
+vim Dockerfile
+--------------
+FROM apline
+RUN date > /datefile
+--------------
+
+docker build -t="apline_date_test1:v1" .
+
+docker run -it apline_date_test1:v1 cat /datefile
+
+docker build -t="apline_date_test1:v2" .
+#Uses cache
+docker run -it apline_date_test1:v2 cat /datefile
+
+docker build -t="apline_date_test1:v3" --no-cache .
+docker run -it apline_date_test1:v3 cat /datefile
+
+mkdir apline_date_test2 && cd apline_date_test2
+date > datefile
+
+vim Dockerfile
+--------------
+FROM apline
+RUN date > /data
+COPY datefile /datefile
+--------------
+
+With COPY instruction, we can copy the content from our build context to the intermediate container which would get committed to create the resulting image.
+COPY <src> <dest>
+COPY ["<src>", "<dest>"] # This form is used when source/destination contains a white space.
+
+docker build -t="apline_date_test2:v1" .
+
+docker run -it apline_date_test2:v1 cat /datefile
+
+ADD command is similar to COPY but with more capability:
+1) It can take source(file/picture) as URL
+2) If the source is a tar file then it would untar it at the destination
+
+The advantage of using a Dockerfile is that it creates an instance of docker container using the base image and then deletes it upon exiting whereas in the case of
+commiting a changes to docker container it doesn't removes the instance there by taking up disk space, you will have to delete the container manually to clean up disk.
+
+Instruction format:
+1) Shell form
+   <instruction> <command>
+   CMD echo "This is shell form"
+2) Exec form
+   <instruction> ["executable", "param1", "param2", ...]
+   CMD ["/bin/echo", "This is exec form"]
+
+Shell form instruction CMD echo "This is shell form" is equivalent to
+/bin/sh -c echo "This is shell form"
+The default shell on Linux is /bin/sh
+We can change the default shell with SHELL instruction in Dockerfile
+
+Exec form is preffered form.
+
+Instruction can be classified into 2 groups
+1) Build time instructions
+   FROM, MAINTAINER, RUN, ADD, COPY, USER, EXPOSE, WORKDIR ..etc
+2) Run time instructions
+   CMD, ENTRYPOINT
+
+CMD:
+This is a runtime instruction means that it would be executed when the container is started from the resulting image.
+There can be only 1 CMD instruction in a Dockerfile.
+If you specify more than 1 CMD instruction then only the last one would be taken into consideration.
+
+If you want to run your <command> without a shell then you must express the command as a JSON array and give the full path to the executable.
+This array form is the preferred format of CMD
+
+CMD ["nginx", "-g", "daemon off;"]
+means that when the container would start from nginx image, it would by default run "nginx -g daemon off;" command to start the nginx daemon.
+We can overwrite the defaults defined by CMD by starting the /bin/sh program instead of nginx daemon at the start time.
+docker run -it nginx /bin/sh
+
+CMD vs ENTRYPOINT :
+-------------------
+mkdir cmd_ex && cd cmd_ex
+vim Dockerfile
+--------------
+FROM alpine
+CMD ["/bin/echo", "This is printed using CMD instruction"]
+--------------
+docker build -t alpine_cmd:v1 .
+docker run alpine_cmd:v1
+# Ouputs: This is printed using CMD instruction
+
+docker run alpine_cmd:v1 ls
+# Here the command "ls" overrides the default instruction specified using CMD
+
+mkdir extrypoint_ex && cd entrypoint_ex
+vim Dockerfile
+--------------
+FROM alpine
+ENTRYPOINT ["/bin/echo", "This is printed using ENTRYPOINT instruction"]
+--------------
+docker build -t alpine_ep:v1 .
+docker run apline_ep:v1
+# Outputs: This is printed using ENTRYPOINT instruction
+
+docker run apline_ep:v1 ls
+# Outputs: This is printed using ENTRYPOINT instruction ls
+
+The difference bewteen CMD and ENTRYPOINT is that the default command is not changed and anything passed while instanting the image with ENTRYPOINT command is taken as argument.
+
+Both CMD and ENTRYPOINT can be used together as well, ENTRYPOINT command will be the default command to be executed and whatever is passed via CMD will be passed to CMD as an argument. If something else is passed from command line then it overrides whatever is written in CMD
+vim Dockerfile
+--------------
+FROM alpine
+ENTRYPOINT ["/bin/echo", "We are learning about"]
+CMD ["Dockerfile"]
+--------------
+docker build -t cmd_vs_entrypoint:v1 .
+docker run cmd_vs_entrypoint:v1
+# Prints We are learning about Dockerfile
+
+docker run cmd_vs_entrypoint:v1 ls
+# Prints We are learning about ls
+
+Difference between CMD and RUN
+RUN command is executed while building the base image,
+whereas CMD command is added as configuration for the base image and is executed when the image is instantiated.
+Command stated using CMD directive will not be executed if the container is asked to do something else like connecting to /bin/bash while instanting.
+
+ENTRYPOINT command is similar to CMD command except it will always be executed the container is instantiated.
+ALso, if something else is asked to run while instanting lets say /bin/bash, then it will be simply ignored and the command mentioned in ENTRYPOINT will be run.
+
+A command can be run on a container having ENTRYPOINT using "docker exec" command
+docker exec apacheweb1 /bin/cat /var/www/html/index.html
+
+Dangling images : Image with either REPOSITORY or TAG as <none>
+docker images --filter=dangling=true
+
+Dangling images are created due to using same image name in the build command.
+To get only image_id
+docker images --quiet --filter=dangling=true
+
+To remove the dangling images
+docker images -q --filter=dangling=true | xargs docker rmi
+
+WORKDIR : The WORKDIR instruction sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile.
+If the WORKDIR doesn't exist, it will be created even if it's not used in any subsequent Dockerfile instruction.
+
+WORKDIR /a
+WORKDIR b
+WORKDIR c
+RUN pwd
+Output would be /a/b/c
+
+vim Dockerfile
+--------------
+FROM alpine
+RUN mkdir scripts
+COPY scripts/sample.sh scripts
+WORKDIR scripts
+CMD ./sample.sh
+--------------
+
+ENV :
+With ENV instruction we set environment variables which would be available inside the container for future reference.
+ENV <key> <value>
+ENV <key>=<value> <key>=<value>
+
+mkdir apache_installation_ubuntu
+
+cd apache_installation_ubuntu
+
+vim Dockerfile
+--------------
+FROM ubuntu:latest
+MAINTAINER amit17thawait@gmail.com
+
+RUN apt-get update -y
+RUN apt-get install -y apache2 net-tools
+
+RUN echo "This is a custom image file build during image creation" > /var/www/html/index.html
+
+EXPOSE 80
+
+ENTRYPOINT apache2ctl  "-DFOREGROUND"
+--------------
+
+docker build -t=apache_ubuntu:v1 .
+
+docker run -d --name=apache1 -p 8081:80 apache_ubuntu:v1
+
+0.0.0.0:8081
+
+--------------------------------------
+Add an example for container with USER
+--------------------------------------
+https://docs.docker.com/engine/examples/running_ssh_service/#build-an-eg_sshd-image
+
+mkdir ssh_with_user
+cd ssh_with_user
+
+vim Dockerfile
+--------------
+FROM ubuntu:16.04
+
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:password' | chpasswd
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+--------------
+
+docker build -t=ssh_ex:v1 .
+
+docker run -d --name=test_sshd1 ssh_ex:v1
+
+docker inspect test_sshd1 | grep IPA
+
+ssh root@172.17.0.2
+
+Inside the container
+useradd -ms /bin/bash amit
+passwd amit
+# enter password as amit
+exit
+
+docker commit -m "Added amit user" -a "Amit Thawait" test_sshd1 ssh_ex:v2
+
+docker images
+
+docker run -d --name=test_sshd2 ssh_ex:v2
+
+docker ps
+
+docker inspect test_sshd2 | grep IPA
+
+ssh amit@172.17.0.3
+
+----------------------------------------------
+
+docker exec -u 0 -it <container_name> /bin/bash
+-u 0 signifies user with id 0 which is actually root user
+docker exec -u 0 -it condescending_albattani /bin/bash
+
+To login to hub.docker.com
+docker login
+
+docker info
+# shows logged-in user name
+
+Pushing a image to docker hub
+First create a repository in hub.docker.com, then create a tag with same name in localhost then push it after login.
+docker tag <image_name_to_be_pushed>:<tag> <docker-id>/<image-name>:<tag>
+docker login
+docker push amit17thawait/myubuntu:v1 # This is just an example name
+docker logout
+
+To pull an image from private registry add registry location as prefix to image name
+docker pull myregitry.com:6000/alpine:latest
+
+Containers can also be exported and imported in the form of tar files using export and import command
+Export: docker container export [OPTIONS] container
+docker container export <container-id> > /tmp/amit_alpine.tar
+
+Import: docker image import [OPTIONS] file|URL - [REPOSITORY:[:TAG]]
+cat /tmp/amit_alpine.tar | docker image import - amitthawait/alpine:2.0
+
+Pushing an image to private repository
+docker image push myregitry.com:6000/alpine:latest
+
+docker image prune
+# removes all the unused images
+
+http://www.johnzaccone.io/entrypoint-vs-cmd-back-to-basics/
+
+Extras :-
+---------
+For local backup & restoring of base images :
+Saving a base image
+docker save centos:latest > centos.latest.tar
+OR
+docker save --output centos.latest.tar centos:latest
+
+To check the content of tar file
+tar tvf centos.latest.tar
+
+To further compress the tar file
+gzip centos.latest.tar
+
+To load the container from compressed file
+docker load < centos.latest.tar
+OR
+docker load --input centos.latest.tar
+docker load --input centos.latest.tar.gz
+
+History of image
+docker history centos7:apache/v2
+# for detailed output
+docker history --no-trunc centos7:apache/v2
+
+Tagging a image
+docker tag <image_name> <new_image_name>
+docker tag <image_id> <new_image_name>
+
+docker tag centos:latest centos/7:v1
+

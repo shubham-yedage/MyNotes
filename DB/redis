@@ -1,0 +1,4 @@
+>> Key-Value database
+>> Provides in memeory data structure store
+>> Supports strings, hashes, lists, sets, sorted sets, range queries, bitmaps, hyperlogs, geospatial indexs
+>>

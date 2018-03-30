@@ -1,0 +1,178 @@
+Day 1:-
+=======
+
+Basic unix commands :
+---------------------
+ls
+
+ll
+
+ps
+
+cat
+
+echo
+
+>
+
+|
+
+vi
+
+vim
+
+env
+
+$
+
+ip a
+
+top/htop
+
+
+History :
+---------
+
+Explain cloud & AWS
+
+Explain hypervisor => Desktop version like VMware player, virtualbox
+
+EC2 instance is also a VM, think of it as a VM running with a enterprise hypervisor on big hardware.
+
+Microservices came into picture.
+
+Containers are not a new concept :
+FreeBSD - Jails
+Sun (now Oracle) Solaris - Zones
+Google - Lmctfy (Let me contain that for you)
+OpenVZ
+
+Google and Microsoft have already adopted Docker as their container mechanism for running and managing containers.
+
+
+Building blocks of Containers :
+-------------------------------
+File system container "chroot" was introduced in Unix 7th edition in 1982
+In 2003, FreeBSD extended chroot into "jails"
+In early 2000, Solaris intoduced "zones" to provide virtualized operating system services
+
+Chroot changes the apparent root directory for the current running process and its children
+
+
+sudo apt-get install debootstrap
+
+sudo mkdir /mnt/chroot-ubuntu-trusty
+
+man debootstrap
+
+sudo debootstrap trusty /mnt/chroot-ubuntu-trusty/ http://archive.ubuntu.com/ubuntu
+
+ls /mnt/chroot-ubuntu-trusty/
+
+cat /etc/os-release
+
+cat /mnt/chroot-ubuntu-trusty/etc/os-release
+
+Creating a chrooted environment
+sudo chroot /mnt/chroot-ubuntu-trusty/ /bin/bash
+
+With Chroot, processes are only limited in the part of file-system they can access but share the rest of the system resources like users, hostname etc.
+
+Jails:
+------
+Jails extend the chroot model by virtualizing
+- users
+- networking sub-system etc
+
+systemd-nspawn
+---------------
+On modern Linux OS we use systemd as init system to bootstrap user space and manage all the processes subsequently
+
+Systemd's systemd-nspawn can also be used to launch containers, which are similar to chroot, but they also provide virtualization :
+- virtualize process tree
+- users
+- host and domain name
+etc
+
+systemd-nspawn is like the chroot command, but it is a chroot on steroids.
+
+systemd-nspawn may be used to run a command or OS in a light-weight namespace container. It is more powerful than chroot since it fully virtualizes the file system hierarchy, as well as the process tree, the various IPC subsystems and the host and domain name.
+
+Install systemd-container
+sudo apt-get update
+sudo apt-get install systemd-container
+
+debootstrap --arch=amd64 stable ~/DebianJessie
+
+ls ~/DebianJessie
+
+systemd-nspawn -bD ~/DebianJessie
+
+In another terminal
+machinectl
+# MACHINE      CLASS     SERVICE
+# DebainJessie container systemd-nspawn
+
+machinectl terminate DebianJessie
+
+=> To create a container we need to use kernel features like cgroups, namespaces, netlink..etc
+- cgroups allows limitation and prioritization of resources (CPU, memory, block I/O, network, etc.) without the need for starting any virtual machines
+- namespace isolation functionality that allows complete isolation of an application's ls  of the operating environment including process trees, networking, user IDs and mounted file systems.
+
+
+=> Unikernel
+With unikernel we can select the kernel libraries we need to run our application, then bundle them with the application to create a machine image.
+That image can be run directly on the hypervisor.
+For ex: If our application just need to communicate with the external world then we can just get the network library from the kernel and create a machine image after compiling it with the application.
+
+=> Native Docker for MacOSX
+- Spins up a lightweight hypervisor that only runs an embedded Linux instance that includes the Docker engine
+- With unikernel, the embedded Linux instance maps host's networking and storage capabilities with itself.
+- The mapping of host's networking and storage capabilities between Linux and OSX/Windows semantics gives us native feel
+https://stackoverflow.com/questions/38532483/where-is-var-lib-docker-on-mac-os-x
+
+=> Docker for windows (Containers in windows)
+- Supports 2 kind of containers
+  - Windows server containers
+  - Hyper-V container
+- Windows server containers
+  - Microsoft has build the functionality in the windows kernel equivalent to namespaces, cgroups etc
+  - containers share the kernel with the host system
+- Hyper-V containers
+  - Runs windows server container inside a highly optimized virtual machine
+  - container doesn't share the host kernel
+
+Dot Cloud
+Way back in 2010 => https://www.quora.com/What-does-DotCloud-do
+https://www.docker.com/company/management
+
+Docker is a client-server application where both daemon and client can be run on the same system or you can connect a Docker client with a remote Docker daemon.
+
+Docker clients and Daemons communicate via sockets or through a RESTful API.
+The main components of Docker are :
+- Daemon
+- Client
+- Docker Registry
+
+
+Does it runs on linux only?
+- That depends on what you mean. Docker can "emulate" Linux within its container space, but the client to do so can be installed on Linux, Windows or MacOSX compatible systems you want.
+
+For windows, since the Docker Engine itself uses "Linux-specific" kernel features, it needs to use a lightweight virtual machine to do its work. You then use the client to control that virtualized Docker Engine to run and work with your containers.
+
+Story of CentOS and Redhat (Fedora)
+
+References
+https://en.wikipedia.org/wiki/Chroot
+https://en.wikipedia.org/wiki/FreeBSD_jail
+https://wiki.debian.org/Debootstrap
+https://wiki.archlinux.org/index.php/Systemd-nspawnls
+
+References : Namespace, CGroup, UnionFS
+https://lwn.net/Articles/531114/
+https://en.wikipedia.org/wiki/Cgroups
+http://www.opencloudblog.com/?p=66
+http://unionfs.filesystems.org/
+
+Install Docker
+https://docs.docker.com/engine/installation/linux/ubuntu

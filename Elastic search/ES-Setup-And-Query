@@ -1,0 +1,98 @@
+Get indices:
+	curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+
+Creat index:
+	e.g. Index: "customer"
+	curl -XPUT 'localhost:9200/customer?pretty&pretty'
+
+Index doc:
+	curl -XPUT 'localhost:9200/customer/doc/1?pretty&pretty' -H 'Content-Type: application/json' -d'
+	{
+	    "name": "John Doe"
+	}'
+
+Get indexed doc:
+	 curl -XGET 'localhost:9200/customer/doc/1?pretty&pretty'
+
+Delete index:
+	curl -XDELETE 'localhost:9200/customer?pretty&pretty'
+
+Update Doc:
+	curl -XPOST 'localhost:9200/customer/doc/1/_update?pretty&pretty' -H 'Content-Type: application/json' -d'
+	{
+	  "doc": { "name": "Jane Doe" }
+	}
+	'
+Delete Doc:
+	curl -XDELETE 'localhost:9200/customer/doc/2?pretty&pretty'
+
+Upsert: Add field if not exsits
+	POST product/default/3/_update
+	{
+	  "script": "ctx._source.price+=5",
+	  "upsert": {
+	    "price": 50
+	  }
+	}
+
+Bulk add: 
+	POST /product/default/_bulk
+	{"index":{"_id": 104}}
+	{"price": 100}
+	{"index":{"_id": 105}}
+	{"price": 100}
+	{"index":{"_id": 106}}
+	{"price": 100}
+
+Bulk update:
+	
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Ingest attachment:
+	1. Install 
+		elasticsearch-plugin install ingest-attachment
+
+	2. Remove
+		elasticsearch-plugin remove ingest-attachment
+
+	Ingest file:
+		1. Create pipeline
+			PUT _ingest/pipeline/attachment
+			{
+			"description": "",
+			"attachment": {
+				"field": "<data>"
+			    }
+			}
+
+		2. Ingest doc
+			PUT <index_name>/<my_type>/<my_id>?pipeline=attachment
+			{
+			    "data": "<base64 encode>"
+			}
+
+		3. Query examples
+			a] GET <index_name>/<my_type>/<my_id>
+			b] GET synerzip/blogs/_search
+			{
+			  "_source": ["doc.filename"], 
+			  "query": { "match": {
+			    "attachment.content": "react"
+			  } },
+			  "highlight": {
+			    "boundary_scanner": "word",
+			    "number_of_fragments": 100,
+			    "fields": {
+			      "attachment.content": {}
+			    }
+			  }
+			}
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
